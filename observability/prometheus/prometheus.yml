@@ -1,0 +1,76 @@
+# Prometheus scrape config
+#
+# Every target gets an `env` label (production / stage / dev) so the same
+# dashboards work across environments. `instance` is kept on the default
+# (host:port) so per-pod drill-down still works.
+
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+  external_labels:
+    env: ${APP_ENV}
+    cluster: primepay
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['alertmanager:9093']
+
+rule_files:
+  - /etc/prometheus/rules/*.yml
+
+scrape_configs:
+  # --- Prometheus self -------------------------------------------------------
+  - job_name: prometheus
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: prometheus
+
+  # --- Host metrics ----------------------------------------------------------
+  - job_name: node
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          service: host
+
+  # --- Container metrics -----------------------------------------------------
+  - job_name: cadvisor
+    static_configs:
+      - targets: ['cadvisor:8080']
+        labels:
+          service: containers
+
+  # --- Postgres --------------------------------------------------------------
+  - job_name: postgres
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+        labels:
+          service: postgres
+
+  # --- Redis (broker + cache) ------------------------------------------------
+  - job_name: redis
+    static_configs:
+      - targets: ['redis-exporter:9121']
+        labels:
+          service: redis
+
+  # --- Celery (workers / tasks / queue) --------------------------------------
+  - job_name: celery
+    static_configs:
+      - targets: ['celery-exporter:9808']
+        labels:
+          service: celery
+
+  # --- Backend (FastAPI /metrics) --------------------------------------------
+  # Disabled by default until Week 2 (prometheus-fastapi-instrumentator wiring
+  # ships in the same PR). Once the backend exposes /metrics, this scrape job
+  # is sufficient — no Prometheus reload needed; the target just goes UP.
+  - job_name: backend
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['backend:8000']
+        labels:
+          service: backend
+          component: api

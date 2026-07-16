@@ -1,0 +1,99 @@
+# Example selector configuration.
+# Copy to selectors.{env}.yaml and tune per environment.
+
+selectors:
+  traders:
+    namespace: "sel:traders"
+    enabled: true
+
+    # FinalScore = quality^qw * bandit^bw
+    quality_weight: 0.7
+    bandit_weight: 0.3
+
+    bandit_strategy: "thompson"   # thompson | epsilon_greedy | ucb
+    policy: "softmax"             # softmax | argmax | random
+
+    decay_factor: 0.995
+    decay_interval_sec: 60
+    initial_alpha: 1.0
+    initial_beta: 1.0
+
+    softmax_temperature: 0.5
+    min_exploration_prob: 0.02
+
+    metrics:
+      - name: conversion
+        weight: 0.4
+        min_value: 0.0
+        max_value: 1.0
+        higher_is_better: true
+        min_sample_size: 50
+        default_value: 0.5
+        max_age_sec: 86400
+
+      - name: rate
+        weight: 0.2
+        min_value: 0.0
+        max_value: 100.0
+        higher_is_better: true
+
+      - name: dispute_rate
+        weight: 0.2
+        min_value: 0.0
+        max_value: 0.5
+        higher_is_better: false
+
+      - name: requisites_count
+        weight: 0.2
+        min_value: 0.0
+        max_value: 50.0
+        higher_is_better: true
+
+    circuit_breaker:
+      enabled: true
+      failure_threshold: 5
+      window_sec: 60
+      cooldown_sec: 300
+
+    fairness:
+      min_share: 0.01
+      max_share: 0.30
+
+    cold_start:
+      forced_exploration_orders: 10
+      bootstrap_alpha: 2.0
+      bootstrap_beta: 1.0
+
+    reward:
+      partial_signals:
+        accepted: 0.3
+        completed: 0.7
+      timeout_sec: 3600
+
+  providers:
+    namespace: "sel:providers"
+    enabled: true
+    quality_weight: 0.6
+    bandit_weight: 0.4
+    bandit_strategy: "thompson"
+    policy: "softmax"
+    decay_factor: 0.99
+    decay_interval_sec: 60
+    softmax_temperature: 0.5
+    min_exploration_prob: 0.02
+    metrics:
+      - name: success_rate
+        weight: 0.6
+        min_value: 0.0
+        max_value: 1.0
+        higher_is_better: true
+        min_sample_size: 20
+        default_value: 0.5
+      - name: avg_latency_ms
+        weight: 0.4
+        min_value: 0.0
+        max_value: 5000.0
+        higher_is_better: false
+    fairness:
+      min_share: 0.05
+      max_share: 0.50

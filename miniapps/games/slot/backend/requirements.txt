@@ -1,0 +1,7 @@
+# Standalone deps for the slot mini-app.
+# game.py (pure logic + its tests) needs only the stdlib + pytest.
+# api.py is integration-parked: when mounted into the host backend it reuses
+# the host's fastapi / sqlalchemy / pydantic, so those are not pinned here.
+pytest>=8.0
+pydantic>=2.6
+pydantic-settings>=2.1

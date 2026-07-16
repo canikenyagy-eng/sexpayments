@@ -1,0 +1,26 @@
+# Dev profile — high exploration, no fairness caps, no CB.
+
+selectors:
+  traders:
+    namespace: "sel:traders"
+    enabled: true
+    quality_weight: 0.5
+    bandit_weight: 0.5
+    softmax_temperature: 1.0
+    min_exploration_prob: 0.1
+    decay_factor: 0.99
+    decay_interval_sec: 30
+    metrics:
+      - name: conversion
+        weight: 1.0
+        min_value: 0.0
+        max_value: 1.0
+        higher_is_better: true
+        default_value: 0.5
+    circuit_breaker:
+      enabled: false
+    fairness:
+      min_share: 0.0
+      max_share: 1.0
+    cold_start:
+      forced_exploration_orders: 3

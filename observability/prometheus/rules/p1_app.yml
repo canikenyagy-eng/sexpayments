@@ -1,0 +1,133 @@
+# Application-layer alerts.
+#
+# These rely on metrics exposed by the backend (/metrics via
+# prometheus-fastapi-instrumentator) and celery-exporter. They start firing
+# automatically once Week 2 instrumentation lands; until then the targets are
+# DOWN and only the `TargetDown` alert from infra rules fires.
+
+groups:
+  # ---------------------------------------------------------------------------
+  # Celery: worker presence, task failure rate, queue depth
+  # ---------------------------------------------------------------------------
+  - name: app_celery
+    interval: 30s
+    rules:
+      - alert: CeleryNoWorkers
+        expr: sum(celery_worker_up) == 0
+        for: 2m
+        labels:
+          severity: p0
+          service: celery
+        annotations:
+          summary: "No Celery workers are alive"
+          description: "Background processing has stopped. Callbacks, requisite assignment, scheduled jobs all halted."
+          runbook_url: "docs/runbooks/celery_down.md"
+
+      - alert: CeleryQueueBacklog
+        # celery-exporter reports queue length via celery_queue_length.
+        expr: max by (queue_name) (celery_queue_length) > 100
+        for: 2m
+        labels:
+          severity: p1
+          service: celery
+        annotations:
+          summary: "Celery queue {{ $labels.queue_name }} backlog > 100 ({{ $value }})"
+          description: "Workers can't keep up. Either scale concurrency or fix the slow task."
+
+      - alert: CeleryQueueBacklogCritical
+        expr: max by (queue_name) (celery_queue_length) > 1000
+        for: 1m
+        labels:
+          severity: p0
+          service: celery
+        annotations:
+          summary: "Celery queue {{ $labels.queue_name }} backlog > 1000 — runaway"
+          description: "User-visible delay across the system. Investigate the slowest task and consider purging."
+
+      - alert: CeleryTaskFailureRateHigh
+        expr: |
+          sum by (name) (rate(celery_task_failed_total[5m]))
+          /
+          (
+            sum by (name) (rate(celery_task_succeeded_total[5m]))
+            + sum by (name) (rate(celery_task_failed_total[5m]))
+          ) > 0.1
+        for: 10m
+        labels:
+          severity: p1
+          service: celery
+        annotations:
+          summary: "Celery task {{ $labels.name }} failing > 10% over 10m"
+          description: "Look at Sentry for the stack trace. Likely a recently-changed downstream."
+
+      - alert: CeleryCallbackTaskFailing
+        # Special-case: callback delivery is user-visible to merchants.
+        expr: |
+          rate(celery_task_failed_total{name="app.workers.tasks.callbacks.send_order_callback"}[10m]) > 0.05
+        for: 5m
+        labels:
+          severity: p1
+          service: celery
+          component: callbacks
+        annotations:
+          summary: "send_order_callback failure rate elevated"
+          description: "Merchant callbacks are not landing. Check Sentry and verify webhook URLs are reachable."
+
+  # ---------------------------------------------------------------------------
+  # Backend API: error rate and latency (uses
+  # prometheus-fastapi-instrumentator metric names)
+  # ---------------------------------------------------------------------------
+  - name: app_backend
+    interval: 30s
+    rules:
+      - alert: BackendHigh5xxRate
+        expr: |
+          sum(rate(http_requests_total{service="backend",status=~"5.."}[5m]))
+          /
+          sum(rate(http_requests_total{service="backend"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: p0
+          service: backend
+        annotations:
+          summary: "Backend 5xx rate above 5%"
+          description: "{{ printf \"%.1f\" $value }}% of requests are 5xx. Check Sentry and recent deploys."
+
+      - alert: BackendLatencyP95High
+        expr: |
+          histogram_quantile(0.95,
+            sum by (le, handler) (rate(http_request_duration_seconds_bucket{service="backend"}[5m]))
+          ) > 2.0
+        for: 10m
+        labels:
+          severity: p1
+          service: backend
+        annotations:
+          summary: "p95 latency > 2s on {{ $labels.handler }}"
+          description: "Sustained for 10 minutes. Trace shows where the time goes — likely DB or external call."
+
+      - alert: BackendMerchantApi5xxRate
+        # Tighter SLO on the merchant integration API — they have automated
+        # retries that hammer us if we 5xx, and unhappy merchants escalate.
+        expr: |
+          sum(rate(http_requests_total{service="backend",handler=~"/api/merchant/.*",status=~"5.."}[5m]))
+          /
+          sum(rate(http_requests_total{service="backend",handler=~"/api/merchant/.*"}[5m])) > 0.01
+        for: 5m
+        labels:
+          severity: p0
+          service: backend
+          component: merchant_api
+        annotations:
+          summary: "Merchant API 5xx rate > 1%"
+          description: "Merchant integrations are seeing errors. This is user-visible to paying customers."
+
+      - alert: BackendDependencyDown
+        expr: primepay_dependency_up == 0
+        for: 2m
+        labels:
+          severity: p1
+          service: backend
+        annotations:
+          summary: "Backend can't reach {{ $labels.dependency }} (readiness probe failing)"
+          description: "/health/ready reports {{ $labels.dependency }} DOWN for 2m. The API is serving degraded — check the dependency and recent deploys."

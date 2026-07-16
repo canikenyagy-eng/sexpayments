@@ -1,0 +1,199 @@
+# PrimePay Observability — merges into the main docker-compose.yml.
+#
+# Designed to be brought up TOGETHER with the main compose, sharing the same
+# project name so all services end up on the same default network:
+#
+#   docker-compose -p primepay_${ENV_PREFIX} \
+#       -f docker-compose.yml \
+#       -f observability/docker-compose.observability.yml \
+#       up -d
+#
+# This is the same shape the existing GitLab CI uses (`-p primepay_${ENV_PREFIX}`)
+# — just add the second `-f` flag in `.gitlab-ci.yml` and you get monitoring
+# on dev / stage / prod from the same per-environment .env file.
+#
+# Every host port binds to 127.0.0.1 — put Grafana behind your VPN / SSH
+# tunnel / private nginx if you want browser access.
+
+volumes:
+  prometheus_data:
+  grafana_data:
+  alertmanager_data:
+
+services:
+  # ---------------------------------------------------------------------------
+  # Prometheus — metrics store + alert engine
+  # ---------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: ${ENV_PREFIX}_prometheus
+    restart: always
+    user: root
+    environment:
+      - APP_ENV=${APP_ENV:-production}
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION:-15d}'
+      - '--web.enable-lifecycle'
+      - '--web.external-url=${PROMETHEUS_EXTERNAL_URL:-http://localhost:9090}'
+      - '--enable-feature=expand-external-labels'
+    volumes:
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./observability/prometheus/rules:/etc/prometheus/rules:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "127.0.0.1:${PORT_PROMETHEUS:-9090}:9090"
+    depends_on:
+      - alertmanager
+      - node-exporter
+      - cadvisor
+      - postgres-exporter
+      - redis-exporter
+
+  # ---------------------------------------------------------------------------
+  # Alertmanager — routing + dedup + Telegram delivery
+  # ---------------------------------------------------------------------------
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: ${ENV_PREFIX}_alertmanager
+    restart: always
+    # Alertmanager does NOT natively expand env vars inside its YAML. We mount
+    # the config as a TEMPLATE and substitute the Telegram bot token / chat ID
+    # at container start via a sed wrapper, then exec alertmanager.
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        cp /etc/alertmanager/alertmanager.tmpl.yml /tmp/alertmanager.yml
+        sed -i "s|__TG_TOKEN__|$$ALERT_TELEGRAM_BOT_TOKEN|g" /tmp/alertmanager.yml
+        sed -i "s|__TG_CHAT__|$$ALERT_TELEGRAM_CHAT_ID|g" /tmp/alertmanager.yml
+        exec /bin/alertmanager \
+          --config.file=/tmp/alertmanager.yml \
+          --storage.path=/alertmanager \
+          --web.external-url=$$ALERTMANAGER_EXTERNAL_URL
+    environment:
+      - ALERT_TELEGRAM_BOT_TOKEN=${ALERT_TELEGRAM_BOT_TOKEN:-}
+      - ALERT_TELEGRAM_CHAT_ID=${ALERT_TELEGRAM_CHAT_ID:-}
+      - ALERTMANAGER_EXTERNAL_URL=${ALERTMANAGER_EXTERNAL_URL:-http://localhost:9093}
+    volumes:
+      - ./observability/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.tmpl.yml:ro
+      - alertmanager_data:/alertmanager
+    ports:
+      - "127.0.0.1:${PORT_ALERTMANAGER:-9093}:9093"
+
+  # ---------------------------------------------------------------------------
+  # Grafana — single pane of glass
+  # ---------------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: ${ENV_PREFIX}_grafana
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=${GRAFANA_ANONYMOUS:-false}
+      - GF_SERVER_ROOT_URL=${GRAFANA_ROOT_URL:-http://localhost:3001}
+      - GF_INSTALL_PLUGINS=
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "127.0.0.1:${PORT_GRAFANA:-3001}:3000"
+    depends_on:
+      - prometheus
+
+  # ---------------------------------------------------------------------------
+  # Host exporter — CPU / RAM / disk / network of the host
+  # ---------------------------------------------------------------------------
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    container_name: ${ENV_PREFIX}_node_exporter
+    restart: always
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/host/root'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'
+      - '--collector.netclass.ignored-devices=^(veth.*|docker.*|br-.*|lo)$$'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/host/root:ro,rslave
+    pid: host
+
+  # ---------------------------------------------------------------------------
+  # cAdvisor — per-container CPU / RAM / IO / network
+  # ---------------------------------------------------------------------------
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    container_name: ${ENV_PREFIX}_cadvisor
+    restart: always
+    # Whitelisting compose-service labels was too aggressive on older Docker
+    # daemons — every container ended up reported as the same "instance"
+    # which collapses to a single timeseries. Keep the full label set.
+    command:
+      - '--housekeeping_interval=15s'
+      - '--docker_only=true'
+      - '--store_container_labels=true'
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
+    privileged: true
+
+  # ---------------------------------------------------------------------------
+  # Postgres exporter — connection pool, locks, custom queries
+  # Reaches `db` over the shared compose network.
+  # ---------------------------------------------------------------------------
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.15.0
+    container_name: ${ENV_PREFIX}_postgres_exporter
+    restart: always
+    environment:
+      DATA_SOURCE_NAME: "postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-primepay}?sslmode=disable"
+      PG_EXPORTER_AUTO_DISCOVER_DATABASES: "false"
+      PG_EXPORTER_EXTEND_QUERY_PATH: /etc/postgres_exporter/queries.yaml
+    volumes:
+      - ./observability/prometheus/postgres_queries.yaml:/etc/postgres_exporter/queries.yaml:ro
+    depends_on:
+      - db
+
+  # ---------------------------------------------------------------------------
+  # Redis exporter — memory, evictions, ops/sec, queue lengths
+  # Reaches `redis` over the shared compose network.
+  # ---------------------------------------------------------------------------
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.62.0
+    container_name: ${ENV_PREFIX}_redis_exporter
+    restart: always
+    command:
+      - '--redis.addr=redis://redis:6379'
+      - '--check-keys=celery,celery_beat,_kombu.binding.celery'
+      - '--check-single-keys=celery,celery_beat'
+    depends_on:
+      - redis
+
+  # ---------------------------------------------------------------------------
+  # Celery exporter — task success/failure rate, queue wait time
+  # ---------------------------------------------------------------------------
+  celery-exporter:
+    image: danihodovic/celery-exporter:0.10.10
+    container_name: ${ENV_PREFIX}_celery_exporter
+    restart: always
+    # Do NOT pass CE_ACCEPT_CONTENT via env — the exporter treats the env
+    # value as a single literal string, which causes:
+    #   SerializerNotInstalled: No encoder/decoder installed for ["json"]
+    # The default already accepts JSON, which is what our Celery emits.
+    command:
+      - '--broker-url=redis://redis:6379/0'
+      - '--port=9808'
+    depends_on:
+      - redis

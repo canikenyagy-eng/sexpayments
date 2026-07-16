@@ -1,0 +1,236 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "type": "row",
+      "title": "RED — overall",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
+      "id": 200
+    },
+    {
+      "type": "stat",
+      "title": "Requests / sec",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 5, "w": 6, "x": 0, "y": 1},
+      "id": 201,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background", "graphMode": "area"},
+      "fieldConfig": {"defaults": {"unit": "reqps"}},
+      "targets": [{
+        "expr": "sum(rate(http_requests_total{service=\"backend\"}[1m]))",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "stat",
+      "title": "Error rate (5xx)",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 5, "w": 6, "x": 6, "y": 1},
+      "id": 202,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background"},
+      "fieldConfig": {"defaults": {
+        "unit": "percentunit",
+        "decimals": 2,
+        "thresholds": {"mode": "absolute", "steps": [
+          {"color": "green", "value": null},
+          {"color": "orange", "value": 0.01},
+          {"color": "red", "value": 0.05}
+        ]}
+      }},
+      "targets": [{
+        "expr": "sum(rate(http_requests_total{service=\"backend\",status=~\"5..\"}[5m])) / sum(rate(http_requests_total{service=\"backend\"}[5m]))",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "stat",
+      "title": "p95 latency",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 5, "w": 6, "x": 12, "y": 1},
+      "id": 203,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background", "graphMode": "area"},
+      "fieldConfig": {"defaults": {
+        "unit": "s",
+        "thresholds": {"mode": "absolute", "steps": [
+          {"color": "green", "value": null},
+          {"color": "orange", "value": 0.5},
+          {"color": "red", "value": 2}
+        ]}
+      }},
+      "targets": [{
+        "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{service=\"backend\"}[5m])))",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "stat",
+      "title": "In-flight",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 5, "w": 6, "x": 18, "y": 1},
+      "id": 204,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background"},
+      "targets": [{
+        "expr": "sum(http_requests_inprogress{service=\"backend\"})",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "timeseries",
+      "title": "Requests per second by status class",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 6},
+      "id": 205,
+      "fieldConfig": {"defaults": {"unit": "reqps", "custom": {"stacking": {"mode": "normal"}}}},
+      "targets": [
+        {"expr": "sum by (status_class) (label_replace(rate(http_requests_total{service=\"backend\"}[1m]), \"status_class\", \"${1}xx\", \"status\", \"(.).*\"))", "legendFormat": "{{status_class}}", "refId": "A"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Latency percentiles",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 6},
+      "id": 206,
+      "fieldConfig": {"defaults": {"unit": "s"}},
+      "targets": [
+        {"expr": "histogram_quantile(0.50, sum by (le) (rate(http_request_duration_seconds_bucket{service=\"backend\"}[5m])))", "legendFormat": "p50", "refId": "A"},
+        {"expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{service=\"backend\"}[5m])))", "legendFormat": "p95", "refId": "B"},
+        {"expr": "histogram_quantile(0.99, sum by (le) (rate(http_request_duration_seconds_bucket{service=\"backend\"}[5m])))", "legendFormat": "p99", "refId": "C"}
+      ]
+    },
+    {
+      "type": "row",
+      "title": "By API surface (admin / trader / merchant / bot)",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 14},
+      "id": 210
+    },
+    {
+      "type": "timeseries",
+      "title": "Requests/sec by surface",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 15},
+      "id": 211,
+      "fieldConfig": {"defaults": {"unit": "reqps"}},
+      "targets": [{
+        "expr": "sum by (api_surface) (rate(http_requests_by_surface_total[1m]))",
+        "legendFormat": "{{api_surface}}",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "timeseries",
+      "title": "Error rate by surface",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 15},
+      "id": 212,
+      "fieldConfig": {"defaults": {"unit": "percentunit", "max": 1, "min": 0}},
+      "targets": [{
+        "expr": "sum by (api_surface) (rate(http_requests_by_surface_total{status=~\"5..\"}[5m])) / sum by (api_surface) (rate(http_requests_by_surface_total[5m]))",
+        "legendFormat": "{{api_surface}}",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "row",
+      "title": "Top endpoints",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 23},
+      "id": 220
+    },
+    {
+      "type": "table",
+      "title": "Top 10 endpoints by traffic",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 9, "w": 12, "x": 0, "y": 24},
+      "id": 221,
+      "options": {"showHeader": true},
+      "fieldConfig": {"defaults": {"custom": {"align": "left"}}},
+      "targets": [{
+        "expr": "topk(10, sum by (handler, method) (rate(http_requests_total{service=\"backend\"}[5m])))",
+        "format": "table",
+        "instant": true,
+        "refId": "A"
+      }],
+      "transformations": [
+        {"id": "organize", "options": {
+          "excludeByName": {"Time": true, "__name__": true, "job": true, "service": true},
+          "indexByName": {"method": 0, "handler": 1, "Value": 2}
+        }}
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Top 10 slowest endpoints (p95)",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 9, "w": 12, "x": 12, "y": 24},
+      "id": 222,
+      "fieldConfig": {"defaults": {"unit": "s", "custom": {"align": "left"}}},
+      "targets": [{
+        "expr": "topk(10, histogram_quantile(0.95, sum by (handler, le) (rate(http_request_duration_seconds_bucket{service=\"backend\"}[5m]))))",
+        "format": "table",
+        "instant": true,
+        "refId": "A"
+      }],
+      "transformations": [
+        {"id": "organize", "options": {
+          "excludeByName": {"Time": true, "__name__": true, "job": true, "service": true},
+          "indexByName": {"handler": 0, "Value": 1}
+        }}
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Top 10 endpoints by error rate",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 9, "w": 24, "x": 0, "y": 33},
+      "id": 223,
+      "fieldConfig": {"defaults": {"unit": "percentunit", "custom": {"align": "left"}}},
+      "targets": [{
+        "expr": "topk(10, sum by (handler) (rate(http_requests_total{service=\"backend\",status=~\"5..\"}[5m])) / sum by (handler) (rate(http_requests_total{service=\"backend\"}[5m])))",
+        "format": "table",
+        "instant": true,
+        "refId": "A"
+      }],
+      "transformations": [
+        {"id": "organize", "options": {
+          "excludeByName": {"Time": true, "__name__": true, "job": true, "service": true},
+          "indexByName": {"handler": 0, "Value": 1}
+        }}
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Noise",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 42},
+      "id": 230
+    },
+    {
+      "type": "timeseries",
+      "title": "Unmatched routes (404 / 405)",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 7, "w": 24, "x": 0, "y": 43},
+      "id": 231,
+      "fieldConfig": {"defaults": {"unit": "reqps"}},
+      "targets": [{
+        "expr": "sum by (status) (rate(http_unmatched_route_total[1m]))",
+        "legendFormat": "{{status}}",
+        "refId": "A"
+      }]
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": ["primepay", "api"],
+  "templating": {"list": []},
+  "time": {"from": "now-1h", "to": "now"},
+  "timepicker": {},
+  "timezone": "",
+  "title": "PrimePay — API Health",
+  "uid": "primepay-api",
+  "version": 1,
+  "weekStart": ""
+}

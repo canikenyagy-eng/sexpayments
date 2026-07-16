@@ -1,0 +1,304 @@
+version: '3.8'
+
+services:
+  # База данных PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: ${ENV_PREFIX}_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-primepay}
+    command:
+      - postgres
+      - -c
+      - max_connections=300
+      - -c
+      - idle_in_transaction_session_timeout=300000
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${PORT_DB}:5432"
+
+  # Redis для кэширования и брокера Celery
+  redis:
+    image: redis:7-alpine
+    container_name: ${ENV_PREFIX}_redis
+    restart: always
+    command: redis-server --maxmemory 512mb --maxmemory-policy noeviction --appendonly yes
+    mem_limit: 768m
+    ports:
+      - "127.0.0.1:${PORT_REDIS}:6379"
+    volumes:
+      - redis_data:/data
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.8-alpine
+    container_name: ${ENV_PREFIX}_clickhouse
+    restart: always
+    environment:
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB:-default}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER:-default}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-}
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    ports:
+      - "127.0.0.1:${PORT_CLICKHOUSE:-8123}:8123"
+
+  # Бэкенд (FastAPI)
+  backend:
+    build:
+      context: ./backend-py
+      dockerfile: Dockerfile
+    container_name: ${ENV_PREFIX}_backend
+    restart: always
+    depends_on:
+      - db
+      - redis
+      - clickhouse
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-primepay}
+      - REDIS_URL=redis://redis:6379/0
+      - APP_ENV=${APP_ENV:-production}
+      - DEBUG=${DEBUG:-False}
+      - SECRET_KEY=${SECRET_KEY}
+      - SENTRY_DSN=${SENTRY_DSN:-}
+      - RUN_MIGRATIONS=true
+      - CHECKOUT_BASE_URL=${CHECKOUT_BASE_URL}
+      - PROJECT_BASE_URL=${PROJECT_BASE_URL}
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - ACCESS_TOKEN_EXPIRE_MIN=${ACCESS_TOKEN_EXPIRE_MIN:-60}
+      - REFRESH_TOKEN_EXPIRE_DAYS=${REFRESH_TOKEN_EXPIRE_DAYS:-7}
+      - TRADER_AUTO_DISABLE_PAYIN_MINUTES=${TRADER_AUTO_DISABLE_PAYIN_MINUTES:-15}
+      - MERCHANT_BOT_URL=http://merchant-bot:8084
+      - MERCHANT_BOT_SECRET=${MERCHANT_BOT_SECRET}
+      - TRADER_BOT_URL=http://trader-bot:8081
+      - TRADER_BOT_SECRET=${TRADER_BOT_SECRET}
+      - SUPPORT_BOT_URL=http://support-bot:8082
+      - SUPPORT_BOT_SECRET=${SUPPORT_BOT_SECRET}
+      - MERCHANT_NOTIFY_BOT_URL=http://merchant-notify-bot:8083
+      - MERCHANT_NOTIFY_BOT_SECRET=${MERCHANT_NOTIFY_BOT_SECRET}
+      # merchant-dispute-bot calls the backend (intake endpoint); backend never
+      # calls it, so only the shared secret is needed (no URL).
+      - MERCHANT_DISPUTE_BOT_SECRET=${MERCHANT_DISPUTE_BOT_SECRET}
+      - UPLOAD_DIR=/app/uploads/receipts
+      - TRACE_PAYIN_TIMING=${TRACE_PAYIN_TIMING:-0}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://tempo:4318}
+      - OTEL_TRACES_SAMPLER_ARG=${OTEL_TRACES_SAMPLER_ARG:-1.0}
+      - CLICKHOUSE_ENABLED=${CLICKHOUSE_ENABLED:-false}
+      - CLICKHOUSE_HOST=${CLICKHOUSE_HOST:-clickhouse}
+      - CLICKHOUSE_PORT=${CLICKHOUSE_PORT:-8123}
+      - CLICKHOUSE_USER=${CLICKHOUSE_USER:-default}
+      - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD:-}
+      - CLICKHOUSE_DB=${CLICKHOUSE_DB:-default}
+      # TronGrid — verify TRC20 (USDT) deposits by tx hash (admin "top-up by hash").
+      # Empty key ⇒ keyless free-tier; base URL / contract carry mainnet defaults.
+      - TRONGRID_API_KEY=${TRONGRID_API_KEY:-}
+      - TRONGRID_BASE_URL=${TRONGRID_BASE_URL:-https://api.trongrid.io}
+      - USDT_TRC20_CONTRACT=${USDT_TRC20_CONTRACT:-TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t}
+    volumes:
+      - uploads_data:/app/uploads
+    ports:
+      - "${PORT_BACKEND}:8000"
+
+  # Воркер Celery для фоновых задач
+  worker:
+    build:
+      context: ./backend-py
+      dockerfile: Dockerfile
+    container_name: ${ENV_PREFIX}_worker
+    restart: always
+    depends_on:
+      - db
+      - redis
+      - clickhouse
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-primepay}
+      - REDIS_URL=redis://redis:6379/0
+      - APP_ENV=${APP_ENV:-production}
+      - SECRET_KEY=${SECRET_KEY}
+      - SENTRY_DSN=${SENTRY_DSN:-}
+      - CHECKOUT_BASE_URL=${CHECKOUT_BASE_URL}
+      - PROJECT_BASE_URL=${PROJECT_BASE_URL}
+      - TRADER_BOT_URL=http://trader-bot:8081
+      - TRADER_BOT_SECRET=${TRADER_BOT_SECRET}
+      - SUPPORT_BOT_URL=http://support-bot:8082
+      - SUPPORT_BOT_SECRET=${SUPPORT_BOT_SECRET}
+      - MERCHANT_NOTIFY_BOT_URL=http://merchant-notify-bot:8083
+      - MERCHANT_NOTIFY_BOT_SECRET=${MERCHANT_NOTIFY_BOT_SECRET}
+      - MERCHANT_BOT_URL=http://merchant-bot:8084
+      - MERCHANT_BOT_SECRET=${MERCHANT_BOT_SECRET}
+      - UPLOAD_DIR=/app/uploads/receipts
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://tempo:4318}
+      - OTEL_TRACES_SAMPLER_ARG=${OTEL_TRACES_SAMPLER_ARG:-1.0}
+      - CLICKHOUSE_ENABLED=${CLICKHOUSE_ENABLED:-false}
+      - CLICKHOUSE_HOST=${CLICKHOUSE_HOST:-clickhouse}
+      - CLICKHOUSE_PORT=${CLICKHOUSE_PORT:-8123}
+      - CLICKHOUSE_USER=${CLICKHOUSE_USER:-default}
+      - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD:-}
+      - CLICKHOUSE_DB=${CLICKHOUSE_DB:-default}
+    volumes:
+      - uploads_data:/app/uploads
+    # -E enables task-events broadcast → consumed by the celery-exporter to
+    # publish per-task succeeded/failed/retried/runtime metrics.
+    command: celery -A app.workers.celery_app worker -E --loglevel=info --concurrency=${CELERY_CONCURRENCY:-4}
+
+  # Шедулер Celery Beat
+  beat:
+    build:
+      context: ./backend-py
+      dockerfile: Dockerfile
+    container_name: ${ENV_PREFIX}_beat
+    restart: always
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-primepay}
+      - REDIS_URL=redis://redis:6379/0
+      - APP_ENV=${APP_ENV:-production}
+      - SECRET_KEY=${SECRET_KEY}
+      - SENTRY_DSN=${SENTRY_DSN:-}
+      - PROJECT_BASE_URL=${PROJECT_BASE_URL}
+    command: celery -A app.workers.celery_app beat --loglevel=info
+
+  # Фронтенд (Vue + Nginx)
+  frontend:
+    build:
+      context: ./frontend-vue
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_SENTRY_DSN: ${SENTRY_DSN_FRONTEND:-}
+    container_name: ${ENV_PREFIX}_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "${PORT_FRONTEND}:80"
+
+  # Merchant Telegram Bot
+  merchant-bot:
+    build:
+      context: ./merchant-bot
+      dockerfile: Dockerfile
+    container_name: ${ENV_PREFIX}_merchant_bot
+    restart: always
+    depends_on:
+      - backend
+    environment:
+      - BOT_TOKEN=${MERCHANT_BOT_TOKEN}
+      - API_BASE_URL=http://backend:8000
+      - BOT_SECRET=${MERCHANT_BOT_SECRET}
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8084
+      - SENTRY_DSN=${MERCHANT_BOT_SENTRY_DSN_BOT:-}
+      - TELEGRAM_PROXY=${MERCHANT_BOT_TELEGRAM_PROXY:-}
+      - STATUS_POLL_INTERVAL_SECONDS=${MERCHANT_BOT_STATUS_POLL_INTERVAL_SECONDS:-10}
+      - REQUEST_TIMEOUT_SECONDS=${MERCHANT_BOT_REQUEST_TIMEOUT_SECONDS:-30}
+
+  # Trader Telegram Bot
+  trader-bot:
+    build:
+      context: ./trader-bot
+      dockerfile: Dockerfile
+    container_name: ${ENV_PREFIX}_trader_bot
+    restart: always
+    depends_on:
+      - backend
+    environment:
+      - BOT_TOKEN=${TRADER_BOT_TOKEN}
+      - BOT_SECRET=${TRADER_BOT_SECRET}
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8081
+      # Backend channel for the "оплачено" confirm button. Symmetric secret —
+      # the backend validates it as TRADER_BOT_SECRET.
+      - BACKEND_API_URL=http://backend:8000
+      - BACKEND_BOT_SECRET=${TRADER_BOT_SECRET}
+      - SENTRY_DSN=${TRADER_BOT_SENTRY_DSN:-}
+      - TELEGRAM_PROXY=${TRADER_BOT_TELEGRAM_PROXY:-}
+    volumes:
+      - uploads_data:/app/uploads
+
+  # Support Telegram Bot (receipt premoderation)
+  support-bot:
+    build:
+      context: ./support-bot
+      dockerfile: Dockerfile
+    container_name: ${ENV_PREFIX}_support_bot
+    restart: always
+    depends_on:
+      - backend
+    environment:
+      - BOT_TOKEN=${SUPPORT_BOT_TOKEN}
+      - BOT_SECRET=${SUPPORT_BOT_SECRET}
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8082
+      - BACKEND_API_URL=http://backend:8000
+      - BACKEND_BOT_SECRET=${SUPPORT_BOT_SECRET}
+      # Must match PlatformSetting.support_bot_chat_id — discrepancy means
+      # the bot will refuse incoming receipts (logged) for safety.
+      - ALLOWED_CHAT_ID=${SUPPORT_BOT_CHAT_ID}
+      - SENTRY_DSN=${SUPPORT_BOT_SENTRY_DSN:-}
+      - TELEGRAM_PROXY=${SUPPORT_BOT_TELEGRAM_PROXY:-}
+    volumes:
+      - uploads_data:/app/uploads
+
+  # Merchant-Notify Telegram Bot (PDF/Video re-upload requests)
+  merchant-notify-bot:
+    build:
+      context: ./merchant-notify-bot
+      dockerfile: Dockerfile
+    container_name: ${ENV_PREFIX}_merchant_notify_bot
+    restart: always
+    depends_on:
+      - backend
+    environment:
+      - BOT_TOKEN=${MERCHANT_NOTIFY_BOT_TOKEN}
+      - BOT_SECRET=${MERCHANT_NOTIFY_BOT_SECRET}
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8083
+      - API_BASE_URL=http://backend:8000
+      - REQUEST_TIMEOUT_SECONDS=${MERCHANT_NOTIFY_BOT_REQUEST_TIMEOUT_SECONDS:-30}
+      - SENTRY_DSN=${MERCHANT_NOTIFY_BOT_SENTRY_DSN:-}
+      - TELEGRAM_PROXY=${MERCHANT_NOTIFY_BOT_TELEGRAM_PROXY:-}
+
+  # Merchant-Dispute Telegram Bot (reads receipts from a merchant-bound chat →
+  # backend intake → receipt premoderation). Polling only; calls the backend.
+  merchant-dispute-bot:
+    build:
+      context: ./merchant-dispute-bot
+      dockerfile: Dockerfile
+    container_name: ${ENV_PREFIX}_merchant_dispute_bot
+    restart: always
+    depends_on:
+      - backend
+    environment:
+      - BOT_TOKEN=${MERCHANT_DISPUTE_BOT_TOKEN}
+      - BOT_SECRET=${MERCHANT_DISPUTE_BOT_SECRET}
+      - API_BASE_URL=http://backend:8000
+      - REQUEST_TIMEOUT_SECONDS=${MERCHANT_DISPUTE_BOT_REQUEST_TIMEOUT_SECONDS:-30}
+      - SENTRY_DSN=${MERCHANT_DISPUTE_BOT_SENTRY_DSN:-}
+      - TELEGRAM_PROXY=${MERCHANT_DISPUTE_BOT_TELEGRAM_PROXY:-}
+
+  # Adminer для удобного просмотра БД
+  adminer:
+    image: adminer
+    container_name: ${ENV_PREFIX}_adminer
+    restart: always
+    ports:
+      - "127.0.0.1:${PORT_ADMINER:-8080}:8080"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+  uploads_data:
+  clickhouse_data:
+  redis_data:

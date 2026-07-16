@@ -1,0 +1,76 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: telegram-default
+  group_by: ['alertname', 'severity', 'service']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+  routes:
+    # P0 — page immediately, repeat every 30 min until acknowledged.
+    - matchers:
+        - severity = "p0"
+      receiver: telegram-p0
+      group_wait: 0s
+      group_interval: 1m
+      repeat_interval: 30m
+      continue: false
+    # P1 — Slack-style notifications, normal batching.
+    - matchers:
+        - severity = "p1"
+      receiver: telegram-default
+      repeat_interval: 4h
+      continue: false
+    # Watchdog / heartbeat — discard so we don't get spammed.
+    - matchers:
+        - alertname = "Watchdog"
+      receiver: blackhole
+
+receivers:
+  - name: blackhole
+
+  - name: telegram-default
+    telegram_configs:
+      # `__TG_TOKEN__` / `__TG_CHAT__` are substituted at container start by
+      # the alertmanager entrypoint (see docker-compose.observability.yml).
+      # Alertmanager itself does NOT expand env vars in YAML.
+      - bot_token: '__TG_TOKEN__'
+        chat_id: __TG_CHAT__
+        parse_mode: HTML
+        send_resolved: true
+        message: |
+          {{ range .Alerts }}
+          <b>[{{ .Labels.severity | toUpper }}] {{ .Labels.alertname }}</b>
+          env: <code>{{ .Labels.env }}</code> · service: <code>{{ .Labels.service }}</code>{{ if .Labels.instance }} · instance: <code>{{ .Labels.instance }}</code>{{ end }}
+          {{ .Annotations.summary }}
+          {{ if .Annotations.description }}{{ .Annotations.description }}{{ end }}
+          {{ if .Annotations.runbook_url }}runbook: {{ .Annotations.runbook_url }}{{ end }}
+          {{ end }}
+
+  - name: telegram-p0
+    telegram_configs:
+      # `__TG_TOKEN__` / `__TG_CHAT__` are substituted at container start by
+      # the alertmanager entrypoint (see docker-compose.observability.yml).
+      # Alertmanager itself does NOT expand env vars in YAML.
+      - bot_token: '__TG_TOKEN__'
+        chat_id: __TG_CHAT__
+        parse_mode: HTML
+        send_resolved: true
+        message: |
+          {{ range .Alerts }}
+          🚨 <b>P0 · {{ .Labels.alertname }}</b>
+          env: <code>{{ .Labels.env }}</code> · service: <code>{{ .Labels.service }}</code>{{ if .Labels.instance }} · instance: <code>{{ .Labels.instance }}</code>{{ end }}
+          <b>{{ .Annotations.summary }}</b>
+          {{ if .Annotations.description }}{{ .Annotations.description }}{{ end }}
+          {{ if .Annotations.runbook_url }}runbook: {{ .Annotations.runbook_url }}{{ end }}
+          {{ end }}
+
+inhibit_rules:
+  # If a container is down, suppress noisy "high error rate" / "no metrics"
+  # alerts that result from it being down.
+  - source_matchers:
+      - alertname = "TargetDown"
+    target_matchers:
+      - severity =~ "p1|p2"
+    equal: [service, instance]

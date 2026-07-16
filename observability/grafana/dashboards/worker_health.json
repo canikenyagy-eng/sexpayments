@@ -1,0 +1,219 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "type": "row",
+      "title": "Workers",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
+      "id": 300
+    },
+    {
+      "type": "stat",
+      "title": "Workers alive",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 5, "w": 6, "x": 0, "y": 1},
+      "id": 301,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background"},
+      "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [
+        {"color": "red", "value": null},
+        {"color": "green", "value": 1}
+      ]}}},
+      "targets": [{"expr": "sum(celery_worker_up)", "refId": "A"}]
+    },
+    {
+      "type": "stat",
+      "title": "Tasks / sec",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 5, "w": 6, "x": 6, "y": 1},
+      "id": 302,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background", "graphMode": "area"},
+      "fieldConfig": {"defaults": {"unit": "ops"}},
+      "targets": [{
+        "expr": "sum(rate(celery_task_succeeded_total[1m])) + sum(rate(celery_task_failed_total[1m]))",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "stat",
+      "title": "Task failure rate",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 5, "w": 6, "x": 12, "y": 1},
+      "id": 303,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background"},
+      "fieldConfig": {"defaults": {
+        "unit": "percentunit",
+        "thresholds": {"mode": "absolute", "steps": [
+          {"color": "green", "value": null},
+          {"color": "orange", "value": 0.02},
+          {"color": "red", "value": 0.1}
+        ]}
+      }},
+      "targets": [{
+        "expr": "sum(rate(celery_task_failed_total[5m])) / (sum(rate(celery_task_succeeded_total[5m])) + sum(rate(celery_task_failed_total[5m])))",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "stat",
+      "title": "Active tasks",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 5, "w": 6, "x": 18, "y": 1},
+      "id": 304,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "colorMode": "background"},
+      "targets": [{"expr": "sum(celery_worker_tasks_active)", "refId": "A"}]
+    },
+    {
+      "type": "row",
+      "title": "Queue depth",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 6},
+      "id": 310
+    },
+    {
+      "type": "timeseries",
+      "title": "Celery queue length (Redis-side)",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 7},
+      "id": 311,
+      "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [
+        {"color": "green", "value": null}, {"color": "orange", "value": 100}, {"color": "red", "value": 1000}
+      ]}}},
+      "targets": [
+        {"expr": "redis_key_size{key=\"celery\"}", "legendFormat": "celery", "refId": "A"},
+        {"expr": "redis_key_size{key=\"celery_beat\"}", "legendFormat": "celery_beat", "refId": "B"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Queue length (celery-exporter view)",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 7},
+      "id": 312,
+      "targets": [{
+        "expr": "celery_queue_length",
+        "legendFormat": "{{queue_name}}",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "row",
+      "title": "Per-task",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 15},
+      "id": 320
+    },
+    {
+      "type": "timeseries",
+      "title": "Task throughput by name",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 9, "w": 12, "x": 0, "y": 16},
+      "id": 321,
+      "fieldConfig": {"defaults": {"unit": "ops"}},
+      "targets": [{
+        "expr": "sum by (name) (rate(celery_task_succeeded_total[5m]))",
+        "legendFormat": "{{name}}",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "timeseries",
+      "title": "Task failures by name",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 9, "w": 12, "x": 12, "y": 16},
+      "id": 322,
+      "fieldConfig": {"defaults": {"unit": "ops"}},
+      "targets": [{
+        "expr": "sum by (name) (rate(celery_task_failed_total[5m]))",
+        "legendFormat": "{{name}}",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "table",
+      "title": "Top 10 slowest tasks (p95 runtime)",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 9, "w": 12, "x": 0, "y": 25},
+      "id": 323,
+      "fieldConfig": {"defaults": {"unit": "s", "custom": {"align": "left"}}},
+      "targets": [{
+        "expr": "topk(10, histogram_quantile(0.95, sum by (name, le) (rate(celery_task_runtime_bucket[5m]))))",
+        "format": "table",
+        "instant": true,
+        "refId": "A"
+      }],
+      "transformations": [
+        {"id": "organize", "options": {
+          "excludeByName": {"Time": true, "__name__": true, "job": true},
+          "indexByName": {"name": 0, "Value": 1}
+        }}
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Task retries (last 1h)",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 9, "w": 12, "x": 12, "y": 25},
+      "id": 324,
+      "fieldConfig": {"defaults": {"custom": {"align": "left"}}},
+      "targets": [{
+        "expr": "topk(10, sum by (name) (increase(celery_task_retried_total[1h])))",
+        "format": "table",
+        "instant": true,
+        "refId": "A"
+      }],
+      "transformations": [
+        {"id": "organize", "options": {
+          "excludeByName": {"Time": true, "__name__": true, "job": true},
+          "indexByName": {"name": 0, "Value": 1}
+        }}
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Critical tasks",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 34},
+      "id": 330
+    },
+    {
+      "type": "timeseries",
+      "title": "send_order_callback — success vs failure",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 35},
+      "id": 331,
+      "fieldConfig": {"defaults": {"unit": "ops"}},
+      "targets": [
+        {"expr": "rate(celery_task_succeeded_total{name=\"app.workers.tasks.callbacks.send_order_callback\"}[5m])", "legendFormat": "succeeded", "refId": "A"},
+        {"expr": "rate(celery_task_failed_total{name=\"app.workers.tasks.callbacks.send_order_callback\"}[5m])", "legendFormat": "failed", "refId": "B"},
+        {"expr": "rate(celery_task_retried_total{name=\"app.workers.tasks.callbacks.send_order_callback\"}[5m])", "legendFormat": "retried", "refId": "C"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "expire_orders / assign_requisite / send_callback — p95 runtime",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 35},
+      "id": 332,
+      "fieldConfig": {"defaults": {"unit": "s"}},
+      "targets": [
+        {"expr": "histogram_quantile(0.95, sum by (le) (rate(celery_task_runtime_bucket{name=\"app.workers.tasks.callbacks.send_order_callback\"}[5m])))", "legendFormat": "send_order_callback", "refId": "A"},
+        {"expr": "histogram_quantile(0.95, sum by (le) (rate(celery_task_runtime_bucket{name=~\".*assign_requisite.*\"}[5m])))", "legendFormat": "assign_requisite", "refId": "B"},
+        {"expr": "histogram_quantile(0.95, sum by (le) (rate(celery_task_runtime_bucket{name=~\".*expire_orders.*\"}[5m])))", "legendFormat": "expire_orders", "refId": "C"}
+      ]
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": ["primepay", "workers"],
+  "templating": {"list": []},
+  "time": {"from": "now-1h", "to": "now"},
+  "timepicker": {},
+  "timezone": "",
+  "title": "PrimePay — Worker Health",
+  "uid": "primepay-workers",
+  "version": 1,
+  "weekStart": ""
+}

@@ -1,0 +1,56 @@
+stages:
+  - deploy
+
+variables:
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+.deploy_template: &deploy_template
+  stage: deploy
+  tags:
+    - my-server # Тег раннера, который мы указывали при регистрации
+  script:
+    # Копируем файл с переменными из GitLab CI в локальный .env файл
+    - cp $ENV_FILE .env
+    # Экспортируем переменные из .env, чтобы использовать их в команде docker-compose
+    - export $(grep -v '^#' .env | xargs)
+    # Поднимаем основной стек. Дополнительные compose-файлы подключаются
+    # через EXTRA_COMPOSE_FILES для окружений, где observability уже настроен
+    # на уровне Docker host.
+    - docker-compose -p primepay_${ENV_PREFIX} -f docker-compose.yml ${EXTRA_COMPOSE_FILES:-} up -d --build
+    # Очищаем старые неиспользуемые образы Docker, чтобы не забить диск сервера
+    - docker image prune -f
+
+# Деплой для ветки dev
+deploy_dev:
+  <<: *deploy_template
+  variables:
+    ENV_FILE: $ENV_DEV
+  environment:
+    name: development
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+
+# Деплой для ветки stage (для мерчантов)
+deploy_stage:
+  <<: *deploy_template
+  variables:
+    ENV_FILE: $ENV_STAGE
+    EXTRA_COMPOSE_FILES: "-f observability/docker-compose.observability.yml"
+  environment:
+    name: staging
+  rules:
+    - if: $CI_COMMIT_BRANCH == "stage"
+      when: manual
+
+# Деплой для ветки main (продакшен)
+deploy_prod:
+  <<: *deploy_template
+  variables:
+    ENV_FILE: $ENV_PROD
+    EXTRA_COMPOSE_FILES: "-f observability/docker-compose.observability.yml"
+  environment:
+    name: production
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual

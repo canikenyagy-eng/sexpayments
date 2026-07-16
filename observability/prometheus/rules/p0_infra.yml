@@ -1,0 +1,213 @@
+# P0 (page) and P1 (notify) alerts for the infrastructure layer.
+#
+# Severity convention:
+#   p0 — wake someone up; the system is broken right now
+#   p1 — Slack/Telegram notify within business hours; degradation visible to users
+#   p2 — dashboard / weekly review; trend or capacity signal
+#
+# Add `runbook_url` to every new alert. A P0 without a runbook is useless at 3am.
+
+groups:
+  # ---------------------------------------------------------------------------
+  # Infrastructure: host, disk, container restart loops
+  # ---------------------------------------------------------------------------
+  - name: infra_host
+    interval: 30s
+    rules:
+      - alert: HostDiskFillingUp
+        expr: |
+          (
+            (node_filesystem_avail_bytes{mountpoint="/host/root",fstype!~"tmpfs|overlay"}
+             / node_filesystem_size_bytes{mountpoint="/host/root",fstype!~"tmpfs|overlay"})
+            * 100
+          ) < 20
+        for: 15m
+        labels:
+          severity: p1
+          service: host
+        annotations:
+          summary: "Disk free under 20% on {{ $labels.instance }}"
+          description: "Filesystem {{ $labels.mountpoint }} has {{ printf \"%.1f\" $value }}% free. Postgres data lives here — running out of space halts writes."
+          runbook_url: "docs/runbooks/disk_full.md"
+
+      - alert: HostDiskCritical
+        expr: |
+          (
+            (node_filesystem_avail_bytes{mountpoint="/host/root",fstype!~"tmpfs|overlay"}
+             / node_filesystem_size_bytes{mountpoint="/host/root",fstype!~"tmpfs|overlay"})
+            * 100
+          ) < 10
+        for: 5m
+        labels:
+          severity: p0
+          service: host
+        annotations:
+          summary: "Disk free under 10% on {{ $labels.instance }} — Postgres will stop accepting writes"
+          description: "Only {{ printf \"%.1f\" $value }}% free. Vacuum + truncate logs + free space NOW."
+          runbook_url: "docs/runbooks/disk_full.md"
+
+      - alert: HostMemoryHigh
+        expr: |
+          (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        for: 10m
+        labels:
+          severity: p1
+          service: host
+        annotations:
+          summary: "Host memory above 90% on {{ $labels.instance }}"
+          description: "Sustained for 10 minutes. Check {{ $labels.instance }} for memory leaks or scale up."
+
+      - alert: HostCpuSaturated
+        expr: |
+          (100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 90
+        for: 15m
+        labels:
+          severity: p1
+          service: host
+        annotations:
+          summary: "Host CPU above 90% on {{ $labels.instance }}"
+          description: "Sustained for 15 minutes. Likely a runaway worker or a hot loop."
+
+  # ---------------------------------------------------------------------------
+  # Containers: restart loops, OOM
+  # ---------------------------------------------------------------------------
+  - name: infra_containers
+    interval: 30s
+    rules:
+      - alert: ContainerRestartLoop
+        expr: |
+          rate(container_start_time_seconds{name=~".+"}[10m]) > 0
+          and on (name) changes(container_start_time_seconds{name=~".+"}[10m]) >= 3
+        for: 5m
+        labels:
+          severity: p1
+          service: containers
+        annotations:
+          summary: "Container {{ $labels.name }} restarted 3+ times in 10 minutes"
+          description: "Restart-loop. Check logs: `docker logs {{ $labels.name }} --tail=200`."
+          runbook_url: "docs/runbooks/container_restart_loop.md"
+
+      - alert: ContainerOOMKilled
+        # cadvisor exposes OOM events via the `container_oom_events_total` counter.
+        expr: |
+          increase(container_oom_events_total{name=~".+"}[15m]) > 0
+        for: 0m
+        labels:
+          severity: p0
+          service: containers
+        annotations:
+          summary: "Container {{ $labels.name }} was OOM-killed"
+          description: "Memory limit hit. Either the limit is too low or there is a leak."
+
+      - alert: TargetDown
+        # Any scrape target unreachable for 2+ minutes. This is the catch-all
+        # for "the thing exposing metrics is gone."
+        expr: up == 0
+        for: 2m
+        labels:
+          severity: p0
+          service: "{{ $labels.service }}"
+        annotations:
+          summary: "Prometheus target {{ $labels.job }} ({{ $labels.instance }}) is DOWN"
+          description: "No metrics for 2 minutes. Either the container is down or it stopped exposing /metrics."
+
+  # ---------------------------------------------------------------------------
+  # Postgres
+  # ---------------------------------------------------------------------------
+  - name: infra_postgres
+    interval: 30s
+    rules:
+      - alert: PostgresDown
+        expr: pg_up == 0
+        for: 1m
+        labels:
+          severity: p0
+          service: postgres
+        annotations:
+          summary: "Postgres is DOWN"
+          description: "postgres_exporter cannot connect. The whole API is degraded — investigate immediately."
+          runbook_url: "docs/runbooks/postgres_down.md"
+
+      - alert: PostgresConnectionsHigh
+        # We run max_connections=300 (docker-compose.yml:14-16).
+        expr: |
+          sum by (instance) (pg_stat_activity_count) / 300 * 100 > 80
+        for: 5m
+        labels:
+          severity: p1
+          service: postgres
+        annotations:
+          summary: "Postgres connection pool above 80% ({{ printf \"%.0f\" $value }}%)"
+          description: "More than 240/300 connections in use. Likely a session leak in the API or worker — check WorkerSessionLocal usage."
+
+      - alert: PostgresConnectionsCritical
+        expr: |
+          sum by (instance) (pg_stat_activity_count) / 300 * 100 > 95
+        for: 2m
+        labels:
+          severity: p0
+          service: postgres
+        annotations:
+          summary: "Postgres connection pool above 95% — new connections about to fail"
+          description: "{{ printf \"%.0f\" $value }}% of max_connections in use. Imminent outage."
+
+      - alert: PostgresBlockedQueries
+        # Custom query in postgres_queries.yaml.
+        expr: pg_blocked_queries_count > 5
+        for: 5m
+        labels:
+          severity: p1
+          service: postgres
+        annotations:
+          summary: "{{ $value }} queries waiting on locks for 5+ minutes"
+          description: "Lock contention. Check pg_stat_activity for the blocker."
+
+      - alert: PostgresLongRunningTx
+        expr: pg_long_running_transactions_count > 0
+        for: 10m
+        labels:
+          severity: p1
+          service: postgres
+        annotations:
+          summary: "{{ $value }} transactions running > 1 minute for 10+ minutes"
+          description: "Stuck transaction holds locks and bloats tables. Identify in pg_stat_activity by xact_start."
+
+  # ---------------------------------------------------------------------------
+  # Redis (cache + Celery broker)
+  # ---------------------------------------------------------------------------
+  - name: infra_redis
+    interval: 30s
+    rules:
+      - alert: RedisDown
+        expr: redis_up == 0
+        for: 1m
+        labels:
+          severity: p0
+          service: redis
+        annotations:
+          summary: "Redis is DOWN — Celery broker offline"
+          description: "All background tasks stop. Callbacks, requisite assignment, scheduled jobs all halted."
+          runbook_url: "docs/runbooks/redis_down.md"
+
+      - alert: RedisMemoryHigh
+        expr: |
+          (redis_memory_used_bytes / redis_memory_max_bytes) * 100 > 85
+          and
+          redis_memory_max_bytes > 0
+        for: 5m
+        labels:
+          severity: p1
+          service: redis
+        annotations:
+          summary: "Redis memory at {{ printf \"%.0f\" $value }}% of maxmemory"
+          description: "Redis is broker + cache with maxmemory-policy=noeviction — once full it rejects new writes, so Celery enqueue and cache writes start failing. Raise maxmemory or find the source of growth."
+
+      - alert: RedisEvictions
+        expr: increase(redis_evicted_keys_total[5m]) > 0
+        for: 1m
+        labels:
+          severity: p1
+          service: redis
+        annotations:
+          summary: "Redis is evicting keys ({{ $value }} in last 5 min)"
+          description: "Evictions on the broker can lose Celery tasks. Scale Redis memory or split cache+broker."

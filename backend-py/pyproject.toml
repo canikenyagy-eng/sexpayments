@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "PrimePay"
+version = "0.1.0"
+description = "Backend"
+authors = ["Admin <admin@primepay.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+pyotp = "^2.9.0"
+fastapi = "^0.135.3"
+uvicorn = {extras = ["standard"], version = "^0.42.0"}
+pydantic = "^2.12.5"
+pydantic-settings = "^2.13.1"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.48"}
+asyncpg = "^0.31.0"
+alembic = "^1.18.4"
+structlog = "^25.5.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+redis = "^7.4.0"
+celery = "^5.6.3"
+httpx = "^0.28.1"
+pytest = "^9.0.2"
+pytest-asyncio = "^1.3.0"
+python-multipart = "^0.0.22"
+pytest-mock = "^3.15.1"
+aiosqlite = "^0.20.0"
+bcrypt = "<4.0.0"
+aiohttp = "^3.13.5"
+sentry-sdk = "^2.58.0"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = "test_*.py"
+filterwarnings = [
+    "ignore:'crypt' is deprecated and slated for removal in Python 3.13:DeprecationWarning",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[dependency-groups]
+dev = [
+    "pytest-cov (>=7.1.0,<8.0.0)"
+]

@@ -1,0 +1,14 @@
+apiVersion: 1
+
+providers:
+  - name: PrimePay
+    orgId: 1
+    folder: PrimePay
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false

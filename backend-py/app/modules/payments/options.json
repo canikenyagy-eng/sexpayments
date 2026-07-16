@@ -1,0 +1,2648 @@
+[
+    {
+        "code": "tbank",
+        "name": "Т-Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/tbank.svg"
+    },
+    {
+        "code": "sber",
+        "name": "Сбер",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/sber.svg"
+    },
+    {
+        "code": "alfa",
+        "name": "Альфа-Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/alfa.svg"
+    },
+    {
+        "code": "vtb",
+        "name": "ВТБ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/vtb.svg"
+    },
+    {
+        "code": "rshb",
+        "name": "Россельхозбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/rshb.svg"
+    },
+    {
+        "code": "raiffeisen",
+        "name": "Райффайзенбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/raiffeisen.svg"
+    },
+    {
+        "code": "rsb",
+        "name": "Русский Стандарт",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/rsb.svg"
+    },
+    {
+        "code": "psb",
+        "name": "Промсвязьбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/psb.svg"
+    },
+    {
+        "code": "gazprom",
+        "name": "Газпромбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/gazprom.svg"
+    },
+    {
+        "code": "bank_open",
+        "name": "Банк Открытие",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank_open.svg"
+    },
+    {
+        "code": "ubrib",
+        "name": "Банк УБРиР",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/ubrib.svg"
+    },
+    {
+        "code": "mkb",
+        "name": "Московский кредитный банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/mkb.svg"
+    },
+    {
+        "code": "home_bank",
+        "name": "Хоум Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/home_bank.svg"
+    },
+    {
+        "code": "otp",
+        "name": "ОТП Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/otp.svg"
+    },
+    {
+        "code": "uralsib",
+        "name": "Уралсиб",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/uralsib.svg"
+    },
+    {
+        "code": "akbars",
+        "name": "Ак Барс",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/akbars.svg"
+    },
+    {
+        "code": "rosbank",
+        "name": "Росбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/rosbank.svg"
+    },
+    {
+        "code": "fora",
+        "name": "Фора-банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/fora.svg"
+    },
+    {
+        "code": "absolute",
+        "name": "Абсолют Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/absolute.svg"
+    },
+    {
+        "code": "rostfinance",
+        "name": "РостФинанс Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/rostfinance.svg"
+    },
+    {
+        "code": "ozon",
+        "name": "Ozon Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/ozon.svg"
+    },
+    {
+        "code": "unistream",
+        "name": "Юнистрим",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/unistream.svg"
+    },
+    {
+        "code": "mtsbank",
+        "name": "МТС Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/mtsbank.svg"
+    },
+    {
+        "code": "tkb",
+        "name": "ТрансКапиталБанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/tkb.svg"
+    },
+    {
+        "code": "pochta",
+        "name": "Почта Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/pochta.svg"
+    },
+    {
+        "code": "rncb",
+        "name": "РНКБ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/rncb.svg"
+    },
+    {
+        "code": "genbank",
+        "name": "ГЕНБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/genbank.svg"
+    },
+    {
+        "code": "sovkom",
+        "name": "Совкомбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/sovkom.svg"
+    },
+    {
+        "code": "cifra",
+        "name": "Цифра банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/cifra.svg"
+    },
+    {
+        "code": "ingo",
+        "name": "Ингосстрах Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/ingo.svg"
+    },
+    {
+        "code": "svoi",
+        "name": "Свой Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/svoi.svg"
+    },
+    {
+        "code": "avangard",
+        "name": "Авангард",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/avangard.svg"
+    },
+    {
+        "code": "rencredit",
+        "name": "Ренессанс Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/rencredit.svg"
+    },
+    {
+        "code": "solid",
+        "name": "Солидарность",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/solid.svg"
+    },
+    {
+        "code": "pucbr",
+        "name": "ПУ Банка России",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/pucbr.svg"
+    },
+    {
+        "code": "expobank",
+        "name": "Экспобанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/expobank.svg"
+    },
+    {
+        "code": "apkbank",
+        "name": "КБ АГРОПРОМКРЕДИТ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/apkbank.svg"
+    },
+    {
+        "code": "bktb",
+        "name": "Кубаньторгбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bktb.svg"
+    },
+    {
+        "code": "bystrobank",
+        "name": "БыстроБанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bystrobank.svg"
+    },
+    {
+        "code": "nico-bank",
+        "name": "НИКО-БАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/nico-bank.svg"
+    },
+    {
+        "code": "okbank",
+        "name": "Банк Объединенный капитал",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/okbank.svg"
+    },
+    {
+        "code": "pscb",
+        "name": "Банк ПСКБ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/pscb.svg"
+    },
+    {
+        "code": "zarech",
+        "name": "Банк Заречье",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/zarech.svg"
+    },
+    {
+        "code": "zemsky",
+        "name": "Земский банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/zemsky.svg"
+    },
+    {
+        "code": "abr",
+        "name": "АБ РОССИЯ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/abr.svg"
+    },
+    {
+        "code": "bksbank",
+        "name": "БКС Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bksbank.svg"
+    },
+    {
+        "code": "chelinvest",
+        "name": "ЧЕЛЯБИНВЕСТБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/chelinvest.svg"
+    },
+    {
+        "code": "databank",
+        "name": "Датабанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/databank.svg"
+    },
+    {
+        "code": "domrfbank",
+        "name": "Банк ДОМ.РФ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/domrfbank.svg"
+    },
+    {
+        "code": "energobank",
+        "name": "Энергобанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/energobank.svg"
+    },
+    {
+        "code": "avangard_pos",
+        "name": "Авангард POS",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/avangard_pos.svg"
+    },
+    {
+        "code": "forshtadt",
+        "name": "Форштадт",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/forshtadt.svg"
+    },
+    {
+        "code": "gaztransbank",
+        "name": "Газтрансбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/gaztransbank.svg"
+    },
+    {
+        "code": "gebank",
+        "name": "Газэнергобанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/gebank.svg"
+    },
+    {
+        "code": "in-bank",
+        "name": "Инбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/in-bank.svg"
+    },
+    {
+        "code": "iturupbank",
+        "name": "Банк ИТУРУП",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/iturupbank.svg"
+    },
+    {
+        "code": "kbb",
+        "name": "Кузнецкбизнесбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kbb.svg"
+    },
+    {
+        "code": "kbhmb",
+        "name": "Хакасский муниципальный банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kbhmb.svg"
+    },
+    {
+        "code": "kkbank",
+        "name": "Кубань Кредит",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kkbank.svg"
+    },
+    {
+        "code": "koshelev-bank",
+        "name": "КОШЕЛЕВ-БАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/koshelev-bank.svg"
+    },
+    {
+        "code": "kremlinbank",
+        "name": "Банк Кремлевский",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kremlinbank.svg"
+    },
+    {
+        "code": "maritimebank",
+        "name": "МОРСКОЙ БАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/maritimebank.svg"
+    },
+    {
+        "code": "mcbank",
+        "name": "БАНК МОСКВА СИТИ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/mcbank.svg"
+    },
+    {
+        "code": "metallinvestbank",
+        "name": "Металлинвестбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/metallinvestbank.svg"
+    },
+    {
+        "code": "modulbank",
+        "name": "КБ Модульбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/modulbank.svg"
+    },
+    {
+        "code": "mp-bank",
+        "name": "Мир Привилегий (МП Банк)",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/mp-bank.svg"
+    },
+    {
+        "code": "nkbank",
+        "name": "НК Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/nkbank.svg"
+    },
+    {
+        "code": "norvikbank",
+        "name": "Норвик Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/norvikbank.svg"
+    },
+    {
+        "code": "novikom",
+        "name": "НОВИКОМБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/novikom.svg"
+    },
+    {
+        "code": "novobank",
+        "name": "Новобанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/novobank.svg"
+    },
+    {
+        "code": "nsbank",
+        "name": "НС Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/nsbank.svg"
+    },
+    {
+        "code": "orbank",
+        "name": "БАНК ОРЕНБУРГ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/orbank.svg"
+    },
+    {
+        "code": "crediteurope",
+        "name": "Кредит Европа Банк (Россия)",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/crediteurope.svg"
+    },
+    {
+        "code": "pskb",
+        "name": "СКБ Примсоцбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/pskb.svg"
+    },
+    {
+        "code": "realistbank",
+        "name": "Реалист Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/realistbank.svg"
+    },
+    {
+        "code": "resocreditbank",
+        "name": "Банк РЕСО Кредит",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/resocreditbank.svg"
+    },
+    {
+        "code": "sinko-bank",
+        "name": "СИНКО-БАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/sinko-bank.svg"
+    },
+    {
+        "code": "socium-bank",
+        "name": "СОЦИУМ БАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/socium-bank.svg"
+    },
+    {
+        "code": "tatsotsbank",
+        "name": "ТАТСОЦБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/tatsotsbank.svg"
+    },
+    {
+        "code": "timerbank",
+        "name": "Тимер Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/timerbank.svg"
+    },
+    {
+        "code": "transstroybank",
+        "name": "Трансстройбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/transstroybank.svg"
+    },
+    {
+        "code": "agroros",
+        "name": "Банк Агророс",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/agroros.svg"
+    },
+    {
+        "code": "akcept",
+        "name": "Банк Акцепт",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/akcept.svg"
+    },
+    {
+        "code": "alefbank",
+        "name": "Алеф-Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/alefbank.svg"
+    },
+    {
+        "code": "aresbank",
+        "name": "КБ АРЕСБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/aresbank.svg"
+    },
+    {
+        "code": "bancaintesa",
+        "name": "Банк Интеза",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bancaintesa.svg"
+    },
+    {
+        "code": "bank-hlynov",
+        "name": "КБ Хлынов",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-hlynov.svg"
+    },
+    {
+        "code": "bankofkazan",
+        "name": "КБЭР Банк Казани",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bankofkazan.svg"
+    },
+    {
+        "code": "bspb",
+        "name": "Банк Санкт-Петербург",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bspb.svg"
+    },
+    {
+        "code": "centrinvest",
+        "name": "Центр-инвест",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/centrinvest.svg"
+    },
+    {
+        "code": "cfb",
+        "name": "Банк БКФ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/cfb.svg"
+    },
+    {
+        "code": "chelindbank",
+        "name": "ЧЕЛИНДБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/chelindbank.svg"
+    },
+    {
+        "code": "coalmetbank",
+        "name": "Углеметбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/coalmetbank.svg"
+    },
+    {
+        "code": "creditural",
+        "name": "Кредит Урал Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/creditural.svg"
+    },
+    {
+        "code": "dcapital",
+        "name": "Банк Развитие-Столица",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/dcapital.svg"
+    },
+    {
+        "code": "dvbank",
+        "name": "Дальневосточный банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/dvbank.svg"
+    },
+    {
+        "code": "el-plat",
+        "name": "ЭЛПЛАТ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/el-plat.svg"
+    },
+    {
+        "code": "energotransbank",
+        "name": "КБ ЭНЕРГОТРАНСБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/energotransbank.svg"
+    },
+    {
+        "code": "finam",
+        "name": "Банк ФИНАМ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/finam.svg"
+    },
+    {
+        "code": "gibank",
+        "name": "ГАРАНТ-ИНВЕСТ БАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/gibank.svg"
+    },
+    {
+        "code": "gorbank",
+        "name": "ГОРБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/gorbank.svg"
+    },
+    {
+        "code": "gutabank",
+        "name": "ГУТА-БАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/gutabank.svg"
+    },
+    {
+        "code": "icbru",
+        "name": "ИК Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/icbru.svg"
+    },
+    {
+        "code": "lanta",
+        "name": "АКБ Ланта Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/lanta.svg"
+    },
+    {
+        "code": "lockobank",
+        "name": "КБ ЛОКО-Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/lockobank.svg"
+    },
+    {
+        "code": "mcbankrus",
+        "name": "МС Банк Рус",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/mcbankrus.svg"
+    },
+    {
+        "code": "metcom",
+        "name": "МЕТКОМБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/metcom.svg"
+    },
+    {
+        "code": "mspbank",
+        "name": "МСП Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/mspbank.svg"
+    },
+    {
+        "code": "nipbank",
+        "name": "Нацинвестпромбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/nipbank.svg"
+    },
+    {
+        "code": "ns-bank",
+        "name": "Банк Национальный стандарт",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/ns-bank.svg"
+    },
+    {
+        "code": "nskbl",
+        "name": "Банк Левобережный",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/nskbl.svg"
+    },
+    {
+        "code": "poidem",
+        "name": "КБ Пойдём",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/poidem.svg"
+    },
+    {
+        "code": "primbank",
+        "name": "Банк Приморье",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/primbank.svg"
+    },
+    {
+        "code": "probank",
+        "name": "ПроБанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/probank.svg"
+    },
+    {
+        "code": "rdb",
+        "name": "РосДорБанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/rdb.svg"
+    },
+    {
+        "code": "sdm",
+        "name": "СДМ-Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/sdm.svg"
+    },
+    {
+        "code": "sevnb",
+        "name": "Северный Народный Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/sevnb.svg"
+    },
+    {
+        "code": "sibsoc",
+        "name": "СИБСОЦБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/sibsoc.svg"
+    },
+    {
+        "code": "sngb",
+        "name": "СургутНефтеГазБанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/sngb.svg"
+    },
+    {
+        "code": "mtsdengi",
+        "name": "МТС Деньги (ЭКСИ-Банк)",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/mtsdengi.svg"
+    },
+    {
+        "code": "tavrich",
+        "name": "Таврический Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/tavrich.svg"
+    },
+    {
+        "code": "tenderbank",
+        "name": "АКБ Тендер Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/tenderbank.svg"
+    },
+    {
+        "code": "thbank",
+        "name": "Тольяттихимбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/thbank.svg"
+    },
+    {
+        "code": "tpsbank",
+        "name": "Томскпромстройбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/tpsbank.svg"
+    },
+    {
+        "code": "unicreditbank",
+        "name": "ЮниКредит Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/unicreditbank.svg"
+    },
+    {
+        "code": "uralfd",
+        "name": "Урал ФД",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/uralfd.svg"
+    },
+    {
+        "code": "vbrr",
+        "name": "Банк ВБРР",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/vbrr.svg"
+    },
+    {
+        "code": "venets-bank",
+        "name": "Банк Венец",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/venets-bank.svg"
+    },
+    {
+        "code": "vfbank",
+        "name": "ВНЕШФИНБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/vfbank.svg"
+    },
+    {
+        "code": "zenit",
+        "name": "Банк ЗЕНИТ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/zenit.svg"
+    },
+    {
+        "code": "yoomoney",
+        "name": "ЮMoney",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/yoomoney.svg"
+    },
+    {
+        "code": "avtofinbank",
+        "name": "Авто Финанс Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/avtofinbank.svg"
+    },
+    {
+        "code": "avtotorgbank",
+        "name": "Автоторгбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/avtotorgbank.svg"
+    },
+    {
+        "code": "aziatsko-tihookeanskij-bank",
+        "name": "Азиатско-Тихоокеанский Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/aziatsko-tihookeanskij-bank.svg"
+    },
+    {
+        "code": "akb-derzhava",
+        "name": "АКБ Держава",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/akb-derzhava.svg"
+    },
+    {
+        "code": "akb-evrofinans-mosnarbank",
+        "name": "АКБ ЕВРОФИНАНС МОСНАРБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/akb-evrofinans-mosnarbank.svg"
+    },
+    {
+        "code": "akb-slavija",
+        "name": "АКБ СЛАВИЯ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/akb-slavija.svg"
+    },
+    {
+        "code": "akibank",
+        "name": "АКИБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/akibank.svg"
+    },
+    {
+        "code": "almazjergijenbank",
+        "name": "Алмазэргиэнбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/almazjergijenbank.svg"
+    },
+    {
+        "code": "bank-avers",
+        "name": "Банк Аверс",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-avers.svg"
+    },
+    {
+        "code": "bank-aleksandrovskij",
+        "name": "Банк АЛЕКСАНДРОВСКИЙ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-aleksandrovskij.svg"
+    },
+    {
+        "code": "bank-bzhf",
+        "name": "Банк БЖФ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-bzhf.svg"
+    },
+    {
+        "code": "bank-vologzhanin",
+        "name": "Банк Вологжанин",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-vologzhanin.svg"
+    },
+    {
+        "code": "bank-ipb",
+        "name": "Банк ИПБ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-ipb.svg"
+    },
+    {
+        "code": "bank-mba-moskva",
+        "name": "Банк МБА МОСКВА",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-mba-moskva.svg"
+    },
+    {
+        "code": "bank-raund",
+        "name": "банк Раунд",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-raund.svg"
+    },
+    {
+        "code": "bank-saratov",
+        "name": "Банк Саратов",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-saratov.svg"
+    },
+    {
+        "code": "bank-snezhinskij",
+        "name": "Банк Снежинский",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-snezhinskij.svg"
+    },
+    {
+        "code": "bank-finservis",
+        "name": "Банк Финсервис",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-finservis.svg"
+    },
+    {
+        "code": "bank-jelita",
+        "name": "банк Элита",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-jelita.svg"
+    },
+    {
+        "code": "bbr-bank",
+        "name": "ББР Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bbr-bank.svg"
+    },
+    {
+        "code": "vladbiznesbank",
+        "name": "ВЛАДБИЗНЕСБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/vladbiznesbank.svg"
+    },
+    {
+        "code": "vuz-bank",
+        "name": "ВУЗ-банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/vuz-bank.svg"
+    },
+    {
+        "code": "drajv-klik-bank",
+        "name": "Драйв Клик Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/drajv-klik-bank.svg"
+    },
+    {
+        "code": "ishbank",
+        "name": "ИШБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/ishbank.svg"
+    },
+    {
+        "code": "kb-krokus-bank",
+        "name": "КБ Крокус Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kb-krokus-bank.svg"
+    },
+    {
+        "code": "kb-moskommercbank",
+        "name": "КБ Москоммерцбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kb-moskommercbank.svg"
+    },
+    {
+        "code": "kb-strojlesbank",
+        "name": "КБ Стройлесбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kb-strojlesbank.svg"
+    },
+    {
+        "code": "mezhdunarodnyj-finansovyj-klub",
+        "name": "МЕЖДУНАРОДНЫЙ ФИНАНСОВЫЙ КЛУБ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/mezhdunarodnyj-finansovyj-klub.svg"
+    },
+    {
+        "code": "moskombank",
+        "name": "МОСКОМБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/moskombank.svg"
+    },
+    {
+        "code": "nbd-bank",
+        "name": "НБД-Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/nbd-bank.svg"
+    },
+    {
+        "code": "nokssbank",
+        "name": "НОКССБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/nokssbank.svg"
+    },
+    {
+        "code": "pervyj-investicionnyj-bank",
+        "name": "Первый Инвестиционный Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/pervyj-investicionnyj-bank.svg"
+    },
+    {
+        "code": "prio-vneshtorgbank",
+        "name": "Прио-Внешторгбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/prio-vneshtorgbank.svg"
+    },
+    {
+        "code": "rusnarbank",
+        "name": "РУСНАРБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/rusnarbank.svg"
+    },
+    {
+        "code": "rus-universalbank",
+        "name": "Русьуниверсалбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/rus-universalbank.svg"
+    },
+    {
+        "code": "sitibank",
+        "name": "Ситибанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/sitibank.svg"
+    },
+    {
+        "code": "solid-bank",
+        "name": "Солид Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/solid-bank.svg"
+    },
+    {
+        "code": "tojota-bank",
+        "name": "Тойота Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/tojota-bank.svg"
+    },
+    {
+        "code": "tochka-bank",
+        "name": "Точка Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/tochka-bank.svg"
+    },
+    {
+        "code": "uralprombank",
+        "name": "УРАЛПРОМБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/uralprombank.svg"
+    },
+    {
+        "code": "hajs",
+        "name": "Хайс",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/hajs.svg"
+    },
+    {
+        "code": "jes-bi-aj-bank",
+        "name": "Эс-Би-Ай Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/jes-bi-aj-bank.svg"
+    },
+    {
+        "code": "jug-investbank",
+        "name": "ЮГ-Инвестбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/jug-investbank.svg"
+    },
+    {
+        "code": "jandeks-bank",
+        "name": "Яндекс Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/jandeks-bank.svg"
+    },
+    {
+        "code": "aikb-enisejskij-obedinennyj-bank",
+        "name": "АИКБ Енисейский объединенный банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/aikb-enisejskij-obedinennyj-bank.svg"
+    },
+    {
+        "code": "bank-sinara",
+        "name": "Банк Синара",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-sinara.svg"
+    },
+    {
+        "code": "bank-uralfinans",
+        "name": "Банк Уралфинанс",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-uralfinans.svg"
+    },
+    {
+        "code": "bank-centrokredit",
+        "name": "Банк ЦентроКредит",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-centrokredit.svg"
+    },
+    {
+        "code": "is-bank",
+        "name": "ИС Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/is-bank.svg"
+    },
+    {
+        "code": "kb-dolinsk",
+        "name": "КБ Долинск",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kb-dolinsk.svg"
+    },
+    {
+        "code": "novyj-vek",
+        "name": "Новый век",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/novyj-vek.svg"
+    },
+    {
+        "code": "ukb-belgorodsocbank",
+        "name": "УКБ Белгородсоцбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/ukb-belgorodsocbank.svg"
+    },
+    {
+        "code": "avtogradbank",
+        "name": "Автоградбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/avtogradbank.svg"
+    },
+    {
+        "code": "bank-ekaterinburg",
+        "name": "Банк Екатеринбург",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-ekaterinburg.svg"
+    },
+    {
+        "code": "bank-sgb",
+        "name": "БАНК СГБ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-sgb.svg"
+    },
+    {
+        "code": "bank-siab",
+        "name": "Банк СИАБ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bank-siab.svg"
+    },
+    {
+        "code": "dzhej-jend-ti-bank",
+        "name": "Джей энд Ти Банк (АО)",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/dzhej-jend-ti-bank.svg"
+    },
+    {
+        "code": "mb-bank",
+        "name": "МБ Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/mb-bank.svg"
+    },
+    {
+        "code": "smp-bank",
+        "name": "СМП Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/smp-bank.svg"
+    },
+    {
+        "code": "tochka-otkrytie",
+        "name": "ТОЧКА (ФК ОТКРЫТИЕ)",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/tochka-otkrytie.svg"
+    },
+    {
+        "code": "bsdbank",
+        "name": "Черноморский банк развития",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bsdbank.svg"
+    },
+    {
+        "code": "chbrr",
+        "name": "Черноморский банк развития и реконструкции",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/chbrr.svg"
+    },
+    {
+        "code": "klookva",
+        "name": "Клюква Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/klookva.svg"
+    },
+    {
+        "code": "mtbank",
+        "name": "МТБанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/mtbank.svg"
+    },
+    {
+        "code": "wbbank",
+        "name": "Вайлдберриз Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/wbbank.svg"
+    },
+    {
+        "code": "kamkombank",
+        "name": "КАМКОМБАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kamkombank.svg"
+    },
+    {
+        "code": "zhivagobank",
+        "name": "Банк Живаго",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/zhivagobank.svg"
+    },
+    {
+        "code": "avito",
+        "name": "Авито - кошелек",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/avito.svg"
+    },
+    {
+        "code": "qplus",
+        "name": "Qplus",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/qplus.svg"
+    },
+    {
+        "code": "multitransfer",
+        "name": "MultiTransfer",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/multitransfer.svg"
+    },
+    {
+        "code": "whitebird",
+        "name": "Whitebird",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/whitebird.svg"
+    },
+    {
+        "code": "vkpay",
+        "name": "VK Pay",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/vkpay.svg"
+    },
+    {
+        "code": "bankrmp",
+        "name": "Банк РМП",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bankrmp.svg"
+    },
+    {
+        "code": "ankb",
+        "name": "АНКБ",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/ankb.svg"
+    },
+    {
+        "code": "moneta",
+        "name": "Монета",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/moneta.svg"
+    },
+    {
+        "code": "kwikpay",
+        "name": "Kwikpay",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kwikpay.svg"
+    },
+    {
+        "code": "cmrbank",
+        "name": "ЦМРБанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/cmrbank.svg"
+    },
+    {
+        "code": "1cupis",
+        "name": "Кошелек ЦУПИС",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/1cupis.svg"
+    },
+    {
+        "code": "vasl",
+        "name": "Vasl",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/vasl.svg"
+    },
+    {
+        "code": "stavrpromstroi",
+        "name": "Ставропольпромстрой банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/stavrpromstroi.svg"
+    },
+    {
+        "code": "rocketbank",
+        "name": "Рокетбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/rocketbank.svg"
+    },
+    {
+        "code": "kuzbank",
+        "name": "Банк Кузнецкий",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kuzbank.svg"
+    },
+    {
+        "code": "pulzze_pro",
+        "name": "Pulzze",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/pulzze_pro.svg"
+    },
+    {
+        "code": "yandex_tips",
+        "name": "Яндекс Чаевые",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/yandex_tips.svg"
+    },
+    {
+        "code": "kontur_bank",
+        "name": "Контур.Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kontur_bank.svg"
+    },
+    {
+        "code": "v_telekom",
+        "name": "Вайнах Телеком",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/v_telekom.svg"
+    },
+    {
+        "code": "altun",
+        "name": "Алтын",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/altun.svg"
+    },
+    {
+        "code": "globe_bank",
+        "name": "Глобус Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/globe_bank.svg"
+    },
+    {
+        "code": "yookassa",
+        "name": "ЮKassa",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/yookassa.svg"
+    },
+    {
+        "code": "royalcreditbank",
+        "name": "Роял Кредит Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/royalcreditbank.svg"
+    },
+    {
+        "code": "belarusbank",
+        "name": "Беларусбанк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/belarusbank.svg"
+    },
+    {
+        "code": "pay_to_phone_emu",
+        "name": "Pay to phone (Emulator)",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/pay_to_phone_emu.svg"
+    },
+    {
+        "code": "dcbank",
+        "name": "Душанбе Сити Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/dcbank.svg"
+    },
+    {
+        "code": "m10",
+        "name": "m10",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/m10.svg"
+    },
+    {
+        "code": "kapitalbank",
+        "name": "Kapital Bank",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/kapitalbank.svg"
+    },
+    {
+        "code": "amrabank",
+        "name": "Амра-банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/amrabank.svg"
+    },
+    {
+        "code": "aurorabank",
+        "name": "Аврора Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/aurorabank.svg"
+    },
+    {
+        "code": "nbra",
+        "name": "Банк Абхазии",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/nbra.svg"
+    },
+    {
+        "code": "bankcmra",
+        "name": "Банк ЦМР Абхазия",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/bankcmra.svg"
+    },
+    {
+        "code": "sbra",
+        "name": "Сбербанк Абхазии",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/sbra.svg"
+    },
+    {
+        "code": "garantbank",
+        "name": "Гарант-Банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/garantbank.svg"
+    },
+    {
+        "code": "cibitbank",
+        "name": "КИБИТ-БАНК",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/cibitbank.svg"
+    },
+    {
+        "code": "unibank",
+        "name": "Универсал-банк",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/unibank.svg"
+    },
+    {
+        "code": "apra",
+        "name": "АПРА",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/apra.svg"
+    },
+    {
+        "code": "amobile",
+        "name": "А-мобайл кошелек",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sbp",
+            "card"
+        ],
+        "logo_url": "/banks/amobile.svg"
+    },
+    {
+        "code": "megafon",
+        "name": "Мегафон",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sim"
+        ],
+        "logo_url": "/banks/megafon.svg"
+    },
+    {
+        "code": "mts",
+        "name": "MTC",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sim"
+        ],
+        "logo_url": "/banks/mts.svg"
+    },
+    {
+        "code": "beeline",
+        "name": "Билайн",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sim"
+        ],
+        "logo_url": "/banks/beeline.svg"
+    },
+    {
+        "code": "tele2",
+        "name": "Теле2",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sim"
+        ],
+        "logo_url": "/banks/tele2.svg"
+    },
+    {
+        "code": "yota",
+        "name": "Yota",
+        "currency": "RUB",
+        "is_active": true,
+        "supported_methods": [
+            "sim"
+        ],
+        "logo_url": "/banks/yota.svg"
+    }
+]

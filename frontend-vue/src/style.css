@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    @apply m-0 min-h-screen p-0 bg-bg-main text-text-main;
+    font-family: 'Space Grotesk', 'SF Pro Display', Inter, Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-block cursor-pointer rounded-xl border-none px-4 py-3 text-sm font-extrabold leading-none no-underline transition-all duration-200;
+  }
+  .btn:hover {
+    @apply -translate-y-px;
+  }
+  .btn-gold {
+    @apply bg-gold-gradient text-text-main shadow-prime;
+  }
+  .btn-dark {
+    @apply bg-bg-hover text-text-main border border-border;
+  }
+  
+  .input-field {
+    @apply w-full rounded-xl border border-border bg-[#101010] px-4 py-2.5 text-sm text-text-main outline-none transition-colors duration-200;
+  }
+  .input-field::placeholder {
+    @apply text-text-muted;
+  }
+  .input-field:focus {
+    @apply border-accent-dark;
+    box-shadow: 0 0 0 3px rgba(139, 21, 56, 0.22);
+  }
+  
+  .card {
+    @apply rounded-[1.1rem] border border-border bg-panel-gradient p-6 shadow-prime;
+  }
+
+  .dashboard-card {
+    @apply rounded-[1.15rem] border p-3 shadow-prime;
+    border-color: rgba(214, 163, 143, 0.16);
+    background: linear-gradient(90deg, rgba(44, 13, 24, 0.94) 0%, rgba(23, 23, 23, 0.94) 100%);
+  }
+
+  .dashboard-panel {
+    @apply rounded-[1.2rem] border p-5 shadow-prime;
+    border-color: rgba(214, 163, 143, 0.14);
+    background: linear-gradient(90deg, rgba(44, 13, 24, 0.94) 0%, rgba(23, 23, 23, 0.94) 100%);
+  }
+
+  .quick-button {
+    @apply rounded-[0.85rem] border-0 px-5 py-3 text-[1.02rem] font-black text-[#F5F5F5] transition-transform duration-200;
+    background: linear-gradient(180deg, #A91D47 0%, #8B1538 100%);
+  }
+
+  .quick-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .admin-shell {
+    max-width: 1450px;
+    margin: 0 auto;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}

@@ -1,0 +1,56 @@
+# Prod profile — tight fairness, low exploration, CB armed.
+
+selectors:
+  traders:
+    namespace: "sel:traders"
+    enabled: true
+    quality_weight: 0.7
+    bandit_weight: 0.3
+    softmax_temperature: 0.5
+    min_exploration_prob: 0.02
+    decay_factor: 0.995
+    decay_interval_sec: 60
+    metrics:
+      - name: conversion
+        weight: 0.4
+        min_value: 0.0
+        max_value: 1.0
+        higher_is_better: true
+        min_sample_size: 50
+        default_value: 0.5
+        max_age_sec: 86400
+      - name: dispute_rate
+        weight: 0.2
+        min_value: 0.0
+        max_value: 0.5
+        higher_is_better: false
+        min_sample_size: 50
+        default_value: 0.05
+        max_age_sec: 86400
+      - name: rate
+        weight: 0.2
+        min_value: 0.0
+        max_value: 100.0
+        higher_is_better: true
+      - name: requisites_count
+        weight: 0.2
+        min_value: 0.0
+        max_value: 50.0
+        higher_is_better: true
+    circuit_breaker:
+      enabled: true
+      failure_threshold: 5
+      window_sec: 60
+      cooldown_sec: 300
+    fairness:
+      min_share: 0.01
+      max_share: 0.30
+    cold_start:
+      forced_exploration_orders: 10
+      bootstrap_alpha: 2.0
+      bootstrap_beta: 1.0
+    reward:
+      partial_signals:
+        accepted: 0.3
+        completed: 0.7
+      timeout_sec: 3600

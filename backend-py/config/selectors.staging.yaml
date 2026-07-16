@@ -1,0 +1,50 @@
+# Staging profile — closer to prod but with looser fairness and shorter
+# decay so behavior is visible in short test windows.
+
+selectors:
+  traders:
+    namespace: "sel:traders"
+    enabled: true
+    quality_weight: 0.7
+    bandit_weight: 0.3
+    softmax_temperature: 0.5
+    min_exploration_prob: 0.05
+    decay_factor: 0.995
+    decay_interval_sec: 60
+    metrics:
+      - name: conversion
+        weight: 0.5
+        min_value: 0.0
+        max_value: 1.0
+        higher_is_better: true
+        min_sample_size: 20
+        default_value: 0.5
+        max_age_sec: 86400
+      - name: dispute_rate
+        weight: 0.3
+        min_value: 0.0
+        max_value: 0.5
+        higher_is_better: false
+        default_value: 0.05
+      - name: rate
+        weight: 0.2
+        min_value: 0.0
+        max_value: 100.0
+        higher_is_better: true
+    circuit_breaker:
+      enabled: true
+      failure_threshold: 10
+      window_sec: 60
+      cooldown_sec: 180
+    fairness:
+      min_share: 0.02
+      max_share: 0.4
+    cold_start:
+      forced_exploration_orders: 5
+      bootstrap_alpha: 2.0
+      bootstrap_beta: 1.0
+    reward:
+      partial_signals:
+        accepted: 0.3
+        completed: 0.7
+      timeout_sec: 1800
