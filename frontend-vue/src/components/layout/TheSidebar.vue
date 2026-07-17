@@ -7,7 +7,7 @@
   >
     <!-- Logo -->
     <div class="flex h-16 items-center gap-3 border-b border-border px-5">
-      <img src="/logos/logo.svg" alt="SexPayments Logo" class="h-9 w-9" />
+      <img src="/logos/logo.svg" alt="Логотип SexPayments" class="h-9 w-9" />
       <div class="text-xl font-black leading-none text-text-main">
         Sex<span class="text-accent">Payments</span>
       </div>
@@ -236,7 +236,7 @@ const navGroups = computed<NavGroup[]>(() => {
       {
         title: 'Обзор',
         items: [
-          { icon: LayoutDashboard, label: 'Dashboard', to: '/admin' },
+          { icon: LayoutDashboard, label: 'Панель', to: '/admin' },
           { icon: BarChart3, label: 'Статистика', to: '/admin/stats' },
         ],
       },
@@ -290,7 +290,7 @@ const navGroups = computed<NavGroup[]>(() => {
       {
         title: 'Система',
         items: [
-          { icon: FileText, label: 'API Запросы', to: '/admin/api-logs' },
+          { icon: FileText, label: 'Запросы интеграции', to: '/admin/api-logs' },
           { icon: Webhook, label: 'Колбэки', to: '/admin/callbacks' },
         ],
       },
@@ -301,7 +301,7 @@ const navGroups = computed<NavGroup[]>(() => {
     return [
       {
         title: 'Обзор',
-        items: [{ icon: LayoutDashboard, label: 'Dashboard', to: '/trader' }],
+        items: [{ icon: LayoutDashboard, label: 'Панель', to: '/trader' }],
       },
       {
         title: 'Работа',
@@ -326,7 +326,7 @@ const navGroups = computed<NavGroup[]>(() => {
     return [
       {
         title: 'Обзор',
-        items: [{ icon: LayoutDashboard, label: 'Dashboard', to: '/teamlead' }],
+        items: [{ icon: LayoutDashboard, label: 'Панель', to: '/teamlead' }],
       },
       {
         title: 'Данные',
@@ -342,7 +342,7 @@ const navGroups = computed<NavGroup[]>(() => {
     return [
       {
         title: 'Обзор',
-        items: [{ icon: LayoutDashboard, label: 'Dashboard', to: '/merchant' }],
+        items: [{ icon: LayoutDashboard, label: 'Панель', to: '/merchant' }],
       },
       {
         title: 'Операции',

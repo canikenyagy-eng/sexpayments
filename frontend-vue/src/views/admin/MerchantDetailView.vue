@@ -20,7 +20,7 @@
             <BaseMenu>
               <BaseMenuItem :icon="Wallet" @click="openEditBalance">Корректировка баланса</BaseMenuItem>
               <BaseMenuItem :icon="FileText" @click="goToApiLogs">API логи мерчанта</BaseMenuItem>
-              <BaseMenuItem :icon="RotateCw" dangerous @click="resetKeyForEditing">Сбросить API ключ</BaseMenuItem>
+              <BaseMenuItem :icon="RotateCw" dangerous @click="resetKeyForEditing">Сбросить ключ интеграции</BaseMenuItem>
             </BaseMenu>
           </div>
 
@@ -292,15 +292,15 @@
     </template>
 
     <!-- API key display (after reset) -->
-    <BaseModal v-model="showApiKey" title="Новый API ключ">
+    <BaseModal v-model="showApiKey" title="Новый ключ интеграции">
       <div class="space-y-3">
         <p class="text-sm text-status-warning">Сохраните ключ и секрет — они больше не будут показаны!</p>
         <div>
-          <p class="mb-1 text-xs font-bold text-text-muted">API Key</p>
+          <p class="mb-1 text-xs font-bold text-text-muted">Ключ интеграции</p>
           <div class="rounded-xl bg-bg-card p-3 font-mono text-sm text-accent break-all">{{ newApiKey }}</div>
         </div>
         <div>
-          <p class="mb-1 text-xs font-bold text-text-muted">API Secret</p>
+          <p class="mb-1 text-xs font-bold text-text-muted">Секрет интеграции</p>
           <div class="rounded-xl bg-bg-card p-3 font-mono text-sm text-accent break-all">{{ newApiSecret }}</div>
         </div>
       </div>
@@ -675,7 +675,7 @@ async function saveEdit() {
 
 async function resetKeyForEditing() {
   if (!editing.value) return
-  if (!(await confirm(`Сбросить API-ключ для мерчанта #${editing.value.id}?`))) return
+  if (!(await confirm(`Сбросить ключ интеграции для мерчанта #${editing.value.id}?`))) return
   try {
     const { data } = await merchantsService.resetApiKeyAdmin(editing.value.id)
     newApiKey.value = data.api_key

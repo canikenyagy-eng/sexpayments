@@ -30,7 +30,7 @@
             <span class="text-text-main">{{ m.currency }}</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-text-muted">API Key</span>
+            <span class="text-text-muted">Ключ интеграции</span>
             <span class="font-mono text-xs text-text-secondary">{{ m.api_key_masked }}</span>
           </div>
           <div v-if="m.webhook_url" class="flex justify-between">
@@ -58,18 +58,18 @@
     <BaseModal v-model="showKeys" title="Терминал создан">
       <div class="space-y-4">
         <div class="rounded-xl bg-status-warning/10 p-4 text-sm text-status-warning">
-          Сохраните API Secret — он показывается только один раз!
+          Сохраните секрет интеграции — он показывается только один раз!
         </div>
         <div class="space-y-2">
           <div>
-            <p class="mb-1 text-xs text-text-muted">API Key</p>
+            <p class="mb-1 text-xs text-text-muted">Ключ интеграции</p>
             <div class="flex items-center gap-2 rounded-lg bg-bg-surface px-3 py-2">
               <code class="flex-1 break-all text-sm text-text-main">{{ newKeys?.api_key }}</code>
               <BaseButton variant="ghost" size="sm" @click="copy(newKeys?.api_key ?? '')">Копировать</BaseButton>
             </div>
           </div>
           <div>
-            <p class="mb-1 text-xs text-text-muted">API Secret</p>
+            <p class="mb-1 text-xs text-text-muted">Секрет интеграции</p>
             <div class="flex items-center gap-2 rounded-lg bg-bg-surface px-3 py-2">
               <code class="flex-1 break-all text-sm text-accent">{{ newKeys?.api_secret }}</code>
               <BaseButton variant="ghost" size="sm" @click="copy(newKeys?.api_secret ?? '')">Копировать</BaseButton>

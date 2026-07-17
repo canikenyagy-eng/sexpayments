@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHeader title="Dashboard">
+    <PageHeader title="Панель">
       <template #actions>
         <div class="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto sm:items-center sm:gap-2">
           <BaseDatePicker

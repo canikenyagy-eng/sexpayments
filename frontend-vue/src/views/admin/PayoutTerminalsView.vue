@@ -54,11 +54,11 @@
       <div class="space-y-3">
         <p class="text-sm text-status-warning">Сохраните ключ и секрет — секрет больше не будет показан!</p>
         <div>
-          <p class="mb-1 text-xs font-bold text-text-muted">API Key</p>
+          <p class="mb-1 text-xs font-bold text-text-muted">Ключ интеграции</p>
           <div class="rounded-xl bg-bg-card p-3 font-mono text-sm text-accent break-all">{{ keyInfo.api_key }}</div>
         </div>
         <div v-if="keyInfo.api_secret">
-          <p class="mb-1 text-xs font-bold text-text-muted">API Secret</p>
+          <p class="mb-1 text-xs font-bold text-text-muted">Секрет интеграции</p>
           <div class="rounded-xl bg-bg-card p-3 font-mono text-sm text-accent break-all">{{ keyInfo.api_secret }}</div>
         </div>
       </div>

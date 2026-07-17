@@ -11,17 +11,17 @@
     <div class="relative z-10 grid w-full max-w-[1040px] items-center gap-8 lg:grid-cols-[1fr_462px]">
       <div class="hidden max-w-[560px] lg:block">
         <p class="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-accent">
-          Private high-risk payment infrastructure
+          Закрытая финтех-инфраструктура
         </p>
         <h1 class="mb-5 text-6xl font-black leading-[0.94] text-text-main">
-          Payment Infrastructure for Adult Businesses
+          Платежная инфраструктура для бизнеса 18+
         </h1>
-        <p class="text-2xl font-bold text-text-secondary">Private. Fast. Reliable.</p>
+        <p class="text-2xl font-bold text-text-secondary">Конфиденциально. Быстро. Надежно.</p>
       </div>
 
       <div class="w-full rounded-[24px] border border-accent/20 bg-bg-surface/80 p-8 shadow-[0_30px_90px_rgba(0,0,0,0.55)] backdrop-blur-xl">
         <div class="mb-6 flex items-center justify-center gap-3">
-          <img src="/logos/logo.svg" alt="SexPayments Logo" class="h-11 w-11" />
+          <img src="/logos/logo.svg" alt="Логотип SexPayments" class="h-11 w-11" />
           <div class="text-[2rem] font-black leading-none text-text-main">
             Sex<span class="text-accent">Payments</span>
           </div>
@@ -56,7 +56,7 @@
             v-if="requires2FA"
             id="totp"
             v-model="form.totp_code"
-            label="Код 2FA (Google Authenticator)"
+            label="Код двухфакторной защиты"
             placeholder="123456"
             required
           />
@@ -102,7 +102,7 @@ async function handleLogin() {
     const detail = err.response?.data?.detail
     if (err.response?.status === 401 && detail === '2FA code required') {
       requires2FA.value = true
-      error.value = 'Введите код из Google Authenticator'
+      error.value = 'Введите код из приложения аутентификации'
     } else {
       error.value = typeof detail === 'string' ? detail : 'Неверный логин или пароль'
     }

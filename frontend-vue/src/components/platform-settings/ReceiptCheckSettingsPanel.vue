@@ -107,7 +107,7 @@
 
         <BaseInput
           v-model="form.api_key"
-          label="API-ключ"
+          label="Ключ интеграции"
           type="password"
           :placeholder="editingId ? 'Оставьте пустым, чтобы не менять' : 'sk_live_…'"
           :required="!editingId"
@@ -211,7 +211,7 @@ const providerColumns: Column[] = [
   { key: 'name', label: 'Название' },
   { key: 'code', label: 'Код' },
   { key: 'adapter_type', label: 'Адаптер' },
-  { key: 'api_key_masked', label: 'API-ключ' },
+  { key: 'api_key_masked', label: 'Ключ интеграции' },
   { key: 'price_usdt', label: 'Цена', align: 'right' },
   { key: 'is_active', label: 'Статус' },
 ]

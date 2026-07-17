@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHeader title="API Запросы" />
+    <PageHeader title="Запросы интеграции" />
 
     <!-- Tabs -->
     <div class="mb-4 flex gap-1 overflow-x-auto rounded-xl bg-bg-surface p-1 no-scrollbar">

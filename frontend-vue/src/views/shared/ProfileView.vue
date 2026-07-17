@@ -97,7 +97,7 @@
           <BaseButton variant="gold" :loading="setupLoading" @click="startSetup2FA">Начать настройку</BaseButton>
         </div>
         <div v-else class="space-y-4">
-          <p class="text-sm text-text-secondary">Отсканируйте QR-код в Google Authenticator или введите секрет вручную:</p>
+          <p class="text-sm text-text-secondary">Отсканируйте QR-код в приложении аутентификации или введите секрет вручную:</p>
           <div class="rounded-xl bg-bg-card p-3 font-mono text-xs text-accent break-all">{{ setup2FA.secret }}</div>
           <form class="flex gap-2" @submit.prevent="enable2FA">
             <BaseInput v-model="totpCode" placeholder="Код из приложения" required />

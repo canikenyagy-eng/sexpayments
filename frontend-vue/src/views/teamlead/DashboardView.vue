@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHeader title="Dashboard" />
+    <PageHeader title="Панель" />
 
     <div v-if="loading" class="py-16"><LoadingSpinner /></div>
 

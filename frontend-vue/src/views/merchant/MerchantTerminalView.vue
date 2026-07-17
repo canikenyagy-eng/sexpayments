@@ -112,7 +112,7 @@
             </div>
           </BaseCard>
 
-          <BaseCard title="API-ключ">
+          <BaseCard title="Ключ интеграции">
             <div class="space-y-4">
               <div>
                 <label class="mb-1.5 block text-sm font-semibold text-text-secondary">Текущий ключ</label>
@@ -131,14 +131,14 @@
               <div v-if="newKey" class="rounded-lg bg-bg-card p-3 space-y-2">
                 <p class="text-sm font-bold text-accent">Новые ключи (сохраните!):</p>
                 <div>
-                  <label class="text-xs text-text-muted">API Key:</label>
+                  <label class="text-xs text-text-muted">Ключ интеграции:</label>
                   <div class="flex items-center gap-2">
                     <code class="flex-1 rounded bg-bg-surface px-2 py-1 font-mono text-xs text-text-main break-all">{{ newKey.api_key }}</code>
                     <button class="text-text-muted hover:text-accent" @click="copy(newKey!.api_key)"><Copy class="h-4 w-4" /></button>
                   </div>
                 </div>
                 <div>
-                  <label class="text-xs text-text-muted">API Secret:</label>
+                  <label class="text-xs text-text-muted">Секрет интеграции:</label>
                   <div class="flex items-center gap-2">
                     <code class="flex-1 rounded bg-bg-surface px-2 py-1 font-mono text-xs text-text-main break-all">{{ newKey.api_secret }}</code>
                     <button class="text-text-muted hover:text-accent" @click="copy(newKey!.api_secret)"><Copy class="h-4 w-4" /></button>
@@ -351,13 +351,13 @@ async function saveSettings() {
 }
 
 async function confirmResetKey() {
-  const yes = await confirmDialog('Вы уверены? Текущий API-ключ будет аннулирован.')
+  const yes = await confirmDialog('Вы уверены? Текущий ключ интеграции будет аннулирован.')
   if (!yes) return
   resetting.value = true
   try {
     const { data } = await merchantsService.resetMyApiKey(terminalId.value)
     newKey.value = data
-    toast.success('API-ключ перегенерирован')
+    toast.success('Ключ интеграции перегенерирован')
     loadProfile()
   } catch {
     toast.error('Ошибка перегенерации ключа')

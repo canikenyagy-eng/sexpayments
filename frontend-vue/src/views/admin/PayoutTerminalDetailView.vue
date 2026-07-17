@@ -16,7 +16,7 @@
             <StatusBadge :status="editing.status" context="merchant" />
             <BaseMenu>
               <BaseMenuItem :icon="Wallet" @click="showTopup = true">Пополнить баланс</BaseMenuItem>
-              <BaseMenuItem :icon="KeyRound" @click="showKey = true">Показать API ключ</BaseMenuItem>
+              <BaseMenuItem :icon="KeyRound" @click="showKey = true">Показать ключ интеграции</BaseMenuItem>
             </BaseMenu>
           </div>
           <h1 class="truncate text-xl font-bold text-text-main">{{ editing.name || `#${editing.id}` }}</h1>
@@ -101,7 +101,7 @@
     </BaseModal>
 
     <!-- API key -->
-    <BaseModal v-model="showKey" title="API ключ терминала">
+    <BaseModal v-model="showKey" title="Ключ интеграции терминала">
       <div class="space-y-2">
         <p class="text-xs text-text-muted">Секрет показывается только при создании.</p>
         <div class="rounded-xl bg-bg-card p-3 font-mono text-sm text-accent break-all">{{ editing?.api_key }}</div>
