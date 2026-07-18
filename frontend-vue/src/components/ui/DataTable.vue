@@ -55,7 +55,7 @@
 
     <div v-if="loading" class="flex min-h-[200px] flex-col items-center justify-center gap-2">
       <img
-        src="/logos/logo_anim.svg"
+        :src="publicAsset('logos/logo_anim.svg')"
         alt="Загрузка"
         class="h-10 w-auto select-none"
         draggable="false"
@@ -137,6 +137,7 @@
 
 <script setup lang="ts">
 import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from 'lucide-vue-next'
+import { publicAsset } from '@/utils/assets'
 
 export interface Column {
   key: string

@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/vue'
 import { authService } from '@/api/services/auth.service'
 import { set401Suppressed } from '@/api/client'
 import type { User, UserRole } from '@/types'
+import { demoCredentials, demoTokens, demoUser, isDemoMode, isDemoToken } from '@/demo/config'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(localStorage.getItem('token'))
@@ -48,6 +49,11 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchUser() {
     if (!token.value) return
+    if (isDemoMode && isDemoToken(token.value)) {
+      user.value = demoUser
+      Sentry.setUser({ id: String(demoUser.id), username: demoUser.username })
+      return
+    }
     try {
       const { data } = await authService.getMe()
       user.value = data
@@ -58,6 +64,15 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function login(username: string, password: string, totp_code?: string) {
+    if (isDemoMode) {
+      if (username !== demoCredentials.username || password !== demoCredentials.password) {
+        throw { response: { status: 401, data: { detail: 'Неверный логин или пароль' } } }
+      }
+      setTokens(demoTokens.access, demoTokens.refresh)
+      user.value = demoUser
+      Sentry.setUser({ id: String(demoUser.id), username: demoUser.username })
+      return
+    }
     const { data } = await authService.login(username, password, totp_code)
     setTokens(data.access_token, data.refresh_token)
     user.value = data.user
@@ -99,7 +114,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function logout() {
-    if (refreshToken.value) {
+    if (refreshToken.value && !(isDemoMode && isDemoToken(refreshToken.value))) {
       authService.logout(refreshToken.value).catch(() => {})
     }
     clearAuth()

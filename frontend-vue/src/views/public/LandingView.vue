@@ -2,7 +2,7 @@
   <main class="min-h-screen overflow-hidden bg-bg-main text-text-main">
     <section class="relative grid min-h-[820px] items-center overflow-hidden px-5 py-28 lg:min-h-screen lg:py-36">
       <img
-        src="/brand/hero-fintech.png"
+        :src="publicAsset('brand/hero-fintech.png')"
         alt=""
         class="absolute inset-0 h-full w-full object-cover object-[68%_center] opacity-55 saturate-[0.72] contrast-110 brightness-[0.82]"
       />
@@ -11,7 +11,7 @@
 
       <div class="absolute inset-x-0 top-4 z-10 mx-auto flex w-[calc(100%_-_2rem)] max-w-[1180px] items-center justify-between rounded-[22px] border border-accent/15 bg-bg-main/80 px-4 py-3 shadow-[0_20px_64px_rgba(0,0,0,0.38)] backdrop-blur-xl">
         <RouterLink to="/" class="flex items-center gap-3">
-          <img src="/logos/logo.svg" alt="Логотип SexPayments" class="h-11 w-11 rounded-2xl" />
+          <img :src="publicAsset('logos/logo.svg')" alt="Логотип SexPayments" class="h-11 w-11 rounded-2xl" />
           <span class="text-lg font-black">Sex<span class="text-accent">Payments</span></span>
         </RouterLink>
         <RouterLink
@@ -190,6 +190,7 @@ import {
   ShieldCheck,
   Zap,
 } from 'lucide-vue-next'
+import { publicAsset } from '@/utils/assets'
 
 const ledger = [
   { label: 'маршрут', value: 'активен' },

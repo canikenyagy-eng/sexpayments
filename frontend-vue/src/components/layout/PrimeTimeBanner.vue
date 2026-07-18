@@ -4,7 +4,7 @@
     class="flex items-center justify-center gap-1.5 whitespace-nowrap rounded-xl border border-accent/30 bg-accent/15 px-3 py-2 text-xs font-bold text-accent"
   >
     <Zap class="h-3.5 w-3.5 shrink-0" />
-    <span>Primetime +{{ pointsLabel }}%</span>
+    <span>Праймтайм +{{ pointsLabel }}%</span>
     <span v-if="remainingLabel" class="font-mono font-semibold opacity-80">{{ remainingLabel }}</span>
   </div>
 </template>

@@ -57,6 +57,9 @@
             <template #cell-amount="{ row }">
               {{ formatAmount(row.amount) }} {{ row.currency }}
             </template>
+            <template #cell-user_role="{ value }">
+              {{ roleLabel(value) }}
+            </template>
             <template #cell-status="{ value }">
               <StatusBadge :status="value" />
             </template>
@@ -189,7 +192,7 @@ const statCards = computed(() => [
   { label: 'Конверсия %', value: Math.round(stats.value.conversion_pct) + '%', icon: Target },
   { label: 'Мерчанты 24ч', value: stats.value.merchants_online_24h, icon: Store },
   { label: 'Трейдеры 24ч', value: stats.value.traders_online_24h, icon: Users },
-  { label: 'Выводы (pending)', value: stats.value.pending_withdrawals, icon: Hourglass },
+  { label: 'Выводы в ожидании', value: stats.value.pending_withdrawals, icon: Hourglass },
   { label: 'Активные споры', value: stats.value.active_disputes, icon: AlertTriangle },
 ])
 
@@ -220,6 +223,14 @@ function getMerchantLogin(merchantId: number): string {
 function getTraderLogin(traderId?: number | null): string {
   if (!traderId) return '—'
   return usersMap.value[traderId] ?? `#${traderId}`
+}
+
+function roleLabel(role?: string): string {
+  if (role === 'merchant') return 'Мерчант'
+  if (role === 'trader') return 'Трейдер'
+  if (role === 'teamlead') return 'Тимлид'
+  if (role === 'admin') return 'Администратор'
+  return role || '—'
 }
 
 const recentOrderRows = computed(() =>

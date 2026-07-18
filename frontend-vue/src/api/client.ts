@@ -6,6 +6,7 @@ import router from '@/router'
 // sides (set401Suppressed is a hoisted fn; useAuthStore() is only called at
 // runtime below), so ESM resolves it fine.
 import { useAuthStore } from '@/stores/auth'
+import { demoApiConfig } from '@/demo/api'
 
 let suppress401 = false
 
@@ -22,6 +23,7 @@ const api = axios.create({
   // at `/api/docs` on production). Auth for XHR still goes via the Bearer
   // header below; the cookie is only consumed by server-rendered endpoints.
   withCredentials: true,
+  ...demoApiConfig(),
 })
 
 api.interceptors.request.use((config) => {

@@ -1,7 +1,7 @@
 <template>
   <section class="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg-main px-4 py-10">
     <img
-      src="/brand/hero-fintech.png"
+      :src="publicAsset('brand/hero-fintech.png')"
       alt=""
       class="absolute inset-0 h-full w-full object-cover object-[62%_center] opacity-45"
     />
@@ -21,9 +21,29 @@
 
       <div class="w-full rounded-[24px] border border-accent/20 bg-bg-surface/80 p-8 shadow-[0_30px_90px_rgba(0,0,0,0.55)] backdrop-blur-xl">
         <div class="mb-6 flex items-center justify-center gap-3">
-          <img src="/logos/logo.svg" alt="Логотип SexPayments" class="h-11 w-11" />
+          <img :src="publicAsset('logos/logo.svg')" alt="Логотип SexPayments" class="h-11 w-11" />
           <div class="text-[2rem] font-black leading-none text-text-main">
             Sex<span class="text-accent">Payments</span>
+          </div>
+        </div>
+
+        <div
+          v-if="isDemoMode"
+          class="mb-5 rounded-2xl border border-accent/20 bg-accent-dark/10 p-4 text-sm text-text-secondary"
+        >
+          <div class="mb-3 flex items-center justify-between gap-3">
+            <p class="font-bold text-text-main">Демо-доступ администратора</p>
+            <button
+              type="button"
+              class="shrink-0 rounded-xl border border-accent/40 px-3 py-1.5 text-xs font-bold text-accent transition hover:border-accent hover:bg-accent/10"
+              @click="fillDemoCredentials"
+            >
+              Заполнить
+            </button>
+          </div>
+          <div class="grid gap-2 font-mono text-xs">
+            <span>логин: {{ demoCredentials.username }}</span>
+            <span>пароль: {{ demoCredentials.password }}</span>
           </div>
         </div>
 
@@ -76,6 +96,8 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import { demoCredentials, isDemoMode } from '@/demo/config'
+import { publicAsset } from '@/utils/assets'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -84,6 +106,11 @@ const form = reactive({ username: '', password: '', totp_code: '' })
 const error = ref('')
 const loading = ref(false)
 const requires2FA = ref(false)
+
+function fillDemoCredentials() {
+  form.username = demoCredentials.username
+  form.password = demoCredentials.password
+}
 
 const roleHome: Record<string, string> = {
   admin: '/admin',

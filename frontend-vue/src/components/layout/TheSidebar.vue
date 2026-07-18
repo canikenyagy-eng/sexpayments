@@ -7,7 +7,7 @@
   >
     <!-- Logo -->
     <div class="flex h-16 items-center gap-3 border-b border-border px-5">
-      <img src="/logos/logo.svg" alt="Логотип SexPayments" class="h-9 w-9" />
+      <img :src="publicAsset('logos/logo.svg')" alt="Логотип SexPayments" class="h-9 w-9" />
       <div class="text-xl font-black leading-none text-text-main">
         Sex<span class="text-accent">Payments</span>
       </div>
@@ -133,6 +133,7 @@ import type { UserRole } from '@/types'
 import { statsService, type ActiveStats } from '@/api/services/stats.service'
 import UserBalanceWidget from './UserBalanceWidget.vue'
 import PrimeTimeBanner from './PrimeTimeBanner.vue'
+import { publicAsset } from '@/utils/assets'
 import {
   LayoutDashboard,
   BarChart3,
