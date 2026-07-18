@@ -1,0 +1,53 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="spGrad" x1="17" y1="15" x2="82" y2="83" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#D6A38F"/>
+      <stop offset="0.52" stop-color="#8B1538"/>
+      <stop offset="1" stop-color="#F0BEAA"/>
+    </linearGradient>
+    <filter id="glow" x="0" y="0" width="96" height="96" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="2.8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .ring {
+        stroke-dasharray: 214;
+        stroke-dashoffset: 214;
+        animation: ring 1.8s ease-in-out infinite;
+      }
+      .mark {
+        stroke-dasharray: 126;
+        stroke-dashoffset: 126;
+        animation: mark 1.8s ease-in-out infinite;
+      }
+      .flow {
+        opacity: 0;
+        animation: flow 1.8s ease-in-out infinite;
+      }
+      @keyframes ring {
+        0% { stroke-dashoffset: 214; opacity: .2; }
+        38%, 72% { stroke-dashoffset: 0; opacity: 1; }
+        100% { stroke-dashoffset: -214; opacity: .2; }
+      }
+      @keyframes mark {
+        0%, 12% { stroke-dashoffset: 126; opacity: 0; }
+        50%, 76% { stroke-dashoffset: 0; opacity: 1; }
+        100% { stroke-dashoffset: -126; opacity: 0; }
+      }
+      @keyframes flow {
+        0%, 24% { opacity: 0; transform: scaleX(.72); }
+        48%, 78% { opacity: 1; transform: scaleX(1); }
+        100% { opacity: 0; transform: scaleX(.72); }
+      }
+    </style>
+  </defs>
+  <rect width="96" height="96" rx="48" fill="#0D0D0D"/>
+  <g filter="url(#glow)">
+    <circle class="ring" cx="48" cy="48" r="34" stroke="url(#spGrad)" stroke-width="4" stroke-linecap="round"/>
+    <path class="mark" d="M61.8 31H40.8C34.3 31 30 34.8 30 40C30 44.7 33.5 47.5 39.2 48.8L55.8 52.7C61.5 54.1 65 56.8 65 61.6C65 67.2 60.4 71 53.7 71H32.6M34.2 71H55.2C61.7 71 66 67.2 66 62C66 57.3 62.5 54.5 56.8 53.2L40.2 49.3C34.5 47.9 31 45.2 31 40.4C31 34.8 35.6 31 42.3 31H63.4" stroke="url(#spGrad)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path class="flow" d="M21 48H14M82 48H75" stroke="#F5F5F5" stroke-width="3.2" stroke-linecap="round"/>
+  </g>
+</svg>

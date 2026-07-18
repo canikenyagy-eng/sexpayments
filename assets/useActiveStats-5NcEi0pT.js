@@ -1,0 +1,1 @@
+import{Y as e}from"./runtime-core.esm-bundler-CtO6J8YA.js";import{z as t}from"./index-DchPAN5g.js";var n=e({orders_active:0,active_disputes:0,pending_withdrawals:0,requisites_traffic_active:0}),r=null;async function i(){return r||(r=(async()=>{try{let{data:e}=await t.getActiveStats();n.value=e}catch{}finally{r=null}})(),r)}function a(){return{stats:n,refresh:i}}export{a as t};

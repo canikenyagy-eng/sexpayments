@@ -1,0 +1,1 @@
+import{n as e}from"./auth-Hd12zAQs.js";var t={list:()=>e.get(`/api/v1/rates/`),getById:t=>e.get(`/api/v1/rates/${t}`),create:t=>e.post(`/api/v1/rates/`,t),update:(t,n)=>e.patch(`/api/v1/rates/${t}`,n),remove:t=>e.delete(`/api/v1/rates/${t}`),sync:t=>e.post(`/api/v1/rates/${t}/sync`)};export{t};

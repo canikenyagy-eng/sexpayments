@@ -1,0 +1,1 @@
+import{n as e}from"./auth-Hd12zAQs.js";var t={listAll:t=>e.get(`/api/v1/clients`,{params:t}),getForOrder:t=>e.get(`/api/v1/clients/for-order/${t}`),getForOrderMine:t=>e.get(`/api/v1/clients/for-order/${t}/me`),block:t=>e.post(`/api/v1/clients/block`,t),unblock:t=>e.post(`/api/v1/clients/unblock`,t)};export{t};

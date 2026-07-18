@@ -1,0 +1,1 @@
+import{n as e}from"./auth-Hd12zAQs.js";var t={listAttempts:t=>e.get(`/api/v1/callbacks/attempts`,{params:t}),resendForOrder:t=>e.post(`/api/v1/callbacks/resend/order/${t}`),resendForMerchant:(t,n,r)=>e.post(`/api/v1/callbacks/resend/merchant/${t}`,null,{params:{start_time:n,end_time:r}})};export{t};

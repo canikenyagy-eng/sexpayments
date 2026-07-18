@@ -1,0 +1,1 @@
+import{D as e,g as t,h as n,s as r,u as i}from"./runtime-core.esm-bundler-CtO6J8YA.js";import{t as a}from"./PageHeader-D-MDYYe7.js";var o=t({__name:`ConfigsView`,setup(t){return(t,o)=>(e(),i(`div`,null,[n(a,{title:`Конфиги`}),o[0]||=r(`div`,{class:`py-16 text-center`},[r(`p`,{class:`text-lg font-bold text-text-muted`},`Страница в разработке`)],-1)]))}});export{o as default};
