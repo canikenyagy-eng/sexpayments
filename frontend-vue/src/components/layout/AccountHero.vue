@@ -1,0 +1,92 @@
+<template>
+  <section
+    class="relative mb-7 overflow-hidden rounded-[28px] border border-accent/15 bg-bg-surface/70 p-5 shadow-[0_28px_90px_rgba(0,0,0,0.42)] backdrop-blur-2xl sm:p-7 lg:p-8"
+  >
+    <div class="pointer-events-none absolute inset-0" :class="tone.overlay" />
+    <div class="pointer-events-none absolute right-0 top-0 h-64 w-64 rounded-full blur-3xl" :class="tone.glow" />
+    <div class="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(214,163,143,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(214,163,143,0.18)_1px,transparent_1px)] [background-size:46px_46px]" />
+
+    <div class="relative grid gap-7 xl:grid-cols-[minmax(0,0.92fr)_minmax(360px,0.58fr)] xl:items-end">
+      <div>
+        <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-bg-main/50 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-accent">
+          <component :is="tone.icon" class="h-4 w-4" />
+          {{ eyebrow }}
+        </div>
+        <h1 class="max-w-4xl text-[clamp(2rem,4vw,4.4rem)] font-black leading-[0.98] text-text-main">
+          {{ title }}
+        </h1>
+        <p class="mt-5 max-w-2xl text-base font-semibold leading-7 text-text-secondary sm:text-lg">
+          {{ subtitle }}
+        </p>
+        <div v-if="$slots.actions" class="mt-6 flex flex-wrap items-center gap-3">
+          <slot name="actions" />
+        </div>
+      </div>
+
+      <div class="grid gap-3 sm:grid-cols-2">
+        <div
+          v-for="metric in metrics"
+          :key="metric.label"
+          class="min-h-[116px] rounded-[22px] border border-accent/15 bg-bg-main/55 p-4 shadow-[inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl"
+        >
+          <span class="mb-3 block text-[11px] font-black uppercase tracking-[0.14em] text-text-muted">
+            {{ metric.label }}
+          </span>
+          <strong class="block break-words text-2xl font-black leading-none text-text-main">
+            {{ metric.value }}
+          </strong>
+          <p v-if="metric.caption" class="mt-3 text-xs font-semibold leading-5 text-text-muted">
+            {{ metric.caption }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { Component } from 'vue'
+import { Activity, Network, Store } from 'lucide-vue-next'
+import type { UserRole } from '@/types'
+
+interface HeroMetric {
+  label: string
+  value: string | number
+  caption?: string
+}
+
+const props = defineProps<{
+  role: Extract<UserRole, 'merchant' | 'trader' | 'teamlead'>
+  eyebrow: string
+  title: string
+  subtitle: string
+  metrics: HeroMetric[]
+}>()
+
+const tone = computed<{
+  icon: Component
+  overlay: string
+  glow: string
+}>(() => {
+  if (props.role === 'merchant') {
+    return {
+      icon: Store,
+      overlay: 'bg-[radial-gradient(circle_at_18%_8%,rgba(214,163,143,0.16),transparent_28rem),linear-gradient(135deg,rgba(139,21,56,0.28),rgba(23,23,23,0.1)_52%,rgba(214,163,143,0.08))]',
+      glow: 'bg-accent-dark/30',
+    }
+  }
+  if (props.role === 'trader') {
+    return {
+      icon: Activity,
+      overlay: 'bg-[radial-gradient(circle_at_20%_0%,rgba(139,21,56,0.24),transparent_30rem),linear-gradient(135deg,rgba(38,30,28,0.92),rgba(23,23,23,0.24)_54%,rgba(214,163,143,0.12))]',
+      glow: 'bg-accent/20',
+    }
+  }
+  return {
+    icon: Network,
+    overlay: 'bg-[radial-gradient(circle_at_24%_4%,rgba(214,163,143,0.14),transparent_28rem),linear-gradient(135deg,rgba(36,29,31,0.88),rgba(139,21,56,0.18)_58%,rgba(13,13,13,0.16))]',
+    glow: 'bg-[#D6A38F]/16',
+  }
+})
+</script>

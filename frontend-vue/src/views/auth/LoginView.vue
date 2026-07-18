@@ -31,19 +31,20 @@
           v-if="isDemoMode"
           class="mb-5 rounded-2xl border border-accent/20 bg-accent-dark/10 p-4 text-sm text-text-secondary"
         >
-          <div class="mb-3 flex items-center justify-between gap-3">
-            <p class="font-bold text-text-main">Демо-доступ администратора</p>
+          <p class="mb-3 font-bold text-text-main">Демо-доступ</p>
+          <div class="grid gap-2">
             <button
+              v-for="account in demoAccounts"
+              :key="account.username"
               type="button"
-              class="shrink-0 rounded-xl border border-accent/40 px-3 py-1.5 text-xs font-bold text-accent transition hover:border-accent hover:bg-accent/10"
-              @click="fillDemoCredentials"
+              class="grid gap-1 rounded-xl border border-accent/15 bg-bg-main/35 px-3 py-2 text-left transition hover:border-accent/35 hover:bg-accent/10"
+              @click="fillDemoCredentials(account)"
             >
-              Заполнить
+              <span class="text-xs font-black uppercase tracking-[0.12em] text-accent">{{ account.label }}</span>
+              <span class="font-mono text-xs text-text-muted">
+                {{ account.username }} / {{ account.password }}
+              </span>
             </button>
-          </div>
-          <div class="grid gap-2 font-mono text-xs">
-            <span>логин: {{ demoCredentials.username }}</span>
-            <span>пароль: {{ demoCredentials.password }}</span>
           </div>
         </div>
 
@@ -96,7 +97,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
-import { demoCredentials, isDemoMode } from '@/demo/config'
+import { demoAccounts, isDemoMode, type DemoAccount } from '@/demo/config'
 import { publicAsset } from '@/utils/assets'
 
 const router = useRouter()
@@ -107,9 +108,9 @@ const error = ref('')
 const loading = ref(false)
 const requires2FA = ref(false)
 
-function fillDemoCredentials() {
-  form.username = demoCredentials.username
-  form.password = demoCredentials.password
+function fillDemoCredentials(account: DemoAccount) {
+  form.username = account.username
+  form.password = account.password
 }
 
 const roleHome: Record<string, string> = {

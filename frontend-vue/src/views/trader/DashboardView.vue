@@ -1,6 +1,12 @@
 <template>
   <div>
-    <PageHeader title="Панель трейдера" />
+    <AccountHero
+      role="trader"
+      eyebrow="Кабинет трейдера"
+      title="Рабочий контур для активных сделок"
+      subtitle="Управляйте входом, выходом, лимитами и активными ордерами в одном спокойном операционном экране."
+      :metrics="heroMetrics"
+    />
 
     <div v-if="loading" class="py-16"><LoadingSpinner /></div>
 
@@ -9,7 +15,7 @@
         <StatCard label="Статус" :value="traderStatusLabel" :icon="BarChart3" />
 
         <!-- Payin toggle card -->
-        <div class="rounded-2xl border border-border bg-panel-gradient p-4">
+        <div class="rounded-[22px] border border-accent/15 bg-bg-surface/70 p-4 shadow-prime backdrop-blur-xl">
           <span class="mb-3 block text-xs font-bold uppercase tracking-wider text-text-muted">Вход</span>
           <div class="flex items-center justify-between">
             <span class="text-sm font-bold" :class="trader.is_payin_active ? 'text-status-success' : 'text-text-muted'">
@@ -18,12 +24,12 @@
             <button
               type="button"
               :disabled="toggling"
-              class="relative h-7 w-12 rounded-full transition-colors duration-200 focus:outline-none"
-              :class="trader.is_payin_active ? 'bg-status-success' : 'bg-bg-hover'"
+              class="relative h-7 w-12 rounded-full border transition-colors duration-200 focus:outline-none disabled:opacity-60"
+              :class="trader.is_payin_active ? 'border-accent/30 bg-accent-dark' : 'border-border bg-bg-hover'"
               @click="togglePayin"
             >
               <span
-                class="absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform duration-200"
+                class="absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-text-main shadow transition-transform duration-200"
                 :class="trader.is_payin_active ? 'translate-x-5' : 'translate-x-0'"
               />
             </button>
@@ -31,7 +37,7 @@
         </div>
 
         <!-- Payout toggle card -->
-        <div class="rounded-2xl border border-border bg-panel-gradient p-4">
+        <div class="rounded-[22px] border border-accent/15 bg-bg-surface/70 p-4 shadow-prime backdrop-blur-xl">
           <span class="mb-3 block text-xs font-bold uppercase tracking-wider text-text-muted">Выход</span>
           <div class="flex items-center justify-between">
             <span class="text-sm font-bold" :class="trader.is_payout_active ? 'text-status-success' : 'text-text-muted'">
@@ -40,12 +46,12 @@
             <button
               type="button"
               :disabled="toggling"
-              class="relative h-7 w-12 rounded-full transition-colors duration-200 focus:outline-none"
-              :class="trader.is_payout_active ? 'bg-status-success' : 'bg-bg-hover'"
+              class="relative h-7 w-12 rounded-full border transition-colors duration-200 focus:outline-none disabled:opacity-60"
+              :class="trader.is_payout_active ? 'border-accent/30 bg-accent-dark' : 'border-border bg-bg-hover'"
               @click="togglePayout"
             >
               <span
-                class="absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform duration-200"
+                class="absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-text-main shadow transition-transform duration-200"
                 :class="trader.is_payout_active ? 'translate-x-5' : 'translate-x-0'"
               />
             </button>
@@ -66,12 +72,12 @@
 
       <BaseCard title="Конфигурация методов" class="mb-6">
         <div v-if="Object.keys(trader.methods_config || {}).length" class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div v-for="(cfg, method) in trader.methods_config" :key="method" class="rounded-xl bg-bg-card p-4">
-            <BaseBadge color="gold" class="mb-2">{{ method }}</BaseBadge>
+          <div v-for="(cfg, method) in trader.methods_config" :key="method" class="rounded-[22px] border border-accent/10 bg-bg-main/45 p-4">
+            <MethodBadge :method="method" class="mb-2" />
             <div class="space-y-1 text-sm text-text-secondary">
-              <div>Fee: <strong class="text-text-main">{{ cfg.fee }}%</strong></div>
-              <div>Min: <strong class="text-text-main">{{ cfg.min_amount }}</strong></div>
-              <div>Max: <strong class="text-text-main">{{ cfg.max_amount }}</strong></div>
+              <div>Комиссия: <strong class="text-text-main">{{ cfg.fee }}%</strong></div>
+              <div>Мин.: <strong class="text-text-main">{{ formatAmount(cfg.min_amount) }}</strong></div>
+              <div>Макс.: <strong class="text-text-main">{{ formatAmount(cfg.max_amount) }}</strong></div>
             </div>
           </div>
         </div>
@@ -116,12 +122,12 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import PageHeader from '@/components/layout/PageHeader.vue'
+import AccountHero from '@/components/layout/AccountHero.vue'
 import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
-import BaseBadge from '@/components/ui/BaseBadge.vue'
+import MethodBadge from '@/components/ui/MethodBadge.vue'
 import TierProgressBar from '@/components/achievements/TierProgressBar.vue'
 import StreakRing from '@/components/achievements/StreakRing.vue'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
@@ -151,6 +157,31 @@ const traderStatusLabel = computed(() => {
   const map: Record<string, string> = { enabled: 'Включён', disabled: 'Выключен', blocked: 'Заблокирован' }
   return trader.value ? map[trader.value.status] ?? trader.value.status : '—'
 })
+
+const configuredMethods = computed(() => Object.keys(trader.value?.methods_config || {}).length)
+
+const heroMetrics = computed(() => [
+  {
+    label: 'Активные ордера',
+    value: activeOrders.value.length,
+    caption: activeOrders.value.length ? 'Требуют внимания' : 'Очередь свободна',
+  },
+  {
+    label: 'Вход',
+    value: trader.value?.is_payin_active ? 'Активен' : 'Пауза',
+    caption: trader.value?.is_payin_active ? 'Прием доступен' : 'Прием выключен',
+  },
+  {
+    label: 'Выход',
+    value: trader.value?.is_payout_active ? 'Активен' : 'Пауза',
+    caption: trader.value?.is_payout_active ? 'Выплаты доступны' : 'Выплаты выключены',
+  },
+  {
+    label: 'Методы',
+    value: configuredMethods.value,
+    caption: traderStatusLabel.value,
+  },
+])
 
 const orderColumns: Column[] = [
   { key: 'uuid', label: 'UUID' },

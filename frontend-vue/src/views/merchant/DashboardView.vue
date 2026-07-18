@@ -1,6 +1,12 @@
 <template>
   <div>
-    <PageHeader title="Панель">
+    <AccountHero
+      role="merchant"
+      eyebrow="Кабинет мерчанта"
+      title="Платежный контур под контролем"
+      subtitle="Сводка по терминалам, балансу, конверсии и последним операциям в одном защищенном рабочем пространстве."
+      :metrics="heroMetrics"
+    >
       <template #actions>
         <div class="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto sm:items-center sm:gap-2">
           <BaseDatePicker
@@ -19,7 +25,7 @@
           />
         </div>
       </template>
-    </PageHeader>
+    </AccountHero>
 
     <div v-if="loadingProfile" class="py-16"><LoadingSpinner /></div>
 
@@ -63,16 +69,16 @@
           <div v-if="!methodRows.length" class="py-4 text-center text-sm text-text-muted">
             Нет доступных методов
           </div>
-          <div v-else class="space-y-2">
+          <div v-else class="grid gap-3">
             <div
               v-for="pm in methodRows"
               :key="pm.method"
-              class="flex items-center justify-between rounded-lg bg-bg-card px-3 py-2"
+              class="flex min-h-[64px] items-center justify-between rounded-2xl border border-accent/10 bg-bg-main/45 px-4 py-3 shadow-[inset_0_1px_0_rgba(245,245,245,0.035)]"
             >
               <div class="flex items-center gap-2">
                 <MethodBadge :method="pm.method" />
               </div>
-              <span class="text-sm font-bold text-text-secondary">{{ pm.fee_percentage }}%</span>
+              <span class="rounded-full border border-accent/20 bg-accent-dark/10 px-3 py-1 text-sm font-black text-accent">{{ pm.fee_percentage }}%</span>
             </div>
           </div>
         </BaseCard>
@@ -117,7 +123,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import PageHeader from '@/components/layout/PageHeader.vue'
+import AccountHero from '@/components/layout/AccountHero.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import BaseDatePicker from '@/components/ui/BaseDatePicker.vue'
@@ -180,6 +186,29 @@ const statusLabel = computed(() => {
     ? merchantStatusLabels[profile.value.status] ?? profile.value.status
     : '—'
 })
+
+const heroMetrics = computed(() => [
+  {
+    label: 'Рабочий баланс',
+    value: `${formatAmount(totalWorkUsdt.value)} USDT`,
+    caption: terminalCount.value > 0 ? `${terminalCount.value} ${pluralize(terminalCount.value, ['терминал', 'терминала', 'терминалов'])}` : 'Терминалы не найдены',
+  },
+  {
+    label: 'Конверсия',
+    value: `${Math.round(stats.value.conversion_pct)}%`,
+    caption: `${stats.value.orders_success} успешных ордеров`,
+  },
+  {
+    label: 'Активные ордера',
+    value: stats.value.orders_active,
+    caption: stats.value.active_disputes ? `${stats.value.active_disputes} спорных операций` : 'Споров нет',
+  },
+  {
+    label: 'Статус контура',
+    value: statusLabel.value,
+    caption: profile.value?.currency ? `Расчеты в ${profile.value.currency}` : 'Профиль загружается',
+  },
+])
 
 const methodRows = computed(() => {
   const p = profile.value

@@ -27,6 +27,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { CreditCard, Smartphone } from 'lucide-vue-next'
+import { publicAsset } from '@/utils/assets'
 
 const props = withDefaults(defineProps<{
   method?: string | null
@@ -51,7 +52,7 @@ const normalized = computed(() => (props.method ?? '').toString().toLowerCase())
 const label = computed(() => normalized.value.toUpperCase())
 
 const iconSrc = computed<string | null>(() => {
-  if (normalized.value === 'sbp') return '/banks/sbp.svg'
+  if (normalized.value === 'sbp') return publicAsset('banks/sbp.svg')
   return null
 })
 

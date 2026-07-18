@@ -46,9 +46,12 @@
   }
 
   .dashboard-card {
-    @apply rounded-[1.15rem] border p-3 shadow-prime;
+    @apply min-h-[118px] rounded-[1.25rem] border p-4 shadow-prime;
     border-color: rgba(214, 163, 143, 0.16);
-    background: linear-gradient(90deg, rgba(44, 13, 24, 0.94) 0%, rgba(23, 23, 23, 0.94) 100%);
+    background:
+      linear-gradient(135deg, rgba(139, 21, 56, 0.22), rgba(214, 163, 143, 0.04)),
+      rgba(23, 23, 23, 0.78);
+    box-shadow: 0 18px 54px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(245, 245, 245, 0.035);
   }
 
   .dashboard-panel {
@@ -69,6 +72,16 @@
   .admin-shell {
     max-width: 1450px;
     margin: 0 auto;
+  }
+
+  .account-branded-shell .card,
+  .account-branded-shell .dashboard-panel {
+    border-color: rgba(214, 163, 143, 0.16);
+    background:
+      linear-gradient(180deg, rgba(23, 23, 23, 0.82), rgba(29, 26, 26, 0.74)),
+      rgba(13, 13, 13, 0.64);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(245, 245, 245, 0.035);
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */

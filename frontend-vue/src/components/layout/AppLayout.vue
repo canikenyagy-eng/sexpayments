@@ -1,5 +1,9 @@
 <template>
-  <div v-if="showAppLayout" class="min-h-screen bg-bg-main">
+  <div v-if="showAppLayout" :class="['min-h-screen bg-bg-main text-text-main', shellClass]">
+    <div
+      v-if="authStore.userRole !== 'admin'"
+      class="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_22%_4%,rgba(139,21,56,0.18),transparent_34rem),radial-gradient(circle_at_92%_10%,rgba(214,163,143,0.08),transparent_28rem),linear-gradient(180deg,#0D0D0D_0%,#121010_44%,#0D0D0D_100%)]"
+    />
     <TheSidebar
       :open="sidebarOpen"
       :role="authStore.userRole"
@@ -11,7 +15,7 @@
     />
 
     <!-- Mobile topbar -->
-    <div class="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-border bg-bg-main/95 px-4 backdrop-blur-md lg:hidden">
+    <div class="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-accent/15 bg-bg-main/85 px-4 shadow-[0_12px_40px_rgba(0,0,0,0.25)] backdrop-blur-xl lg:hidden">
       <div class="flex items-center">
         <button
           type="button"
@@ -30,7 +34,7 @@
     </div>
 
     <!-- Main content -->
-    <main class="lg:ml-64">
+    <main class="relative z-10 lg:ml-64">
       <div class="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
         <router-view />
       </div>
@@ -67,6 +71,10 @@ const sidebarOpen = ref(false)
 // to avoid flicker of the login page rendered inside the shrunken main area.
 const showAppLayout = computed(
   () => authStore.isAuthenticated && !route.meta.guestOnly,
+)
+
+const shellClass = computed(() =>
+  authStore.userRole === 'admin' ? '' : 'account-branded-shell',
 )
 
 function handleLogout() {
