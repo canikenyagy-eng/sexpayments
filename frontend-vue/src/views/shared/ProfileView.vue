@@ -132,7 +132,7 @@ const authStore = useAuthStore()
 const user = computed(() => authStore.user)
 
 const roleLabelMap: Record<string, string> = {
-  admin: 'Администратор', merchant: 'Мерчант', trader: 'Трейдер', teamlead: 'Тимлид',
+  admin: 'Администратор', support: 'Саппорт', merchant: 'Мерчант', trader: 'Трейдер', teamlead: 'Тимлид',
 }
 const roleLabel = computed(() => roleLabelMap[user.value?.role ?? ''] ?? '')
 

@@ -51,5 +51,7 @@ class RoleChecker:
 
 # Convenience dependencies
 require_admin = RoleChecker([UserRole.ADMIN])
+require_support = RoleChecker([UserRole.SUPPORT])
 require_merchant = RoleChecker([UserRole.MERCHANT])
 require_trader = RoleChecker([UserRole.TRADER])
+require_admin_or_support = RoleChecker([UserRole.ADMIN, UserRole.SUPPORT])

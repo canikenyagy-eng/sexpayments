@@ -10,6 +10,7 @@ import {
   demoMerchants,
   demoOrders,
   demoPrimeTime,
+  demoReceiptModerations,
   demoStats,
   demoTeamleadBalances,
   demoTeamleadLinks,
@@ -101,6 +102,9 @@ export const demoAdapter: AxiosAdapter = async (config) => {
   if (path === '/api/v1/stats/admin') return response(config, demoStats)
   if (path === '/api/v1/stats/admin/timeseries') return response(config, demoTimeseries)
   if (path === '/api/v1/stats/me/active') return response(config, demoActiveStats)
+  if (path === '/api/v1/receipt-moderations') {
+    return response(config, { items: demoReceiptModerations, total: demoReceiptModerations.length, skip: 0, limit: 100 })
+  }
   if (path === '/api/v1/orders/') {
     return response(config, { items: demoOrders, total: demoOrders.length })
   }

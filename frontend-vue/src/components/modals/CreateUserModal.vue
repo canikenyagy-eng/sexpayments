@@ -6,10 +6,11 @@
       <div class="space-y-1.5">
         <label for="cu-role" class="block text-sm font-semibold text-text-secondary">Роль</label>
         <select id="cu-role" v-model="form.role" class="input-field" required>
-          <option value="admin">Admin</option>
-          <option value="merchant">Merchant</option>
-          <option value="trader">Trader</option>
-          <option value="teamlead">Teamlead</option>
+          <option value="admin">Админ</option>
+          <option value="support">Саппорт</option>
+          <option value="merchant">Мерчант</option>
+          <option value="trader">Трейдер</option>
+          <option value="teamlead">Тимлид</option>
         </select>
       </div>
 

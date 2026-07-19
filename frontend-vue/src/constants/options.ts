@@ -193,6 +193,7 @@ export const withdrawalStatusOptionsWithAll: Option[] = [ALL, ...withdrawalStatu
 // ─── User roles ─────────────────────────────────────────────
 export const userRoleLabels: Record<UserRole, string> = {
   admin: 'Админ',
+  support: 'Саппорт',
   merchant: 'Мерчант',
   trader: 'Трейдер',
   teamlead: 'Тимлид',

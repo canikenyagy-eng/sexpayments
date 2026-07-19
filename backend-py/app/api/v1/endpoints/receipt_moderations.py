@@ -1,14 +1,14 @@
-"""Admin endpoints for the receipt-premoderation history.
+"""Web endpoints for the receipt-premoderation history.
 
 Two endpoints:
   * GET /api/v1/receipt-moderations
       Filterable list (pending / by-decision / per-merchant / by-date)
-      with pagination. Used by the "История модерации чеков" admin page.
+      with pagination. Used by the receipt moderation pages.
   * GET /api/v1/receipt-moderations/order/{order_id}
       All moderation rows for one order — used on the admin order detail
       page to render a per-cycle history.
 
-Both endpoints require admin. They do NOT include the receipt file blob —
+Endpoints require admin or support. They do NOT include the receipt file blob —
 the existing `/api/v1/orders/{id}/receipt` route serves that and bakes
 the right auth/range handling.
 """
@@ -24,7 +24,7 @@ from app.common.enums.receipt_moderations import ModerationDecision
 from app.core.exceptions import NotFoundException
 from app.modules.orders.models import Order
 from app.modules.orders.repository import OrderRepository
-from app.modules.receipts.permissions import require_admin
+from app.modules.receipts.permissions import require_admin_or_support
 from app.modules.receipts.schemas.admin import (
     AdminModerationDecisionRequest,
     AdminReceiptModerationItem,
@@ -84,8 +84,8 @@ def _item_from_row(
 @router.get(
     "",
     response_model=AdminReceiptModerationListResponse,
-    dependencies=[Depends(require_admin)],
-    summary="List receipt-moderation rows (admin)",
+    dependencies=[Depends(require_admin_or_support)],
+    summary="List receipt-moderation rows (admin/support)",
 )
 async def list_moderations(
     decision: Optional[ModerationDecision] = Query(default=None),
@@ -120,8 +120,8 @@ async def list_moderations(
 @router.get(
     "/order/{order_id}",
     response_model=list[AdminReceiptModerationItem],
-    dependencies=[Depends(require_admin)],
-    summary="Moderation history for one order (admin)",
+    dependencies=[Depends(require_admin_or_support)],
+    summary="Moderation history for one order (admin/support)",
 )
 async def list_moderations_for_order(
     order_id: int,
@@ -142,12 +142,12 @@ async def list_moderations_for_order(
 @router.post(
     "/{order_id}/decide",
     response_model=AdminReceiptModerationItem,
-    summary="Apply a moderation decision from the admin web UI",
+    summary="Apply a moderation decision from the web UI",
 )
 async def decide_moderation(
     order_id: int,
     payload: AdminModerationDecisionRequest,
-    current_user: User = Depends(require_admin),
+    current_user: User = Depends(require_admin_or_support),
     moderation_service: ReceiptModerationService = Depends(
         get_service(ReceiptModerationService)
     ),
@@ -155,7 +155,7 @@ async def decide_moderation(
     """Accept / Request-PDF / Request-Video on an order's pending check — the web
     equivalent of the support-bot inline buttons. Runs the SAME shared coordinator
     (first-wins decision + side effects), so a duplicate / racing click returns
-    HTTP 400 conflict (``ModerationAlreadyDecidedError``). The acting admin's
+    HTTP 400 conflict (``ModerationAlreadyDecidedError``). The acting user's
     login is recorded as the moderator (no Telegram id)."""
     session = moderation_service.session
     order = await OrderRepository(session).get(order_id)

@@ -7,7 +7,7 @@ import type {
 } from '@/types'
 
 /**
- * Admin-side calls for /api/v1/receipt-moderations.
+ * Web moderation calls for /api/v1/receipt-moderations.
  *
  * Browse the history + per-order details, and apply a decision (Accept /
  * Request-PDF / Request-Video) on a pending check — the web equivalent of the

@@ -12,6 +12,7 @@ declare module 'vue-router' {
 
 const roleHome: Record<string, string> = {
   admin: '/admin',
+  support: '/support',
   merchant: '/merchant',
   trader: '/trader',
   teamlead: '/teamlead',
@@ -209,6 +210,20 @@ const router = createRouter({
       name: 'admin-doliv',
       component: () => import('@/views/admin/DolivView.vue'),
       meta: { requiresAuth: true, roles: ['admin'] },
+    },
+
+    // ── Support ──────────────────────────────────────
+    {
+      path: '/support',
+      name: 'support-dashboard',
+      component: () => import('@/views/support/DashboardView.vue'),
+      meta: { requiresAuth: true, roles: ['support'] },
+    },
+    {
+      path: '/support/receipt-moderations',
+      name: 'support-receipt-moderations',
+      component: () => import('@/views/support/ReceiptModerationsView.vue'),
+      meta: { requiresAuth: true, roles: ['support'] },
     },
 
     // ── Trader ───────────────────────────────────────

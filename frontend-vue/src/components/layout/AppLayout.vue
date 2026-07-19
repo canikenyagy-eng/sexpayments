@@ -28,7 +28,7 @@
           Sex<span class="text-accent">Payments</span>
         </div>
       </div>
-      <div v-if="authStore.userRole !== 'admin'" class="w-48">
+      <div v-if="showBalanceWidget" class="w-48">
         <UserBalanceWidget />
       </div>
     </div>
@@ -77,6 +77,11 @@ const shellClass = computed(() =>
   authStore.userRole === 'admin' ? '' : 'account-branded-shell',
 )
 
+const balanceRoles = new Set(['merchant', 'trader', 'teamlead'])
+const showBalanceWidget = computed(() =>
+  balanceRoles.has(authStore.userRole ?? ''),
+)
+
 function handleLogout() {
   sidebarOpen.value = false
   authStore.logout()
@@ -88,6 +93,7 @@ async function handleStopImpersonating() {
   await authStore.stopImpersonating()
   const homeMap: Record<string, string> = {
     admin: '/admin',
+    support: '/support',
     merchant: '/merchant',
     trader: '/trader',
     teamlead: '/teamlead',

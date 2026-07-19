@@ -6,7 +6,7 @@
       <BaseFilter :active-count="activeFilterCount" @apply="page = 1; load()" @reset="resetFilters">
         <BaseSelect v-model="filters.decision" label="Решение" :options="decisionOptions" />
         <BaseSelect v-model="filters.pending_only" label="Только ожидающие" :options="boolOptions" />
-        <BaseInput v-model="filters.merchant_id" label="Merchant ID" placeholder="42" />
+        <BaseInput v-model="filters.merchant_id" label="ID мерчанта" placeholder="42" />
       </BaseFilter>
     </div>
 
@@ -22,7 +22,7 @@
       @per-page-change="n => { perPage = n; page = 1; load() }"
     >
       <template #cell-order_external_id="{ value }">
-        <UuidDisplay :value="value as string" success-message="External ID скопирован" />
+        <UuidDisplay :value="value as string" success-message="Внешний ID скопирован" />
       </template>
 
       <template #cell-order_uuid="{ value }">
@@ -211,8 +211,8 @@ const totalPages = computed(() => Math.max(1, Math.ceil(total.value / perPage.va
 
 const columns: Column[] = [
   { key: 'id', label: 'ID' },
-  { key: 'order_external_id', label: 'External ID' },
-  { key: 'order_uuid', label: 'Order UUID' },
+  { key: 'order_external_id', label: 'Внешний ID' },
+  { key: 'order_uuid', label: 'UUID заявки' },
   { key: 'merchant', label: 'Мерчант' },
   { key: 'trader', label: 'Трейдер' },
   { key: 'moderation_status', label: 'Статус' },
@@ -314,7 +314,7 @@ async function decide(row: ReceiptModerationItem, decision: ModerationDecision) 
   const ok = await askConfirm({
     title: label,
     message: `Заявка ${row.order_external_id || row.order_uuid}: «${label}»? `
-      + 'Действие повторяет кнопку в support-боте.',
+      + 'Действие повторяет кнопку в саппорт-боте.',
     confirmText: label,
     cancelText: 'Отмена',
     variant: decision === 'accept' ? 'success' : 'gold',

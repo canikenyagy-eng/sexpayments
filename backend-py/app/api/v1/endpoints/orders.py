@@ -218,7 +218,7 @@ async def get_order_debug(
     "/{order_id}/receipt",
     summary="Download order receipt",
     description=(
-        "Admin: any order. "
+        "Admin/support: any order. "
         "Trader: only orders assigned to them. "
         "Merchant: not via this endpoint — use /api/merchant/v1/orders/{id}/receipt."
     ),
@@ -231,7 +231,7 @@ async def download_receipt(
 ):
     service = OrderService(session)
 
-    if current_user.role == UserRole.ADMIN:
+    if current_user.role in (UserRole.ADMIN, UserRole.SUPPORT):
         order = await service.get_order_by_uuid(order_id)
     elif current_user.role == UserRole.TRADER:
         order = await service.get_trader_order_by_uuid(order_id, current_user.id)
@@ -268,8 +268,8 @@ async def _resolve_order_for_receipts(
     service: OrderService, order_id: str, current_user: User
 ):
     """Resolve the order for a receipt read + whether to apply the trader
-    visibility gate. Admin → all receipts; trader → own order, visible only."""
-    if current_user.role == UserRole.ADMIN:
+    visibility gate. Admin/support → all receipts; trader → own order, visible only."""
+    if current_user.role in (UserRole.ADMIN, UserRole.SUPPORT):
         return await service.get_order_by_uuid(order_id), False
     if current_user.role == UserRole.TRADER:
         return await service.get_trader_order_by_uuid(order_id, current_user.id), True
@@ -280,7 +280,7 @@ async def _resolve_order_for_receipts(
     "/{order_id}/receipts",
     response_model=List[ReceiptItem],
     summary="List all receipts for an order",
-    description="Trader sees only premoderation-approved receipts; admin sees all.",
+    description="Trader sees only premoderation-approved receipts; admin/support sees all.",
 )
 async def list_order_receipts(
     order_id: str,

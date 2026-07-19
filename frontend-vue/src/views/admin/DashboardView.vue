@@ -230,6 +230,7 @@ function roleLabel(role?: string): string {
   if (role === 'trader') return 'Трейдер'
   if (role === 'teamlead') return 'Тимлид'
   if (role === 'admin') return 'Администратор'
+  if (role === 'support') return 'Саппорт'
   return role || '—'
 }
 

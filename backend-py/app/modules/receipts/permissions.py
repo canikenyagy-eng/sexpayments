@@ -7,6 +7,6 @@ future fine-grained checks. The bot-to-backend endpoint uses
 ``X-Bot-Secret`` instead of a JWT — see ``app/api/bot/v1/endpoints/support.py``.
 """
 
-# Admin-only endpoints in this domain import the guard from here so any future
-# swap is a single-file change.
-from app.modules.users.permissions import require_admin  # noqa: F401
+# Moderation endpoints import guards from here so future fine-grained support
+# policies stay local to the receipts module.
+from app.modules.users.permissions import require_admin, require_admin_or_support  # noqa: F401

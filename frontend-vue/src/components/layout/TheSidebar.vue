@@ -18,7 +18,7 @@
 
     <!-- Navigation -->
     <nav class="flex-1 overflow-y-auto px-3 py-4">
-      <div v-if="role !== 'admin'" class="mb-1">
+      <div v-if="showBalanceWidget" class="mb-1">
         <UserBalanceWidget />
         <div class="my-2 mx-2 border-t border-border/50"></div>
       </div>
@@ -222,6 +222,7 @@ function handleLogout() {
 const roleLabel = computed(() => {
   const map: Record<string, string> = {
     admin: 'Администратор',
+    support: 'Саппорт',
     merchant: 'Мерчант',
     trader: 'Трейдер',
     teamlead: 'Тимлид',
@@ -230,6 +231,11 @@ const roleLabel = computed(() => {
 })
 
 const userInitial = computed(() => props.username?.charAt(0).toUpperCase() ?? '?')
+
+const balanceRoles = new Set<UserRole>(['merchant', 'trader', 'teamlead'])
+const showBalanceWidget = computed(() =>
+  props.role ? balanceRoles.has(props.role) : false,
+)
 
 const navGroups = computed<NavGroup[]>(() => {
   if (props.role === 'admin') {
@@ -323,6 +329,21 @@ const navGroups = computed<NavGroup[]>(() => {
     ]
   }
 
+  if (props.role === 'support') {
+    return [
+      {
+        title: 'Обзор',
+        items: [{ icon: LayoutDashboard, label: 'Панель', to: '/support' }],
+      },
+      {
+        title: 'Модерация',
+        items: [
+          { icon: ShieldCheck, label: 'Чеки', to: '/support/receipt-moderations' },
+        ],
+      },
+    ]
+  }
+
   if (props.role === 'teamlead') {
     return [
       {
@@ -368,7 +389,7 @@ const navGroups = computed<NavGroup[]>(() => {
 })
 
 function isActive(path: string): boolean {
-  if (path === '/admin' || path === '/trader' || path === '/teamlead' || path === '/merchant') {
+  if (path === '/admin' || path === '/support' || path === '/trader' || path === '/teamlead' || path === '/merchant') {
     return route.path === path
   }
   return route.path.startsWith(path)
@@ -405,7 +426,7 @@ function formatBadge(value: number): string {
 let pollTimer: ReturnType<typeof setInterval> | null = null
 
 async function fetchActiveStats() {
-  if (!props.role) return
+  if (!props.role || props.role === 'support') return
   try {
     const { data } = await statsService.getActiveStats()
     activeStats.value = data

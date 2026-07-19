@@ -171,6 +171,47 @@ export const demoMerchantOrders = demoOrders.map(order => ({
   updated_at: order.created_at,
 }))
 
+export const demoReceiptModerations = [
+  {
+    id: 9001,
+    order_id: 7299,
+    order_uuid: 'sp-demo-7299',
+    order_external_id: 'checkout-7299',
+    merchant_id: 101,
+    merchant_name: 'Закрытая медиа-группа',
+    trader_id: 3,
+    trader_username: 'трейдер_север',
+    moderation_status: 'pending',
+    has_receipt: true,
+    chat_id: null,
+    message_id: null,
+    decision: null,
+    moderator_tg_id: null,
+    moderator_username: null,
+    created_at: new Date(now - 11 * 60 * 1000).toISOString(),
+    decided_at: null,
+  },
+  {
+    id: 9000,
+    order_id: 7301,
+    order_uuid: 'sp-demo-7301',
+    order_external_id: 'checkout-7301',
+    merchant_id: 101,
+    merchant_name: 'Закрытая медиа-группа',
+    trader_id: 3,
+    trader_username: 'трейдер_север',
+    moderation_status: 'approved',
+    has_receipt: true,
+    chat_id: null,
+    message_id: null,
+    decision: 'accept',
+    moderator_tg_id: null,
+    moderator_username: 'саппорт_оператор',
+    created_at: new Date(now - 45 * 60 * 1000).toISOString(),
+    decided_at: new Date(now - 43 * 60 * 1000).toISOString(),
+  },
+]
+
 export const demoWithdrawals = [
   {
     id: 501,

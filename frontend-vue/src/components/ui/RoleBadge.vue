@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ShieldCheck, Store, TrendingUp, Users } from 'lucide-vue-next'
+import { Headset, ShieldCheck, Store, TrendingUp, Users } from 'lucide-vue-next'
 import type { UserRole } from '@/types'
 
 const props = withDefaults(
@@ -43,6 +43,12 @@ const config = computed(() => {
         label: 'Админ',
         icon: ShieldCheck,
         cls: 'bg-status-danger/15 text-status-danger',
+      }
+    case 'support':
+      return {
+        label: 'Саппорт',
+        icon: Headset,
+        cls: 'bg-accent/15 text-accent',
       }
     case 'merchant':
       return {

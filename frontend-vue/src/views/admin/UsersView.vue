@@ -14,6 +14,7 @@
         :options="[
           { value: '', label: 'Все' },
           { value: 'admin', label: 'Админ' },
+          { value: 'support', label: 'Саппорт' },
           { value: 'merchant', label: 'Мерчант' },
           { value: 'trader', label: 'Трейдер' },
           { value: 'teamlead', label: 'Тимлид' },

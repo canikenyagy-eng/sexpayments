@@ -35,6 +35,26 @@ export const demoAccounts: DemoAccount[] = [
     },
   },
   {
+    label: 'Саппорт',
+    username: 'support',
+    password: 'DemoSupport2026!',
+    user: {
+      id: 5,
+      username: 'саппорт_оператор',
+      role: 'support',
+      totp_enabled: false,
+      is_blocked: false,
+      use_shared_balance: false,
+      timezone: 'Europe/Moscow',
+      created_at: '2026-07-17T10:00:00Z',
+      balance_usdt: 0,
+    },
+    tokens: {
+      access: 'demo-support-access-token',
+      refresh: 'demo-support-refresh-token',
+    },
+  },
+  {
     label: 'Мерчант',
     username: 'merchant',
     password: 'DemoMerchant2026!',

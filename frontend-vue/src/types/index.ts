@@ -9,7 +9,7 @@ export interface Paginated<T> {
 
 // ─── Enums ───────────────────────────────────────────────
 
-export type UserRole = 'admin' | 'merchant' | 'trader' | 'teamlead'
+export type UserRole = 'admin' | 'support' | 'merchant' | 'trader' | 'teamlead'
 
 export type OrderStatus =
   | 'created'

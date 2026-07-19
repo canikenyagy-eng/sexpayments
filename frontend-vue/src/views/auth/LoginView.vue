@@ -115,6 +115,7 @@ function fillDemoCredentials(account: DemoAccount) {
 
 const roleHome: Record<string, string> = {
   admin: '/admin',
+  support: '/support',
   merchant: '/merchant',
   trader: '/trader',
   teamlead: '/teamlead',
