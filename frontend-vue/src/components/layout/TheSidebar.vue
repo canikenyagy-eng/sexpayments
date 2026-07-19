@@ -1,15 +1,20 @@
 <template>
   <aside
     :class="[
-      'fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-border bg-bg-surface transition-transform duration-300 lg:translate-x-0',
+      'fixed inset-y-0 left-0 z-40 flex w-[232px] flex-col border-r border-border bg-[#111111] shadow-[18px_0_80px_rgba(0,0,0,0.28)] transition-transform duration-300 lg:translate-x-0',
       open ? 'translate-x-0' : '-translate-x-full',
     ]"
   >
     <!-- Logo -->
-    <div class="flex h-16 items-center gap-3 border-b border-border px-5">
-      <img :src="publicAsset('logos/logo.svg')" alt="Логотип SexPayments" class="h-9 w-9" />
-      <div class="text-xl font-black leading-none text-text-main">
-        Sex<span class="text-accent">Payments</span>
+    <div class="flex h-16 items-center gap-3 border-b border-border/80 px-4">
+      <img :src="publicAsset('logos/logo.svg')" alt="Логотип SexPayments" class="h-10 w-10" />
+      <div class="min-w-0">
+        <div class="truncate text-base font-black leading-none text-text-main">
+          Sex<span class="text-accent">Payments</span>
+        </div>
+        <div class="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-text-muted">
+          Закрытая сеть
+        </div>
       </div>
     </div>
 
@@ -17,50 +22,61 @@
     <PrimeTimeBanner class="mx-3 mt-3" />
 
     <!-- Navigation -->
-    <nav class="flex-1 overflow-y-auto px-3 py-4">
-      <div v-if="showBalanceWidget" class="mb-1">
-        <UserBalanceWidget />
-        <div class="my-2 mx-2 border-t border-border/50"></div>
+    <nav class="flex-1 overflow-y-auto px-2.5 py-3">
+      <div v-if="showBalanceWidget" class="mb-3">
+        <UserBalanceWidget compact />
       </div>
 
-      <div v-for="(group, index) in navGroups" :key="index" class="mb-1">
+      <div v-for="(group, index) in navGroups" :key="index" class="mb-3">
+        <div
+          class="px-2.5 pb-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-text-muted/75"
+          :class="index === 0 ? 'pt-1' : 'border-t border-border/50 pt-3'"
+        >
+          {{ group.title }}
+        </div>
         <router-link
           v-for="item in group.items"
           :key="item.to"
           :to="item.to"
-          class="mb-0.5 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-text-secondary no-underline transition-colors hover:bg-bg-hover hover:text-text-main"
-          :class="{ '!bg-accent/10 !text-accent': isActive(item.to) }"
+          class="relative mb-0.5 flex min-h-[38px] items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-bold text-text-secondary no-underline transition-colors hover:bg-bg-hover/60 hover:text-text-main"
+          :class="{ '!bg-accent-dark/10 !text-text-main': isActive(item.to) }"
           @click="$emit('navigate')"
         >
-          <component :is="item.icon" class="h-5 w-5 shrink-0" />
+          <span
+            v-if="isActive(item.to)"
+            class="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-accent"
+          />
+          <span
+            class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors"
+            :class="isActive(item.to) ? 'bg-accent/15 text-accent' : 'text-text-muted'"
+          >
+            <component :is="item.icon" class="h-4 w-4" />
+          </span>
           <span class="flex-1 truncate">{{ item.label }}</span>
           <span
             v-if="shouldShowBadge(item)"
-            class="ml-auto inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[11px] font-black leading-none"
+            class="ml-auto inline-flex h-5 min-w-[24px] items-center justify-center rounded-md border px-1.5 text-[10px] font-black leading-none"
             :class="[
               getBadge(item) > 0
-                ? 'bg-accent/15 text-accent'
-                : 'bg-status-warning/15 text-status-warning',
+                ? 'border-accent/20 bg-accent/10 text-accent'
+                : 'border-status-warning/20 bg-status-warning/10 text-status-warning',
               isActive(item.to) && getBadge(item) > 0
-                ? '!bg-accent !text-[#110c09]'
+                ? '!border-accent/35 !bg-accent/20 !text-accent'
                 : '',
             ]"
           >
             {{ formatBadge(getBadge(item)) }}
           </span>
         </router-link>
-        
-        <!-- Divider between groups -->
-        <div v-if="index !== navGroups.length - 1" class="my-2 border-t border-border/50 mx-2"></div>
       </div>
     </nav>
 
     <!-- User block -->
-    <div class="border-t border-border p-3">
+    <div class="border-t border-border/80 p-2.5">
       <button
         v-if="isImpersonating"
         type="button"
-        class="mb-3 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-bold text-status-warning transition hover:bg-status-warning/10"
+        class="mb-2 flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-bold text-status-warning transition hover:bg-status-warning/10"
         @click="$emit('stopImpersonating')"
       >
         <Undo2 class="h-4 w-4 shrink-0" />
@@ -70,14 +86,14 @@
       <div class="relative" ref="profileDropdownRef">
         <button
           type="button"
-          class="flex w-full items-center gap-3 rounded-xl p-2 transition hover:bg-bg-hover"
+          class="flex w-full items-center gap-2.5 rounded-lg p-2 transition hover:bg-bg-hover/70"
           @click="isDropdownOpen = !isDropdownOpen"
         >
-          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/15 text-xs font-black text-accent">
+          <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-accent/15 text-xs font-black text-accent">
             {{ userInitial }}
           </div>
           <div class="min-w-0 flex-1 text-left">
-            <p class="truncate text-sm font-bold text-text-main">{{ username }}</p>
+            <p class="truncate text-xs font-black text-text-main">{{ username }}</p>
             <p class="text-xs text-text-muted">{{ roleLabel }}</p>
           </div>
           <ChevronUp v-if="isDropdownOpen" class="h-4 w-4 shrink-0 text-text-muted" />
@@ -320,9 +336,19 @@ const navGroups = computed<NavGroup[]>(() => {
             to: '/trader/requisites',
             badge: 'requisites_traffic_active',
           },
+        ],
+      },
+      {
+        title: 'Деньги',
+        items: [
           { icon: Wallet, label: 'Финансы', to: '/trader/finances' },
           { icon: ArrowLeftRight, label: 'Выплаты', to: '/trader/payouts' },
           { icon: Droplet, label: 'Доливы', to: '/trader/doliv' },
+        ],
+      },
+      {
+        title: 'Контроль',
+        items: [
           { icon: AlertTriangle, label: 'Споры', to: '/trader/disputes', badge: 'active_disputes' },
         ],
       },

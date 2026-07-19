@@ -34,7 +34,7 @@
     </div>
 
     <!-- Main content -->
-    <main class="relative z-10 lg:ml-64">
+    <main class="relative z-10 lg:ml-[232px]">
       <div class="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
         <router-view />
       </div>

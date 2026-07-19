@@ -1,23 +1,35 @@
 <template>
   <div class="relative" ref="widgetRef">
-    <!-- Trigger — sidebar (full-width card) vs topbar (compact pill) -->
     <button
       type="button"
       :class="[
         'flex items-center gap-3 transition-colors',
-        'w-full rounded-xl px-3 py-2.5 text-left hover:bg-bg-hover',
-        isOpen ? 'bg-bg-hover' : '',
+        compact
+          ? 'w-full rounded-lg border border-border/70 bg-bg-main/35 px-2.5 py-2 text-left hover:border-accent/25 hover:bg-bg-hover/45'
+          : 'w-full rounded-xl px-3 py-2.5 text-left hover:bg-bg-hover',
+        isOpen ? (compact ? 'border-accent/25 bg-bg-hover/50' : 'bg-bg-hover') : '',
       ]"
       @click="toggle"
     >
-      <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/15">
-        <Wallet class="h-4 w-4 text-accent" />
+      <div
+        class="flex shrink-0 items-center justify-center bg-accent/15"
+        :class="compact ? 'h-7 w-7 rounded-md' : 'h-8 w-8 rounded-lg'"
+      >
+        <Wallet :class="compact ? 'h-3.5 w-3.5 text-accent' : 'h-4 w-4 text-accent'" />
       </div>
       <div class="min-w-0 flex-1">
-        <p class="truncate text-sm font-bold text-text-main leading-none">
+        <p
+          class="truncate font-bold text-text-main leading-none"
+          :class="compact ? 'text-xs' : 'text-sm'"
+        >
           {{ formatAmount(workBalanceUsdt) }} USDT
         </p>
-        <p class="text-xs text-text-muted leading-none mt-0.5">Рабочий баланс</p>
+        <p
+          class="text-text-muted leading-none mt-0.5"
+          :class="compact ? 'text-[11px]' : 'text-xs'"
+        >
+          Рабочий баланс
+        </p>
       </div>
       <ChevronDown
         class="h-4 w-4 shrink-0 text-text-muted transition-transform duration-200"
@@ -81,6 +93,11 @@ import { formatAmount } from '@/utils/format'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import { useToast } from '@/composables/useToast'
 import { useAuthStore } from '@/stores/auth'
+
+const props = withDefaults(defineProps<{ compact?: boolean }>(), {
+  compact: false,
+})
+const compact = computed(() => props.compact)
 
 const toast = useToast()
 const router = useRouter()

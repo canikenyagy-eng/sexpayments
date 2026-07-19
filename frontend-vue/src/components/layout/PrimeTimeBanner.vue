@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="show"
-    class="flex items-center justify-center gap-1.5 whitespace-nowrap rounded-xl border border-accent/30 bg-accent/15 px-3 py-2 text-xs font-bold text-accent"
+    class="flex items-center justify-start gap-1.5 whitespace-nowrap rounded-lg border border-accent/20 bg-bg-main/35 px-2.5 py-1.5 text-[11px] font-black text-accent"
   >
     <Zap class="h-3.5 w-3.5 shrink-0" />
     <span>Праймтайм +{{ pointsLabel }}%</span>
