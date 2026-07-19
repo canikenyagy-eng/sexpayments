@@ -199,7 +199,7 @@
               <h5 class="mb-1 text-sm font-bold text-accent">Трейдеры ({{ snapshot.traders_snapshot.length }})</h5>
               <div v-if="snapshot.traders_snapshot.length" class="max-h-40 overflow-y-auto rounded-lg border border-border">
                 <table class="w-full text-xs">
-                  <thead class="sticky top-0 z-10 border-b border-border bg-bg-surface text-text-muted shadow-[0_1px_0_theme(colors.border)]">
+                  <thead class="sticky top-0 z-10 border-b border-border bg-bg-surface text-text-muted shadow-[0_1px_0_#2A2A2A]">
                     <tr>
                       <th class="px-2 py-1 text-left">ID</th>
                       <th class="px-2 py-1 text-left">User ID</th>
@@ -236,7 +236,7 @@
               </h5>
               <div v-if="snapshot.candidates.length" class="max-h-40 overflow-y-auto rounded-lg border border-border">
                 <table class="w-full text-xs">
-                  <thead class="sticky top-0 z-10 border-b border-border bg-bg-surface text-text-muted shadow-[0_1px_0_theme(colors.border)]">
+                  <thead class="sticky top-0 z-10 border-b border-border bg-bg-surface text-text-muted shadow-[0_1px_0_#2A2A2A]">
                     <tr>
                       <th class="px-2 py-1 text-left">ID</th>
                       <th class="px-2 py-1 text-left">Трейдер</th>
@@ -287,7 +287,7 @@
               </div>
               <div v-else-if="cascadeAttempts.length" class="max-h-48 overflow-y-auto rounded-lg border border-border">
                 <table class="w-full text-xs">
-                  <thead class="sticky top-0 z-10 border-b border-border bg-bg-surface text-text-muted shadow-[0_1px_0_theme(colors.border)]">
+                  <thead class="sticky top-0 z-10 border-b border-border bg-bg-surface text-text-muted shadow-[0_1px_0_#2A2A2A]">
                     <tr>
                       <th class="px-2 py-1 text-left">Провайдер</th>
                       <th class="px-2 py-1 text-left">Tier</th>

@@ -1,7 +1,7 @@
 <template>
   <span
     :class="[
-      'inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-bold',
+      'inline-flex items-center rounded-lg border px-2.5 py-1 text-[11px] font-black uppercase tracking-[0.08em]',
       colorClasses,
     ]"
   >
@@ -19,11 +19,11 @@ const props = withDefaults(defineProps<{
 })
 
 const colorClasses = computed(() => ({
-  success: 'bg-status-success/15 text-status-success',
-  danger: 'bg-status-danger/15 text-status-danger',
-  warning: 'bg-status-warning/15 text-status-warning',
-  info: 'bg-status-info/15 text-status-info',
-  default: 'bg-bg-hover text-text-secondary',
-  gold: 'bg-accent/15 text-accent',
+  success: 'border-status-success/25 bg-status-success/10 text-status-success',
+  danger: 'border-status-danger/25 bg-status-danger/10 text-status-danger',
+  warning: 'border-status-warning/25 bg-status-warning/10 text-status-warning',
+  info: 'border-status-info/25 bg-status-info/10 text-status-info',
+  default: 'border-accent/15 bg-bg-hover/55 text-text-secondary',
+  gold: 'border-accent/25 bg-accent/10 text-accent',
 }[props.color]))
 </script>

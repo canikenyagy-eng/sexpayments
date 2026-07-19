@@ -1,16 +1,16 @@
 <template>
   <div class="trader-terminal space-y-6">
-    <section class="relative overflow-hidden rounded-[28px] border border-accent/20 bg-[#121010]/90 p-5 shadow-[0_30px_110px_rgba(0,0,0,0.48)] sm:p-7 lg:p-8">
+    <section class="relative overflow-hidden rounded-[1.4rem] border border-accent/20 bg-[#121010]/90 p-5 shadow-[0_30px_110px_rgba(0,0,0,0.48),inset_0_1px_0_rgba(245,245,245,0.04)] sm:p-7 lg:p-8">
       <div class="pointer-events-none absolute inset-0 terminal-grid opacity-45" />
-      <div class="pointer-events-none absolute -right-24 top-0 h-80 w-80 rounded-full bg-accent-dark/25 blur-3xl" />
-      <div class="pointer-events-none absolute bottom-0 left-10 h-48 w-48 rounded-full bg-accent/10 blur-3xl" />
+      <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/45 to-transparent" />
+      <div class="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-accent-dark/20 to-transparent" />
 
       <div class="relative grid gap-8 xl:grid-cols-[minmax(0,1fr)_420px] xl:items-stretch">
         <div class="flex min-h-[360px] flex-col justify-between">
           <div>
-            <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-bg-main/60 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-accent">
+            <div class="mb-6 inline-flex max-w-full items-center gap-2 overflow-hidden rounded-xl border border-accent/20 bg-bg-main/60 px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] text-accent sm:text-xs sm:tracking-[0.18em]">
               <Activity class="h-4 w-4" />
-              Закрытый финансовый терминал
+              <span class="min-w-0 truncate">Рабочий терминал</span>
             </div>
             <h1 class="max-w-[660px] text-[clamp(2.35rem,4.35vw,4.7rem)] font-black leading-[0.92] text-text-main">
               Операционный терминал трейдера
@@ -24,7 +24,7 @@
             <div
               v-for="metric in terminalMetrics"
               :key="metric.label"
-              class="rounded-[22px] border border-accent/15 bg-bg-main/55 p-4 shadow-[inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl"
+              class="rounded-[1rem] border border-accent/15 bg-bg-main/55 p-4 shadow-[inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl"
             >
               <p class="text-[11px] font-black uppercase tracking-[0.14em] text-text-muted">
                 {{ metric.label }}

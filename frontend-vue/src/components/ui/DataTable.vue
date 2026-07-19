@@ -1,19 +1,22 @@
 <template>
-  <div class="overflow-hidden rounded-2xl border border-border bg-panel-gradient" style="contain: layout style">
+  <div
+    class="overflow-hidden rounded-[1.15rem] border border-accent/15 bg-bg-main/55 shadow-[0_22px_64px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(245,245,245,0.035)] backdrop-blur-xl"
+    style="contain: layout style"
+  >
     <div class="overflow-x-auto">
       <table class="w-full text-sm" style="table-layout: auto">
         <thead>
-          <tr class="border-b border-border bg-bg-surface/50">
+          <tr class="border-b border-accent/15 bg-bg-surface/35">
             <th
               v-for="col in columns"
               :key="col.key"
-              class="whitespace-nowrap px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-text-muted"
+              class="whitespace-nowrap px-4 py-3 text-left text-[11px] font-black uppercase tracking-[0.14em] text-text-muted"
               :class="col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : ''"
               :style="col.width ? { width: col.width } : undefined"
             >
               <slot :name="`header-${col.key}`">{{ col.label }}</slot>
             </th>
-            <th v-if="$slots.actions" class="px-4 py-3 text-right text-xs font-bold uppercase tracking-wider text-text-muted">
+            <th v-if="$slots.actions" class="px-4 py-3 text-right text-[11px] font-black uppercase tracking-[0.14em] text-text-muted">
               Действия
             </th>
           </tr>
@@ -22,7 +25,7 @@
           <tr
             v-for="(row, idx) in rows"
             :key="rowKey ? row[rowKey] : idx"
-            class="border-b border-border/50 transition hover:bg-bg-hover/50"
+            class="border-b border-accent/10 transition hover:bg-accent-dark/10"
             :class="[
               { 'cursor-pointer': clickable },
               rowClass ? rowClass(row) : ''
@@ -32,7 +35,7 @@
             <td
               v-for="col in columns"
               :key="col.key"
-              class="whitespace-nowrap px-4 text-text-secondary"
+              class="whitespace-nowrap px-4 text-[13px] font-semibold text-text-secondary"
               :class="[
                 col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : '',
                 col.cellClass || 'py-3'
@@ -65,14 +68,14 @@
 
     <div v-else-if="rows.length === 0" class="flex min-h-[200px] items-center justify-center text-center">
       <div>
-        <p class="text-lg font-bold text-text-muted">Нет данных</p>
-        <p class="mt-1 text-sm text-text-muted/70">{{ emptyText }}</p>
+        <p class="sp-kicker mb-2">Пустой контур</p>
+        <p class="text-sm font-semibold text-text-muted/80">{{ emptyText }}</p>
       </div>
     </div>
 
     <div
       v-if="!loading && rows.length > 0 && showPagination"
-      class="flex flex-wrap items-center justify-between gap-3 border-t border-border px-4 py-3"
+      class="flex flex-wrap items-center justify-between gap-3 border-t border-accent/10 bg-bg-main/35 px-4 py-3"
     >
       <div class="flex items-center gap-3 text-xs text-text-muted">
         <span class="whitespace-nowrap">
@@ -86,7 +89,7 @@
           <span class="whitespace-nowrap">На странице:</span>
           <select
             :value="perPage"
-            class="rounded-lg border border-border bg-bg-surface px-2 py-1 text-xs font-semibold text-text-main focus:border-accent focus:outline-none"
+            class="rounded-lg border border-accent/15 bg-bg-surface/70 px-2 py-1 text-xs font-semibold text-text-main focus:border-accent focus:outline-none"
             @change="onPerPageChange(($event.target as HTMLSelectElement).value)"
           >
             <option v-for="opt in perPageOptions" :key="opt" :value="opt">{{ opt }}</option>
@@ -97,7 +100,7 @@
         <button
           type="button"
           :disabled="currentPage <= 1"
-          class="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-bg-surface text-text-secondary transition hover:border-accent hover:text-text-main disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-border disabled:hover:text-text-secondary"
+          class="flex h-8 w-8 items-center justify-center rounded-lg border border-accent/15 bg-bg-surface/65 text-text-secondary transition hover:border-accent/45 hover:text-text-main disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-border disabled:hover:text-text-secondary"
           title="Первая страница"
           @click="$emit('page-change', 1)"
         >
@@ -106,7 +109,7 @@
         <button
           type="button"
           :disabled="currentPage <= 1"
-          class="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-bg-surface text-text-secondary transition hover:border-accent hover:text-text-main disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-border disabled:hover:text-text-secondary"
+          class="flex h-8 w-8 items-center justify-center rounded-lg border border-accent/15 bg-bg-surface/65 text-text-secondary transition hover:border-accent/45 hover:text-text-main disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-border disabled:hover:text-text-secondary"
           title="Предыдущая"
           @click="$emit('page-change', currentPage - 1)"
         >
@@ -115,7 +118,7 @@
         <button
           type="button"
           :disabled="currentPage >= totalPages"
-          class="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-bg-surface text-text-secondary transition hover:border-accent hover:text-text-main disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-border disabled:hover:text-text-secondary"
+          class="flex h-8 w-8 items-center justify-center rounded-lg border border-accent/15 bg-bg-surface/65 text-text-secondary transition hover:border-accent/45 hover:text-text-main disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-border disabled:hover:text-text-secondary"
           title="Следующая"
           @click="$emit('page-change', currentPage + 1)"
         >
@@ -124,7 +127,7 @@
         <button
           type="button"
           :disabled="currentPage >= totalPages"
-          class="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-bg-surface text-text-secondary transition hover:border-accent hover:text-text-main disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-border disabled:hover:text-text-secondary"
+          class="flex h-8 w-8 items-center justify-center rounded-lg border border-accent/15 bg-bg-surface/65 text-text-secondary transition hover:border-accent/45 hover:text-text-main disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-border disabled:hover:text-text-secondary"
           title="Последняя страница"
           @click="$emit('page-change', totalPages)"
         >

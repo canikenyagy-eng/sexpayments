@@ -3,66 +3,163 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --sp-bg: #0d0d0d;
+    --sp-bg-elevated: #151313;
+    --sp-bg-panel: rgba(20, 18, 18, 0.82);
+    --sp-border: rgba(214, 163, 143, 0.15);
+    --sp-border-strong: rgba(214, 163, 143, 0.28);
+    --sp-burgundy: #8b1538;
+    --sp-rose: #d6a38f;
+    --sp-text: #f5f5f5;
+    --sp-muted: #a8a8a8;
+  }
+
   html, body {
     @apply m-0 min-h-screen p-0 bg-bg-main text-text-main;
     font-family: 'Space Grotesk', 'SF Pro Display', Inter, Arial, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01" 1, "cv01" 1, "tnum" 1;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 18% -8%, rgba(139, 21, 56, 0.24), transparent 30rem),
+      radial-gradient(circle at 88% 8%, rgba(214, 163, 143, 0.08), transparent 28rem),
+      linear-gradient(180deg, #0d0d0d 0%, #120f10 42%, #0d0d0d 100%);
   }
 
   * {
     box-sizing: border-box;
   }
+
+  ::selection {
+    background: rgba(214, 163, 143, 0.24);
+    color: var(--sp-text);
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  *::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: rgba(13, 13, 13, 0.65);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: rgba(214, 163, 143, 0.2);
+    border: 2px solid rgba(13, 13, 13, 0.65);
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(214, 163, 143, 0.34);
+  }
 }
 
 @layer components {
   .btn {
-    @apply inline-block cursor-pointer rounded-xl border-none px-4 py-3 text-sm font-extrabold leading-none no-underline transition-all duration-200;
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-black leading-none no-underline transition-all duration-200;
+    border-color: var(--sp-border);
+    box-shadow: inset 0 1px 0 rgba(245, 245, 245, 0.04);
   }
+
   .btn:hover {
     @apply -translate-y-px;
   }
+
   .btn-gold {
-    @apply bg-gold-gradient text-text-main shadow-prime;
+    @apply text-text-main;
+    border-color: rgba(214, 163, 143, 0.24);
+    background:
+      linear-gradient(135deg, rgba(214, 163, 143, 0.18), transparent 38%),
+      linear-gradient(180deg, #9e1b43 0%, #74112e 100%);
+    box-shadow:
+      0 18px 42px rgba(139, 21, 56, 0.28),
+      inset 0 1px 0 rgba(245, 245, 245, 0.08);
   }
+
   .btn-dark {
-    @apply bg-bg-hover text-text-main border border-border;
+    @apply text-text-main;
+    background: rgba(23, 23, 23, 0.72);
   }
   
   .input-field {
-    @apply w-full rounded-xl border border-border bg-[#101010] px-4 py-2.5 text-sm text-text-main outline-none transition-colors duration-200;
+    @apply w-full rounded-xl border px-4 py-3 text-sm font-semibold text-text-main outline-none transition duration-200;
+    border-color: rgba(214, 163, 143, 0.13);
+    background:
+      linear-gradient(180deg, rgba(245, 245, 245, 0.03), transparent),
+      rgba(11, 11, 11, 0.72);
+    box-shadow: inset 0 1px 0 rgba(245, 245, 245, 0.035);
   }
+
   .input-field::placeholder {
     @apply text-text-muted;
   }
+
   .input-field:focus {
     @apply border-accent-dark;
-    box-shadow: 0 0 0 3px rgba(139, 21, 56, 0.22);
+    box-shadow:
+      0 0 0 3px rgba(139, 21, 56, 0.18),
+      0 14px 36px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(245, 245, 245, 0.05);
   }
   
   .card {
-    @apply rounded-[1.1rem] border border-border bg-panel-gradient p-6 shadow-prime;
+    @apply rounded-[1.35rem] border p-6;
+    border-color: var(--sp-border);
+    background:
+      linear-gradient(180deg, rgba(245, 245, 245, 0.035), rgba(245, 245, 245, 0.01)),
+      linear-gradient(145deg, rgba(139, 21, 56, 0.08), transparent 42%),
+      rgba(18, 17, 17, 0.82);
+    box-shadow:
+      0 24px 70px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(245, 245, 245, 0.04);
+    backdrop-filter: blur(18px);
   }
 
   .dashboard-card {
-    @apply min-h-[118px] rounded-[1.25rem] border p-4 shadow-prime;
-    border-color: rgba(214, 163, 143, 0.16);
+    @apply min-h-[118px] rounded-[1.15rem] border p-4;
+    border-color: rgba(214, 163, 143, 0.13);
     background:
-      linear-gradient(135deg, rgba(139, 21, 56, 0.22), rgba(214, 163, 143, 0.04)),
-      rgba(23, 23, 23, 0.78);
-    box-shadow: 0 18px 54px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(245, 245, 245, 0.035);
+      linear-gradient(180deg, rgba(245, 245, 245, 0.035), transparent),
+      linear-gradient(135deg, rgba(139, 21, 56, 0.16), rgba(214, 163, 143, 0.035)),
+      rgba(17, 16, 16, 0.78);
+    box-shadow:
+      0 18px 54px rgba(0, 0, 0, 0.26),
+      inset 0 1px 0 rgba(245, 245, 245, 0.04);
+    backdrop-filter: blur(16px);
   }
 
   .dashboard-panel {
-    @apply rounded-[1.2rem] border p-5 shadow-prime;
+    @apply rounded-[1.15rem] border p-5;
     border-color: rgba(214, 163, 143, 0.14);
-    background: linear-gradient(90deg, rgba(44, 13, 24, 0.94) 0%, rgba(23, 23, 23, 0.94) 100%);
+    background:
+      linear-gradient(90deg, rgba(44, 13, 24, 0.62) 0%, rgba(17, 16, 16, 0.92) 52%, rgba(13, 13, 13, 0.92) 100%),
+      rgba(23, 23, 23, 0.76);
+    box-shadow:
+      0 20px 58px rgba(0, 0, 0, 0.26),
+      inset 0 1px 0 rgba(245, 245, 245, 0.035);
+    backdrop-filter: blur(18px);
   }
 
   .quick-button {
-    @apply rounded-[0.85rem] border-0 px-5 py-3 text-[1.02rem] font-black text-[#F5F5F5] transition-transform duration-200;
-    background: linear-gradient(180deg, #A91D47 0%, #8B1538 100%);
+    @apply rounded-xl border px-5 py-3 text-[1.02rem] font-black text-[#F5F5F5] transition duration-200;
+    border-color: rgba(214, 163, 143, 0.18);
+    background:
+      linear-gradient(135deg, rgba(214, 163, 143, 0.16), transparent 42%),
+      linear-gradient(180deg, #9E1B43 0%, #73102D 100%);
+    box-shadow: 0 16px 38px rgba(139, 21, 56, 0.26);
   }
 
   .quick-button:hover {
@@ -82,6 +179,34 @@
       rgba(13, 13, 13, 0.64);
     backdrop-filter: blur(18px);
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(245, 245, 245, 0.035);
+  }
+
+  .sp-command-bar {
+    border-color: rgba(214, 163, 143, 0.13);
+    background:
+      linear-gradient(180deg, rgba(245, 245, 245, 0.035), rgba(245, 245, 245, 0.01)),
+      rgba(13, 13, 13, 0.82);
+    box-shadow:
+      0 18px 54px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(245, 245, 245, 0.04);
+    backdrop-filter: blur(18px);
+  }
+
+  .sp-kicker {
+    @apply text-[11px] font-black uppercase text-accent;
+    letter-spacing: 0.18em;
+  }
+
+  .sp-panel-grid {
+    background-image:
+      linear-gradient(rgba(214, 163, 143, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(214, 163, 143, 0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .sp-status-dot {
+    @apply h-1.5 w-1.5 rounded-full bg-status-success;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.12);
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */

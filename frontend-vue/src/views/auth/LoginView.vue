@@ -1,43 +1,70 @@
 <template>
-  <section class="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg-main px-4 py-10">
+  <section class="sp-panel-grid relative flex min-h-screen items-center justify-center overflow-hidden bg-bg-main px-4 py-8">
     <img
       :src="publicAsset('brand/hero-fintech.png')"
       alt=""
-      class="absolute inset-0 h-full w-full object-cover object-[62%_center] opacity-45"
+      class="absolute inset-0 h-full w-full object-cover object-[62%_center] opacity-35 saturate-[0.65] contrast-110"
     />
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,_rgba(139,21,56,0.34),_transparent_34rem),linear-gradient(90deg,rgba(13,13,13,0.97)_0%,rgba(13,13,13,0.86)_42%,rgba(13,13,13,0.54)_100%)]" />
+    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(13,13,13,0.98)_0%,rgba(13,13,13,0.92)_48%,rgba(13,13,13,0.72)_100%),linear-gradient(180deg,rgba(139,21,56,0.18)_0%,transparent_46%,#0D0D0D_100%)]" />
     <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
 
-    <div class="relative z-10 grid w-full max-w-[1040px] items-center gap-8 lg:grid-cols-[1fr_462px]">
-      <div class="hidden max-w-[560px] lg:block">
-        <p class="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-accent">
-          Закрытая финтех-инфраструктура
+    <div class="relative z-10 grid w-full max-w-[1120px] items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_430px]">
+      <div class="hidden max-w-[620px] lg:block">
+        <div class="mb-8 flex items-center gap-3">
+          <img :src="publicAsset('logos/logo.svg')" alt="Логотип SexPayments" class="h-12 w-12" />
+          <div>
+            <div class="text-2xl font-black leading-none text-text-main">
+              Sex<span class="text-accent">Payments</span>
+            </div>
+            <div class="mt-1 sp-kicker">Приватная платежная сеть</div>
+          </div>
+        </div>
+
+        <p class="mb-5 sp-kicker">
+          Доступ к закрытому контуру
         </p>
-        <h1 class="mb-5 text-6xl font-black leading-[0.94] text-text-main">
-          Платежная инфраструктура для бизнеса 18+
+        <h1 class="mb-5 text-[clamp(2.8rem,4.4vw,4.95rem)] font-black leading-[0.94] text-text-main">
+          Финансовая инфраструктура без публичного шума
         </h1>
-        <p class="text-2xl font-bold text-text-secondary">Конфиденциально. Быстро. Надежно.</p>
+        <p class="max-w-xl text-xl font-bold leading-8 text-text-secondary">
+          Кабинеты мерчанта, трейдера, тимлида и поддержки работают поверх одной защищенной платежной базы.
+        </p>
+
+        <div class="mt-8 grid max-w-xl gap-1.5 rounded-[1.15rem] border border-accent/15 bg-bg-main/55 p-2 shadow-[0_24px_70px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+          <div
+            v-for="item in accessSignals"
+            :key="item.label"
+            class="grid min-h-[46px] grid-cols-[0.8fr_1fr] items-center gap-4 rounded-xl px-4 text-sm"
+          >
+            <span class="font-semibold text-text-muted">{{ item.label }}</span>
+            <strong class="text-right font-black text-text-main">{{ item.value }}</strong>
+          </div>
+        </div>
       </div>
 
-      <div class="w-full rounded-[24px] border border-accent/20 bg-bg-surface/80 p-8 shadow-[0_30px_90px_rgba(0,0,0,0.55)] backdrop-blur-xl">
-        <div class="mb-6 flex items-center justify-center gap-3">
+      <div class="w-full overflow-hidden rounded-[1.35rem] border border-accent/20 bg-bg-surface/80 p-5 shadow-[0_30px_90px_rgba(0,0,0,0.52),inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl sm:p-6">
+        <div class="mb-7 flex items-center justify-center gap-3 lg:hidden">
           <img :src="publicAsset('logos/logo.svg')" alt="Логотип SexPayments" class="h-11 w-11" />
           <div class="text-[2rem] font-black leading-none text-text-main">
             Sex<span class="text-accent">Payments</span>
           </div>
         </div>
+        <div class="mb-5 hidden lg:block">
+          <p class="sp-kicker mb-2">Защищенный вход</p>
+          <h2 class="text-2xl font-black leading-none text-text-main">Панель доступа</h2>
+        </div>
 
         <div
           v-if="isDemoMode"
-          class="mb-5 rounded-2xl border border-accent/20 bg-accent-dark/10 p-4 text-sm text-text-secondary"
+          class="mb-4 rounded-[1rem] border border-accent/15 bg-bg-main/45 p-3 text-sm text-text-secondary"
         >
-          <p class="mb-3 font-bold text-text-main">Демо-доступ</p>
-          <div class="grid gap-2">
+          <p class="mb-3 sp-kicker">Демо-доступ</p>
+          <div class="grid gap-1.5">
             <button
               v-for="account in demoAccounts"
               :key="account.username"
               type="button"
-              class="grid gap-1 rounded-xl border border-accent/15 bg-bg-main/35 px-3 py-2 text-left transition hover:border-accent/35 hover:bg-accent/10"
+              class="grid gap-0.5 rounded-xl border border-accent/10 bg-bg-surface/35 px-3 py-1.5 text-left transition hover:border-accent/35 hover:bg-accent/10"
               @click="fillDemoCredentials(account)"
             >
               <span class="text-xs font-black uppercase tracking-[0.12em] text-accent">{{ account.label }}</span>
@@ -57,7 +84,7 @@
           </div>
         </div>
 
-        <form class="space-y-5" @submit.prevent="handleLogin">
+        <form class="space-y-4" @submit.prevent="handleLogin">
           <BaseInput
             id="username"
             v-model="form.username"
@@ -82,8 +109,8 @@
             required
           />
 
-          <BaseButton type="submit" variant="gold" size="lg" class="mt-6 w-full !py-2.5" :loading="loading">
-            Войти
+          <BaseButton type="submit" variant="gold" size="lg" class="mt-5 w-full !py-2.5" :loading="loading">
+            Открыть контур
           </BaseButton>
         </form>
       </div>
@@ -102,6 +129,12 @@ import { publicAsset } from '@/utils/assets'
 
 const router = useRouter()
 const authStore = useAuthStore()
+
+const accessSignals = [
+  { label: 'режим', value: 'приватный' },
+  { label: 'защита', value: '2FA готова' },
+  { label: 'маршрутизация', value: 'активна' },
+]
 
 const form = reactive({ username: '', password: '', totp_code: '' })
 const error = ref('')

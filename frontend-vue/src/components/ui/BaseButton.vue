@@ -4,10 +4,10 @@
     :disabled="disabled || loading"
     :title="($attrs.title as string) || actionTitle"
     :class="[
-      'inline-flex items-center justify-center gap-2 rounded-xl font-bold transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed',
+      'inline-flex items-center justify-center gap-2 rounded-xl border font-black transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0',
       sizeClasses,
       variantClasses,
-      { 'hover:-translate-y-px': !disabled && !loading && variant !== 'icon' },
+      { 'hover:-translate-y-px active:translate-y-0': !disabled && !loading && variant !== 'icon' },
     ]"
   >
     <span v-if="loading" class="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -60,7 +60,7 @@ const actionIcon = computed(() => actionConfig.value?.icon)
 const actionTitle = computed(() => actionConfig.value?.title)
 
 const sizeClasses = computed(() =>
-  // `icon` is padding-less — it's just the glyph, so size (padding) doesn't apply.
+  // Вариант icon без внутренних отступов, размер задает вызывающий компонент.
   props.variant === 'icon' ? '' : {
     sm: 'px-3 py-2 text-xs',
     md: 'px-4 py-2.5 text-sm',
@@ -68,13 +68,11 @@ const sizeClasses = computed(() =>
   }[props.size])
 
 const variantClasses = computed(() => ({
-  gold: 'bg-gold-gradient text-text-main shadow-prime',
-  dark: 'bg-bg-hover text-text-main border border-border hover:bg-bg-card',
-  danger: 'bg-status-danger/15 text-status-danger border border-status-danger/30 hover:bg-status-danger/25',
-  ghost: 'text-text-secondary hover:text-text-main hover:bg-bg-hover',
-  success: 'bg-status-success/15 text-status-success border border-status-success/30 hover:bg-status-success/25',
-  // Bare icon — no bg / border / padding; caller sets the colour via `class`
-  // (e.g. text-status-danger). Only dims on hover.
-  icon: 'hover:opacity-70',
+  gold: 'border-accent/25 bg-[linear-gradient(135deg,rgba(214,163,143,0.18),transparent_38%),linear-gradient(180deg,#9E1B43_0%,#74112E_100%)] text-text-main shadow-[0_18px_42px_rgba(139,21,56,0.28),inset_0_1px_0_rgba(245,245,245,0.08)] hover:border-accent/45',
+  dark: 'border-accent/15 bg-bg-surface/70 text-text-main shadow-[inset_0_1px_0_rgba(245,245,245,0.04)] hover:border-accent/30 hover:bg-bg-hover/70',
+  danger: 'border-status-danger/25 bg-status-danger/10 text-status-danger hover:bg-status-danger/18',
+  ghost: 'border-transparent text-text-secondary hover:border-accent/15 hover:bg-bg-hover/45 hover:text-text-main',
+  success: 'border-status-success/25 bg-status-success/10 text-status-success hover:bg-status-success/18',
+  icon: 'border-transparent hover:opacity-70',
 }[props.variant]))
 </script>

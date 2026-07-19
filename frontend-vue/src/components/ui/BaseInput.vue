@@ -1,6 +1,6 @@
 <template>
-  <div class="space-y-1.5">
-    <label v-if="label" :for="id" class="block text-sm font-semibold text-text-secondary">
+  <div class="space-y-2">
+    <label v-if="label" :for="id" class="block text-[11px] font-black uppercase tracking-[0.14em] text-text-muted">
       {{ label }}
     </label>
     <div class="relative">
@@ -18,7 +18,7 @@
       <button
         v-if="type === 'password'"
         type="button"
-        class="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg text-text-muted transition hover:bg-bg-hover hover:text-text-main focus:outline-none"
+        class="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg text-text-muted transition hover:bg-bg-hover/70 hover:text-text-main focus:outline-none"
         @click="togglePasswordVisibility"
         tabindex="-1"
       >
@@ -26,7 +26,7 @@
         <EyeOff v-else class="h-4 w-4" />
       </button>
     </div>
-    <p v-if="error" class="text-xs text-status-danger">{{ error }}</p>
+    <p v-if="error" class="text-xs font-semibold text-status-danger">{{ error }}</p>
   </div>
 </template>
 

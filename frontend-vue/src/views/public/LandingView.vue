@@ -1,63 +1,84 @@
 <template>
-  <main class="min-h-screen overflow-hidden bg-bg-main text-text-main">
-    <section class="relative grid min-h-[820px] items-center overflow-hidden px-5 py-28 lg:min-h-screen lg:py-36">
+  <main class="sp-panel-grid min-h-screen overflow-hidden bg-bg-main text-text-main">
+    <section class="relative grid min-h-[760px] items-center overflow-hidden px-5 py-24 lg:min-h-screen lg:py-28">
       <img
         :src="publicAsset('brand/hero-fintech.png')"
         alt=""
-        class="absolute inset-0 h-full w-full object-cover object-[68%_center] opacity-55 saturate-[0.72] contrast-110 brightness-[0.82]"
+        class="absolute inset-0 h-full w-full object-cover object-[68%_center] opacity-40 saturate-[0.68] contrast-110 brightness-[0.78]"
       />
-      <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(13,13,13,0.97)_0%,rgba(13,13,13,0.84)_46%,rgba(13,13,13,0.34)_76%,rgba(13,13,13,0.88)_100%),linear-gradient(180deg,rgba(13,13,13,0.42)_0%,rgba(13,13,13,0.16)_50%,#0D0D0D_100%)]" />
-      <div class="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(255,255,255,0.026)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.026)_1px,transparent_1px)] [background-size:72px_72px]" />
+      <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(13,13,13,0.98)_0%,rgba(13,13,13,0.9)_48%,rgba(13,13,13,0.42)_78%,rgba(13,13,13,0.92)_100%),linear-gradient(180deg,rgba(13,13,13,0.5)_0%,rgba(13,13,13,0.18)_48%,#0D0D0D_100%)]" />
 
-      <div class="absolute inset-x-0 top-4 z-10 mx-auto flex w-[calc(100%_-_2rem)] max-w-[1180px] items-center justify-between rounded-[22px] border border-accent/15 bg-bg-main/80 px-4 py-3 shadow-[0_20px_64px_rgba(0,0,0,0.38)] backdrop-blur-xl">
-        <RouterLink to="/" class="flex items-center gap-3">
-          <img :src="publicAsset('logos/logo.svg')" alt="Логотип SexPayments" class="h-11 w-11 rounded-2xl" />
-          <span class="text-lg font-black">Sex<span class="text-accent">Payments</span></span>
-        </RouterLink>
-        <RouterLink
-          to="/login"
-          class="rounded-2xl border border-accent/40 px-5 py-3 text-sm font-bold text-accent transition hover:border-accent hover:bg-accent/10 hover:text-text-main"
-        >
-          Войти
-        </RouterLink>
+      <div class="absolute inset-x-0 top-0 z-10 border-b border-accent/10 bg-bg-main/70 backdrop-blur-2xl">
+        <div class="mx-auto flex h-20 w-[calc(100%_-_2rem)] max-w-[1180px] items-center justify-between">
+          <RouterLink to="/" class="flex items-center gap-3">
+            <img :src="publicAsset('logos/logo.svg')" alt="Логотип SexPayments" class="h-11 w-11" />
+            <span class="text-lg font-black">Sex<span class="text-accent">Payments</span></span>
+          </RouterLink>
+          <div class="hidden items-center gap-6 text-xs font-black uppercase tracking-[0.14em] text-text-muted md:flex">
+            <span>Процессинг</span>
+            <span>Риски</span>
+            <span>Выплаты</span>
+          </div>
+          <RouterLink
+            to="/login"
+            class="rounded-xl border border-accent/40 px-5 py-3 text-sm font-black text-accent transition hover:border-accent hover:bg-accent/10 hover:text-text-main"
+          >
+            Войти
+          </RouterLink>
+        </div>
       </div>
 
-      <div class="relative z-10 mx-auto grid w-full max-w-[1180px] gap-10 lg:grid-cols-[minmax(0,0.78fr)_360px] lg:items-end">
+      <div class="relative z-10 mx-auto grid w-full max-w-[1180px] gap-10 lg:grid-cols-[minmax(0,0.78fr)_420px] lg:items-end">
         <div class="max-w-[820px]">
-          <p class="mb-6 text-xs font-bold uppercase tracking-[0.18em] text-accent">
-            Закрытая финтех-инфраструктура
+          <p class="mb-6 sp-kicker">
+            Приватная платежная сеть
           </p>
-          <h1 class="mb-7 text-[clamp(2.45rem,6.8vw,5.65rem)] font-black leading-none">
+          <h1 class="mb-7 text-[clamp(2.35rem,5.8vw,5rem)] font-black leading-none">
             Платежная инфраструктура для бизнеса 18+
           </h1>
-          <p class="mb-9 text-[clamp(1.1rem,2.6vw,2rem)] font-bold text-text-secondary">
+          <p class="mb-8 text-[clamp(1.1rem,2.2vw,1.72rem)] font-bold text-text-secondary">
             Конфиденциально. Быстро. Надежно.
           </p>
           <div class="flex flex-col gap-3 sm:flex-row">
             <RouterLink
               to="/login"
-              class="inline-flex min-h-[58px] items-center justify-center gap-2 rounded-2xl bg-gold-gradient px-7 text-base font-black text-text-main shadow-[0_18px_42px_rgba(139,21,56,0.32)] transition hover:-translate-y-0.5"
+              class="inline-flex min-h-[58px] items-center justify-center gap-2 rounded-xl border border-accent/25 bg-[linear-gradient(135deg,rgba(214,163,143,0.18),transparent_38%),linear-gradient(180deg,#9E1B43_0%,#74112E_100%)] px-7 text-base font-black text-text-main shadow-[0_18px_42px_rgba(139,21,56,0.32)] transition hover:-translate-y-0.5 hover:border-accent/45"
             >
               Начать прием платежей
               <ArrowRight class="h-5 w-5" />
             </RouterLink>
             <a
               href="mailto:sales@sexpayments.example"
-              class="inline-flex min-h-[58px] items-center justify-center rounded-2xl border border-accent/60 bg-bg-main/30 px-7 text-base font-black text-accent backdrop-blur transition hover:-translate-y-0.5 hover:border-accent hover:bg-accent/10 hover:text-text-main"
+              class="inline-flex min-h-[58px] items-center justify-center rounded-xl border border-accent/60 bg-bg-main/30 px-7 text-base font-black text-accent backdrop-blur transition hover:-translate-y-0.5 hover:border-accent hover:bg-accent/10 hover:text-text-main"
             >
               Назначить демо
             </a>
           </div>
         </div>
 
-        <aside class="rounded-[24px] border border-accent/15 bg-bg-main/60 p-2 shadow-[0_26px_72px_rgba(0,0,0,0.4)] backdrop-blur-2xl">
+        <aside class="sp-command-bar overflow-hidden rounded-[1.2rem] border p-3">
+          <div class="mb-3 flex items-center justify-between px-2 pt-1">
+            <span class="sp-kicker">Платежный контур</span>
+            <span class="flex items-center gap-2 text-xs font-black text-status-success">
+              <span class="sp-status-dot" />
+              активен
+            </span>
+          </div>
           <div
             v-for="item in ledger"
             :key="item.label"
-            class="grid min-h-[58px] grid-cols-[0.8fr_1fr] items-center gap-3 rounded-[17px] px-4 text-text-muted [&+&]:border-t [&+&]:border-accent/10"
+            class="grid min-h-[58px] grid-cols-[0.8fr_1fr] items-center gap-3 rounded-xl px-4 text-text-muted [&+&]:border-t [&+&]:border-accent/10"
           >
             <span>{{ item.label }}</span>
             <strong class="text-right text-sm text-text-main">{{ item.value }}</strong>
+          </div>
+          <div class="mt-3 grid grid-cols-5 gap-2 px-2 pb-1">
+            <span
+              v-for="node in 10"
+              :key="node"
+              class="h-1.5 rounded-full"
+              :class="node % 3 === 0 ? 'bg-accent' : node % 2 === 0 ? 'bg-accent-dark' : 'bg-white/10'"
+            />
           </div>
         </aside>
       </div>
