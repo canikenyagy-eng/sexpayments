@@ -30,42 +30,95 @@
     <div v-if="loadingProfile" class="py-16"><LoadingSpinner /></div>
 
     <template v-else-if="profile">
-      <!-- Balance cards — aggregated across every terminal the merchant owns. -->
-      <div class="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
-        <StatCard
-          label="Общий баланс (WORK)"
-          :value="`${formatAmount(totalWorkUsdt)} USDT`"
-          :icon="Wallet"
-          :subtitle="terminalCount > 0 ? `По ${terminalCount} ${pluralize(terminalCount, ['терминалу', 'терминалам', 'терминалам'])}` : undefined"
-        />
-        <StatCard
-          label="Заморожено (ESCROW)"
-          :value="`${formatAmount(totalEscrowUsdt)} USDT`"
-          :icon="Lock"
-        />
-        <StatCard label="Статус" :value="statusLabel" :icon="Activity" />
-        <StatCard
-          label="Терминалов"
-          :value="String(terminalCount)"
-          :icon="ArrowRightLeft"
-        />
-      </div>
+      <section class="mb-6 grid gap-4 xl:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)]">
+        <div class="relative overflow-hidden rounded-[1.35rem] border border-accent/15 bg-bg-surface/70 p-5 shadow-[0_24px_76px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl">
+          <div class="pointer-events-none absolute inset-0 sp-panel-grid opacity-45" />
+          <div class="relative mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p class="sp-kicker">CFO cockpit</p>
+              <h2 class="mt-2 text-3xl font-black leading-none text-text-main">Финансовый пульт мерчанта</h2>
+            </div>
+            <span class="inline-flex w-fit items-center gap-2 rounded-xl border border-status-success/20 bg-status-success/10 px-3 py-2 text-xs font-black text-status-success">
+              <span class="sp-status-dot" />
+              {{ statusLabel }}
+            </span>
+          </div>
 
-      <div class="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
-        <StatCard label="Оборот USDT" :value="formatInt(stats.turnover_usdt)" :icon="TrendingUp" :loading="loadingStats" />
-        <StatCard label="Комиссии USDT" :value="formatInt(stats.fee_usdt)" :icon="Receipt" :loading="loadingStats" />
-        <StatCard label="Ордеров всего" :value="stats.orders_total" :icon="Package" :loading="loadingStats" />
-        <StatCard label="Успешных" :value="stats.orders_success" :icon="CheckCircle2" :loading="loadingStats" />
-        <StatCard label="Конверсия" :value="Math.round(stats.conversion_pct) + '%'" :icon="Target" :loading="loadingStats" />
-        <StatCard label="Активных" :value="stats.orders_active" :icon="Zap" :loading="loadingStats" />
-        <StatCard label="Неудачных" :value="stats.orders_failed" :icon="XCircle" :loading="loadingStats" />
-        <StatCard label="Выводы (ожид.)" :value="stats.pending_withdrawals" :icon="Hourglass" :loading="loadingStats" />
-        <StatCard label="Споры" :value="stats.active_disputes" :icon="AlertTriangle" :loading="loadingStats" />
-      </div>
+          <div class="relative grid gap-3 sm:grid-cols-2">
+            <article
+              v-for="metric in cockpitMetrics"
+              :key="metric.label"
+              class="min-h-[142px] rounded-[1rem] border border-accent/15 bg-bg-main/60 p-4 shadow-[inset_0_1px_0_rgba(245,245,245,0.035)]"
+            >
+              <div class="mb-5 flex items-center justify-between gap-3">
+                <p class="text-[11px] font-black uppercase tracking-[0.14em] text-text-muted">{{ metric.label }}</p>
+                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-accent/15 bg-accent-dark/10 text-accent">
+                  <component :is="metric.icon" class="h-4 w-4" />
+                </span>
+              </div>
+              <strong class="block break-words text-3xl font-black leading-none text-text-main">{{ metric.value }}</strong>
+              <p class="mt-3 text-xs font-semibold leading-5 text-text-muted">{{ metric.caption }}</p>
+            </article>
+          </div>
+        </div>
 
-      <!-- System status -->
-      <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <BaseCard title="Платёжные методы">
+        <div class="grid gap-4">
+          <div class="rounded-[1.35rem] border border-accent/15 bg-bg-surface/70 p-5 shadow-[0_24px_76px_rgba(0,0,0,0.26),inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl">
+            <div class="mb-5 flex items-center justify-between gap-3">
+              <div>
+                <p class="sp-kicker">Процессинг</p>
+                <h2 class="mt-2 text-2xl font-black leading-none text-text-main">Здоровье потока</h2>
+              </div>
+              <span class="rounded-xl border border-accent/20 bg-accent-dark/10 px-3 py-2 text-sm font-black text-accent">
+                {{ approvalPct }}%
+              </span>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <div class="mb-2 flex items-center justify-between text-xs font-black text-text-muted">
+                  <span>Одобрение</span>
+                  <span>{{ stats.orders_success }} / {{ stats.orders_total }}</span>
+                </div>
+                <div class="h-2 overflow-hidden rounded-full bg-white/10">
+                  <div class="h-full rounded-full bg-gradient-to-r from-accent-dark via-accent to-status-success" :style="{ width: `${approvalPct}%` }" />
+                </div>
+              </div>
+              <div>
+                <div class="mb-2 flex items-center justify-between text-xs font-black text-text-muted">
+                  <span>Отказы</span>
+                  <span>{{ failedPct }}%</span>
+                </div>
+                <div class="h-2 overflow-hidden rounded-full bg-white/10">
+                  <div class="h-full rounded-full bg-status-danger/70" :style="{ width: `${failedPct}%` }" />
+                </div>
+              </div>
+              <div class="grid grid-cols-3 gap-2 pt-1">
+                <div v-for="item in flowRows" :key="item.label" class="rounded-xl border border-accent/10 bg-bg-main/45 p-3">
+                  <span class="block text-[10px] font-black uppercase tracking-[0.12em] text-text-muted">{{ item.label }}</span>
+                  <strong class="mt-2 block text-lg font-black text-text-main">{{ item.value }}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-[1.35rem] border border-accent/15 bg-bg-surface/70 p-5 shadow-[0_24px_76px_rgba(0,0,0,0.26),inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl">
+            <p class="sp-kicker mb-4">Расчетный слой</p>
+            <div class="grid gap-2">
+              <div
+                v-for="row in settlementRows"
+                :key="row.label"
+                class="grid min-h-[48px] grid-cols-[1fr_auto] items-center gap-3 rounded-xl border border-accent/10 bg-bg-main/45 px-4"
+              >
+                <span class="text-sm font-semibold text-text-muted">{{ row.label }}</span>
+                <strong class="text-right text-sm font-black text-text-main">{{ row.value }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <BaseCard title="Платежные методы">
           <div v-if="!methodRows.length" class="py-4 text-center text-sm text-text-muted">
             Нет доступных методов
           </div>
@@ -73,12 +126,10 @@
             <div
               v-for="pm in methodRows"
               :key="pm.method"
-              class="flex min-h-[64px] items-center justify-between rounded-2xl border border-accent/10 bg-bg-main/45 px-4 py-3 shadow-[inset_0_1px_0_rgba(245,245,245,0.035)]"
+              class="flex min-h-[58px] items-center justify-between rounded-xl border border-accent/10 bg-bg-main/45 px-4 py-3 shadow-[inset_0_1px_0_rgba(245,245,245,0.035)]"
             >
-              <div class="flex items-center gap-2">
-                <MethodBadge :method="pm.method" />
-              </div>
-              <span class="rounded-full border border-accent/20 bg-accent-dark/10 px-3 py-1 text-sm font-black text-accent">{{ pm.fee_percentage }}%</span>
+              <MethodBadge :method="pm.method" />
+              <span class="rounded-lg border border-accent/20 bg-accent-dark/10 px-3 py-1 text-sm font-black text-accent">{{ pm.fee_percentage }}%</span>
             </div>
           </div>
         </BaseCard>
@@ -116,7 +167,7 @@
             </div>
           </BaseCard>
         </div>
-      </div>
+      </section>
     </template>
   </div>
 </template>
@@ -124,7 +175,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import AccountHero from '@/components/layout/AccountHero.vue'
-import StatCard from '@/components/ui/StatCard.vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import BaseDatePicker from '@/components/ui/BaseDatePicker.vue'
 import MethodBadge from '@/components/ui/MethodBadge.vue'
@@ -140,10 +190,7 @@ import { toUnixTs } from '@/utils/datetime'
 import UuidDisplay from '@/components/ui/UuidDisplay.vue'
 import type { BalanceInfo, MerchantFullProfile, MerchantStats, Order, PaymentMethod } from '@/types'
 import { ALL_PAYMENT_METHODS, merchantStatusLabels } from '@/constants'
-import {
-  Wallet, Lock, Activity, ArrowRightLeft, TrendingUp, Receipt,
-  Package, CheckCircle2, Target, Zap, XCircle, Hourglass, AlertTriangle,
-} from 'lucide-vue-next'
+import { Wallet, TrendingUp, Target, AlertTriangle } from 'lucide-vue-next'
 
 const toast = useToast()
 
@@ -208,6 +255,60 @@ const heroMetrics = computed(() => [
     value: statusLabel.value,
     caption: profile.value?.currency ? `Расчеты в ${profile.value.currency}` : 'Профиль загружается',
   },
+])
+
+function pct(value: number): number {
+  if (!Number.isFinite(value)) return 0
+  return Math.max(0, Math.min(100, Math.round(value)))
+}
+
+const approvalPct = computed(() => pct(stats.value.conversion_pct))
+const failedPct = computed(() =>
+  stats.value.orders_total > 0
+    ? pct((stats.value.orders_failed / stats.value.orders_total) * 100)
+    : 0,
+)
+
+const cockpitMetrics = computed(() => [
+  {
+    label: 'Рабочий баланс',
+    value: `${formatAmount(totalWorkUsdt.value)} USDT`,
+    caption: terminalCount.value > 0
+      ? `${terminalCount.value} ${pluralize(terminalCount.value, ['терминал', 'терминала', 'терминалов'])} в контуре`
+      : 'Терминалы не найдены',
+    icon: Wallet,
+  },
+  {
+    label: 'Оборот',
+    value: `${formatInt(stats.value.turnover_usdt)} USDT`,
+    caption: `${stats.value.orders_total} операций за период`,
+    icon: TrendingUp,
+  },
+  {
+    label: 'Конверсия',
+    value: `${approvalPct.value}%`,
+    caption: `${stats.value.orders_success} успешных ордеров`,
+    icon: Target,
+  },
+  {
+    label: 'Риски',
+    value: stats.value.active_disputes ? `${stats.value.active_disputes} споров` : 'Чисто',
+    caption: stats.value.orders_failed ? `${stats.value.orders_failed} неудачных операций` : 'Критичных сигналов нет',
+    icon: AlertTriangle,
+  },
+])
+
+const flowRows = computed(() => [
+  { label: 'Активные', value: stats.value.orders_active },
+  { label: 'Выводы', value: stats.value.pending_withdrawals },
+  { label: 'Методы', value: methodRows.value.length },
+])
+
+const settlementRows = computed(() => [
+  { label: 'WORK баланс', value: `${formatAmount(totalWorkUsdt.value)} USDT` },
+  { label: 'ESCROW резерв', value: `${formatAmount(totalEscrowUsdt.value)} USDT` },
+  { label: 'Комиссии', value: `${formatInt(stats.value.fee_usdt)} USDT` },
+  { label: 'Терминалы', value: String(terminalCount.value) },
 ])
 
 const methodRows = computed(() => {
