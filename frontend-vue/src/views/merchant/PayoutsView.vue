@@ -2,13 +2,51 @@
   <div>
     <PageHeader title="Выплаты" />
 
-    <!-- Filters -->
-    <div class="mb-4 flex flex-wrap items-end gap-3">
-      <BaseSelect v-model="filters.status" label="Статус" :options="statusOptions" />
-      <BaseSelect v-model="filters.payment_method" label="Метод" :options="methodOptions" />
-      <BaseInput v-model="filters.search" label="Поиск" placeholder="UUID или external_id" />
-      <BaseButton variant="dark" size="sm" @click="page = 1; load()">Применить</BaseButton>
-    </div>
+    <section class="mb-5 grid gap-4 xl:grid-cols-[minmax(0,0.95fr)_minmax(360px,0.72fr)]">
+      <div class="relative overflow-hidden rounded-[1.25rem] border border-accent/15 bg-bg-surface/70 p-5 shadow-[0_22px_70px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl">
+        <div class="pointer-events-none absolute inset-0 sp-panel-grid opacity-35" />
+        <div class="relative flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="sp-kicker">Выплатный контур</p>
+            <h2 class="mt-2 text-2xl font-black leading-none text-text-main">Очередь исходящих выплат</h2>
+            <p class="mt-3 max-w-2xl text-sm font-semibold leading-6 text-text-muted">
+              Статусы, методы и идентификаторы выплат собраны для контроля исходящего потока.
+            </p>
+          </div>
+          <div class="grid grid-cols-3 gap-2 sm:min-w-[360px]">
+            <div
+              v-for="item in summaryRows"
+              :key="item.label"
+              class="rounded-xl border border-accent/10 bg-bg-main/55 p-3"
+            >
+              <span class="block text-[10px] font-black uppercase tracking-[0.12em] text-text-muted">{{ item.label }}</span>
+              <strong class="mt-2 block text-lg font-black text-text-main">{{ item.value }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-[1.25rem] border border-accent/15 bg-bg-surface/70 p-5 shadow-[0_22px_70px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl">
+        <div class="mb-4 flex items-center justify-between gap-3">
+          <div>
+            <p class="sp-kicker">Фильтры</p>
+            <h2 class="mt-2 text-xl font-black leading-none text-text-main">Сверка выплат</h2>
+          </div>
+          <span class="rounded-lg border border-accent/15 bg-bg-main/45 px-2.5 py-1 text-xs font-black text-text-muted">
+            {{ activeFilterCount }} акт.
+          </span>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <BaseSelect v-model="filters.status" label="Статус" :options="statusOptions" />
+          <BaseSelect v-model="filters.payment_method" label="Метод" :options="methodOptions" />
+          <BaseInput v-model="filters.search" label="Поиск" placeholder="UUID или внешний ID" class="sm:col-span-2" />
+        </div>
+        <div class="mt-4 flex flex-wrap items-center justify-end gap-2">
+          <BaseButton v-if="activeFilterCount" variant="ghost" size="sm" @click="resetFilters">Сбросить</BaseButton>
+          <BaseButton variant="dark" size="sm" @click="page = 1; load()">Применить</BaseButton>
+        </div>
+      </div>
+    </section>
 
     <DataTable
       :columns="columns"
@@ -17,7 +55,9 @@
       row-key="id"
       :current-page="page"
       :total-pages="totalPages"
+      :total-items="totalItems"
       :per-page="perPage"
+      empty-text="Выплат по выбранным параметрам нет"
       clickable
       @page-change="p => { page = p; load() }"
       @per-page-change="(n: number) => { perPage = n; page = 1; load() }"
@@ -70,7 +110,7 @@
             <span class="text-text-muted">UUID:</span>
             <UuidDisplay :value="detail.id" :truncate="false" show-icon class="ml-1" />
           </div>
-          <div><span class="text-text-muted">External ID:</span> <span class="ml-1 text-text-main">{{ detail.external_id || '—' }}</span></div>
+          <div><span class="text-text-muted">Внешний ID:</span> <span class="ml-1 text-text-main">{{ detail.external_id || '—' }}</span></div>
           <div><span class="text-text-muted">Терминал:</span> <span class="ml-1 text-text-main">{{ detail.terminal_name || `#${detail.payout_terminal_id}` }}</span></div>
           <div>
             <span class="text-text-muted">Сумма:</span>
@@ -142,13 +182,24 @@ const perPage = ref(25)
 const totalItems = ref(0)
 const totalPages = computed(() => Math.max(1, Math.ceil(totalItems.value / perPage.value)))
 const filters = reactive({ status: '', payment_method: '', search: '' })
+const activeFilterCount = computed(() =>
+  [filters.status, filters.payment_method, filters.search.trim()].filter(Boolean).length,
+)
+const pageAmountUsdt = computed(() =>
+  payouts.value.reduce((sum, payout) => sum + Number(payout.amount_usdt ?? 0), 0),
+)
+const summaryRows = computed(() => [
+  { label: 'Всего', value: totalItems.value },
+  { label: 'На странице', value: payouts.value.length },
+  { label: 'Объем', value: `${formatAmount(pageAmountUsdt.value)} USDT` },
+])
 
 const showDetails = ref(false)
 const detail = ref<MerchantPayout | null>(null)
 
 const columns: Column[] = [
   { key: 'id', label: 'UUID' },
-  { key: 'external_id', label: 'External ID' },
+  { key: 'external_id', label: 'Внешний ID' },
   { key: 'terminal_name', label: 'Терминал' },
   { key: 'amount', label: 'Сумма', align: 'right' },
   { key: 'amount_usdt', label: 'USDT', align: 'right' },
@@ -165,6 +216,14 @@ function copy(text: string) {
     () => toast.success('Скопировано'),
     () => toast.error('Не удалось скопировать'),
   )
+}
+
+function resetFilters() {
+  filters.status = ''
+  filters.payment_method = ''
+  filters.search = ''
+  page.value = 1
+  load()
 }
 
 async function load() {

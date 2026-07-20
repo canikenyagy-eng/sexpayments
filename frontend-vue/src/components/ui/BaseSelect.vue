@@ -1,6 +1,6 @@
 <template>
-  <div class="space-y-1.5">
-    <label v-if="label" :for="id" class="block text-sm font-semibold text-text-secondary">
+  <div class="space-y-2">
+    <label v-if="label" :for="id" class="block text-[11px] font-black uppercase tracking-[0.14em] text-text-muted">
       {{ label }}
     </label>
     <select

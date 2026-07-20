@@ -35,7 +35,7 @@
           <div class="pointer-events-none absolute inset-0 sp-panel-grid opacity-45" />
           <div class="relative mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p class="sp-kicker">CFO cockpit</p>
+              <p class="sp-kicker">Финансовый контур</p>
               <h2 class="mt-2 text-3xl font-black leading-none text-text-main">Финансовый пульт мерчанта</h2>
             </div>
             <span class="inline-flex w-fit items-center gap-2 rounded-xl border border-status-success/20 bg-status-success/10 px-3 py-2 text-xs font-black text-status-success">
@@ -305,8 +305,8 @@ const flowRows = computed(() => [
 ])
 
 const settlementRows = computed(() => [
-  { label: 'WORK баланс', value: `${formatAmount(totalWorkUsdt.value)} USDT` },
-  { label: 'ESCROW резерв', value: `${formatAmount(totalEscrowUsdt.value)} USDT` },
+  { label: 'Рабочий баланс', value: `${formatAmount(totalWorkUsdt.value)} USDT` },
+  { label: 'Эскроу резерв', value: `${formatAmount(totalEscrowUsdt.value)} USDT` },
   { label: 'Комиссии', value: `${formatInt(stats.value.fee_usdt)} USDT` },
   { label: 'Терминалы', value: String(terminalCount.value) },
 ])

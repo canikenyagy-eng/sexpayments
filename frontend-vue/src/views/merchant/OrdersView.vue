@@ -9,14 +9,52 @@
       </template>
     </PageHeader>
 
-    <!-- Filters -->
-    <div class="mb-4 flex flex-wrap items-end gap-3">
-      <BaseSelect v-model="filters.merchant_id" label="Терминал" :options="terminalFilterOptions" />
-      <BaseSelect v-model="filters.status" label="Статус" :options="statusOptions" />
-      <BaseSelect v-model="filters.payment_method" label="Метод" :options="methodOptions" />
-      <BaseInput v-model="filters.search" label="Поиск" placeholder="UUID или external_id" />
-      <BaseButton variant="dark" size="sm" @click="page = 1; load()">Применить</BaseButton>
-    </div>
+    <section class="mb-5 grid gap-4 xl:grid-cols-[minmax(0,0.95fr)_minmax(380px,0.72fr)]">
+      <div class="relative overflow-hidden rounded-[1.25rem] border border-accent/15 bg-bg-surface/70 p-5 shadow-[0_22px_70px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl">
+        <div class="pointer-events-none absolute inset-0 sp-panel-grid opacity-35" />
+        <div class="relative flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="sp-kicker">Операционный поток</p>
+            <h2 class="mt-2 text-2xl font-black leading-none text-text-main">Контроль входящих ордеров</h2>
+            <p class="mt-3 max-w-2xl text-sm font-semibold leading-6 text-text-muted">
+              Поиск, статусы и терминалы собраны в одном рабочем контуре для быстрой сверки.
+            </p>
+          </div>
+          <div class="grid grid-cols-3 gap-2 sm:min-w-[360px]">
+            <div
+              v-for="item in summaryRows"
+              :key="item.label"
+              class="rounded-xl border border-accent/10 bg-bg-main/55 p-3"
+            >
+              <span class="block text-[10px] font-black uppercase tracking-[0.12em] text-text-muted">{{ item.label }}</span>
+              <strong class="mt-2 block text-lg font-black text-text-main">{{ item.value }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-[1.25rem] border border-accent/15 bg-bg-surface/70 p-5 shadow-[0_22px_70px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl">
+        <div class="mb-4 flex items-center justify-between gap-3">
+          <div>
+            <p class="sp-kicker">Фильтры</p>
+            <h2 class="mt-2 text-xl font-black leading-none text-text-main">Поиск операций</h2>
+          </div>
+          <span class="rounded-lg border border-accent/15 bg-bg-main/45 px-2.5 py-1 text-xs font-black text-text-muted">
+            {{ activeFilterCount }} акт.
+          </span>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <BaseSelect v-model="filters.merchant_id" label="Терминал" :options="terminalFilterOptions" />
+          <BaseSelect v-model="filters.status" label="Статус" :options="statusOptions" />
+          <BaseSelect v-model="filters.payment_method" label="Метод" :options="methodOptions" />
+          <BaseInput v-model="filters.search" label="Поиск" placeholder="UUID или внешний ID" />
+        </div>
+        <div class="mt-4 flex flex-wrap items-center justify-end gap-2">
+          <BaseButton v-if="activeFilterCount" variant="ghost" size="sm" @click="resetFilters">Сбросить</BaseButton>
+          <BaseButton variant="dark" size="sm" @click="page = 1; load()">Применить</BaseButton>
+        </div>
+      </div>
+    </section>
 
     <DataTable
       :columns="columns"
@@ -25,7 +63,9 @@
       row-key="id"
       :current-page="page"
       :total-pages="totalPages"
+      :total-items="totalItems"
       :per-page="perPage"
+      empty-text="Ордеров по выбранным параметрам нет"
       clickable
       @page-change="p => { page = p; load() }"
       @per-page-change="(n: number) => { perPage = n; page = 1; load() }"
@@ -65,7 +105,9 @@
         <StatusBadge :status="value" />
       </template>
       <template #cell-direction="{ value }">
-        <BaseBadge :color="value === 'payin' ? 'success' : 'warning'">{{ value }}</BaseBadge>
+        <BaseBadge :color="value === 'payin' ? 'success' : 'warning'">
+          {{ value === 'payin' ? 'Вход' : 'Выход' }}
+        </BaseBadge>
       </template>
       <template #cell-created_at="{ value }">
         {{ formatDate(value) }}
@@ -87,8 +129,8 @@
         <BaseInput v-model="createForm.amount" label="Сумма" type="number" required />
         <BaseSelect v-model="createForm.currency" label="Валюта" :options="createCurrencyOptions" />
         <BaseSelect v-model="createForm.payment_method" label="Метод оплаты" :options="createMethodOptions" />
-        <BaseInput v-model="createForm.internalId" label="Internal ID (опционально)" />
-        <BaseInput v-model="createForm.notificationUrl" label="Webhook URL (опционально)" />
+        <BaseInput v-model="createForm.internalId" label="Внутренний ID (опционально)" />
+        <BaseInput v-model="createForm.notificationUrl" label="URL уведомлений (опционально)" />
       </div>
       <template #footer>
         <BaseButton variant="dark" @click="showCreate = false">Отмена</BaseButton>
@@ -119,7 +161,7 @@
         <div class="text-sm">
           <p><span class="text-text-muted">UUID:</span> <span class="font-mono text-text-main">{{ createdOrder.id }}</span></p>
           <p><span class="text-text-muted">Статус:</span> <StatusBadge :status="createdOrder.status" /></p>
-          <p><span class="text-text-muted">Payment URL:</span></p>
+          <p><span class="text-text-muted">Ссылка на оплату:</span></p>
           <div class="mt-1 rounded-lg bg-bg-card p-2 font-mono text-xs text-accent break-all">{{ createdOrder.payment_url }}</div>
         </div>
         <BaseButton variant="dark" size="sm" @click="copy(createdOrder.payment_url)">Копировать URL</BaseButton>
@@ -174,6 +216,14 @@ const terminalFilterOptions = computed(() => [
     label: m.name || `Терминал #${m.id}`,
   })),
 ])
+const activeFilterCount = computed(() =>
+  [filters.status, filters.payment_method, filters.search.trim(), filters.merchant_id].filter(Boolean).length,
+)
+const summaryRows = computed(() => [
+  { label: 'Всего', value: totalItems.value },
+  { label: 'На странице', value: orders.value.length },
+  { label: 'Терминалы', value: terminalFilterOptions.value.length - 1 },
+])
 
 const showDetails = ref(false)
 const detailOrder = ref<Order | null>(null)
@@ -203,7 +253,7 @@ const createForm = reactive({
 
 const columns: Column[] = [
   { key: 'uuid', label: 'UUID' },
-  { key: 'external_id', label: 'External ID' },
+  { key: 'external_id', label: 'Внешний ID' },
   { key: 'merchant_name', label: 'Терминал' },
   { key: 'direction', label: 'Тип' },
   { key: 'amount', label: 'Сумма', align: 'right' },
@@ -223,6 +273,15 @@ function copy(text: string) {
     () => toast.success('Скопировано'),
     () => toast.error('Не удалось скопировать'),
   )
+}
+
+function resetFilters() {
+  filters.status = ''
+  filters.payment_method = ''
+  filters.search = ''
+  filters.merchant_id = ''
+  page.value = 1
+  load()
 }
 
 async function load() {

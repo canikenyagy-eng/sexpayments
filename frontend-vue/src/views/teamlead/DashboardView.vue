@@ -16,7 +16,7 @@
           <div class="pointer-events-none absolute inset-0 sp-panel-grid opacity-45" />
           <div class="relative mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p class="sp-kicker">Operations center</p>
+              <p class="sp-kicker">Операционный центр</p>
               <h2 class="mt-2 text-3xl font-black leading-none text-text-main">Контроль команды</h2>
             </div>
             <RouterLink

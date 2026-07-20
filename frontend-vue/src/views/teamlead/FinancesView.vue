@@ -6,24 +6,71 @@
       </template>
     </PageHeader>
 
-    <div class="mb-4 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-      <BaseCard v-for="b in balances" :key="b.id" class="p-4">
-        <div class="mb-1 text-xs uppercase text-text-muted">{{ balanceTypeLabel(b.type) }} · {{ b.currency }}</div>
-        <div class="text-xl font-bold text-text-main">{{ formatAmount(b.amount) }}</div>
-      </BaseCard>
-    </div>
+    <section class="mb-5 grid gap-4 xl:grid-cols-[minmax(0,0.95fr)_minmax(360px,0.72fr)]">
+      <div class="relative overflow-hidden rounded-[1.25rem] border border-accent/15 bg-bg-surface/70 p-5 shadow-[0_22px_70px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl">
+        <div class="pointer-events-none absolute inset-0 sp-panel-grid opacity-35" />
+        <div class="relative mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p class="sp-kicker">Финансовый контур</p>
+            <h2 class="mt-2 text-2xl font-black leading-none text-text-main">Портфель тимлида</h2>
+            <p class="mt-3 max-w-2xl text-sm font-semibold leading-6 text-text-muted">
+              Балансы, сделки трейдеров и запросы на вывод собраны в одном расчетном слое.
+            </p>
+          </div>
+          <span class="inline-flex w-fit items-center gap-2 rounded-xl border border-status-success/20 bg-status-success/10 px-3 py-2 text-xs font-black text-status-success">
+            <span class="sp-status-dot" />
+            Контур активен
+          </span>
+        </div>
+        <div class="relative grid gap-3 sm:grid-cols-3">
+          <article
+            v-for="b in balances"
+            :key="b.id"
+            class="min-h-[116px] rounded-xl border border-accent/10 bg-bg-main/55 p-4"
+          >
+            <span class="block text-[10px] font-black uppercase tracking-[0.12em] text-text-muted">
+              {{ balanceTypeLabel(b.type) }} · {{ b.currency }}
+            </span>
+            <strong class="mt-4 block break-words text-2xl font-black leading-none text-text-main">
+              {{ formatAmount(b.amount) }}
+            </strong>
+          </article>
+          <article v-if="!balances.length" class="min-h-[116px] rounded-xl border border-dashed border-accent/15 bg-bg-main/45 p-4">
+            <span class="block text-[10px] font-black uppercase tracking-[0.12em] text-text-muted">Балансы</span>
+            <strong class="mt-4 block text-lg font-black text-text-main">Нет данных</strong>
+          </article>
+        </div>
+      </div>
 
-    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-      <BaseTabs v-model="activeTab" :tabs="tabs" />
-      <BaseFilter
-        v-if="activeTab === 'withdrawals'"
-        :active-count="withdrawalFilters.status ? 1 : 0"
-        @apply="withdrawalPage = 1; loadWithdrawals()"
-        @reset="resetWithdrawalFilters"
-      >
-        <BaseSelect v-model="withdrawalFilters.status" label="Статус" :options="statusOptions" />
-      </BaseFilter>
-    </div>
+      <div class="rounded-[1.25rem] border border-accent/15 bg-bg-surface/70 p-5 shadow-[0_22px_70px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(245,245,245,0.04)] backdrop-blur-xl">
+        <p class="sp-kicker">Рабочий срез</p>
+        <h2 class="mt-2 text-xl font-black leading-none text-text-main">Финансовая лента</h2>
+        <div class="mt-5">
+          <BaseTabs v-model="activeTab" :tabs="tabs" />
+        </div>
+        <div v-if="activeTab === 'withdrawals'" class="mt-4 rounded-xl border border-accent/10 bg-bg-main/45 p-3">
+          <BaseSelect v-model="withdrawalFilters.status" label="Статус вывода" :options="statusOptions" />
+          <div class="mt-3 flex justify-end gap-2">
+            <BaseButton v-if="withdrawalFilters.status" variant="ghost" size="sm" @click="resetWithdrawalFilters">
+              Сбросить
+            </BaseButton>
+            <BaseButton variant="dark" size="sm" @click="withdrawalPage = 1; loadWithdrawals()">
+              Применить
+            </BaseButton>
+          </div>
+        </div>
+        <div class="mt-4 grid grid-cols-3 gap-2">
+          <div
+            v-for="item in summaryRows"
+            :key="item.label"
+            class="rounded-xl border border-accent/10 bg-bg-main/45 p-3"
+          >
+            <span class="block text-[10px] font-black uppercase tracking-[0.12em] text-text-muted">{{ item.label }}</span>
+            <strong class="mt-2 block text-lg font-black text-text-main">{{ item.value }}</strong>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <DataTable
       v-if="activeTab === 'orders'"
@@ -34,6 +81,7 @@
       :current-page="ordersPage"
       :total-pages="ordersTotalPages"
       :per-page="perPage"
+      empty-text="Сделок в финансовой ленте нет"
       @page-change="p => { ordersPage = p; loadTraderOrders() }"
       @per-page-change="n => { perPage = n; ordersPage = 1; loadTraderOrders() }"
     >
@@ -65,6 +113,7 @@
       row-key="id"
       :current-page="withdrawalPage"
       :total-pages="withdrawalTotalPages"
+      empty-text="Запросов на вывод по выбранному статусу нет"
       @page-change="p => { withdrawalPage = p; loadWithdrawals() }"
     >
       <template #cell-amount="{ row }">
@@ -102,16 +151,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { computed, ref, reactive, onMounted } from 'vue'
 import PageHeader from '@/components/layout/PageHeader.vue'
 import DataTable from '@/components/ui/DataTable.vue'
 import type { Column } from '@/components/ui/DataTable.vue'
 import BaseSelect from '@/components/ui/BaseSelect.vue'
-import BaseFilter from '@/components/ui/BaseFilter.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseModal from '@/components/ui/BaseModal.vue'
-import BaseCard from '@/components/ui/BaseCard.vue'
 import BaseTabs from '@/components/ui/BaseTabs.vue'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
 import { financesService } from '@/api/services/finances.service'
@@ -141,6 +188,19 @@ const perPage = ref(50)
 const ordersTotalPages = ref(1)
 const withdrawalTotalPages = ref(1)
 const withdrawalFilters = reactive({ status: '' })
+const totalBalanceUsdt = computed(() =>
+  balances.value
+    .filter(balance => balance.currency === 'USDT')
+    .reduce((sum, balance) => sum + Number(balance.amount ?? 0), 0),
+)
+const visibleFinanceRows = computed(() =>
+  activeTab.value === 'orders' ? traderOrders.value.length : withdrawals.value.length,
+)
+const summaryRows = computed(() => [
+  { label: 'USDT', value: formatAmount(totalBalanceUsdt.value) },
+  { label: 'Строки', value: visibleFinanceRows.value },
+  { label: 'Режим', value: activeTab.value === 'orders' ? 'Сделки' : 'Выводы' },
+])
 
 const showRequest = ref(false)
 const submitting = ref(false)
